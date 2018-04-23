@@ -1,2 +1,10 @@
 /Driver.class
 /Piece.class
+/Move.class
+/Player.class
+/King.class
+/Queen.class
+/Pawn.class
+/Knight.class
+/Rook.class
+/Bishop.class
