@@ -7,6 +7,9 @@ public abstract class Piece {
 	private String name;
 	private int color;
 	private Position pos;
+	/**
+	* Add an int field for the "rank" of each piece
+	* /
 
 	public Piece(String name, int color, Position pos) {
 		this.name = name;
