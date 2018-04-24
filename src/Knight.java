@@ -7,7 +7,7 @@ public class Knight extends Piece {
 	}
 
 	@Override
-	public boolean check(Position move) {
+	public boolean isLegal(Position move) {
 		// TODO Auto-generated method stub
 		return false;
 	}

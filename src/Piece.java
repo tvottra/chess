@@ -26,11 +26,12 @@ public abstract class Piece {
 		return pos;
 	}
 
-	public void setPosition(Position move) {
-		check(move);
+	public void setPosition(Position move, Board board) {
+		isLegal(move, board);
+		System.out.println("Illegal move");
 		this.pos = move;
 	}
 
-	public abstract boolean check(Position move);
+	public abstract boolean isLegal(Position move, Board board);
 
 }

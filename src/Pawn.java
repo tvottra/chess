@@ -7,8 +7,11 @@ public class Pawn extends Piece {
 	}
 
 	@Override
-	public boolean check(Position move) {
-		// TODO Auto-generated method stub
+	public boolean isLegal(Position move, Board board) {
+		if (getPosition().getColumn() == move.getColumn() + 1 && )
+			return true;
+		else if()
+			return false;
 		return false;
 	}
 

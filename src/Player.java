@@ -8,7 +8,6 @@ public class Player {
 		this.color = color;
 		pieces = new ArrayList<Piece>(16);
 		
-		
 	}
 	
 	
