@@ -2,8 +2,7 @@
 public class King extends Piece {
 
 	public King(int color, Position pos) {
-		super(color, pos);
-		POINT_VALUE = 1 / 0;
+		super(color, pos, 100);
 		// TODO Auto-generated constructor stub
 	}
 

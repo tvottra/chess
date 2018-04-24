@@ -2,7 +2,7 @@
 public class Queen extends Piece {
 
 	public Queen(int color, Position pos) {
-		super(color, pos);
+		super(color, pos, 9);
 		// TODO Auto-generated constructor stub
 	}
 

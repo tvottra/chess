@@ -2,7 +2,7 @@
 public class Pawn extends Piece {
 
 	public Pawn(int color, Position pos) {
-		super(color, pos);
+		super(color, pos, 1);
 		// TODO Auto-generated constructor stub
 	}
 

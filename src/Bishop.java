@@ -2,7 +2,7 @@
 public class Bishop extends Piece {
 
 	public Bishop(int color, Position pos) {
-		super(color, pos);
+		super(color, pos, 3);
 		// TODO Auto-generated constructor stub
 	}
 

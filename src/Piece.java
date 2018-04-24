@@ -4,18 +4,18 @@
  *
  */
 public abstract class Piece {
-
-	private int color;
+	private int color; // 0 is white, 1 is black
 	private Position pos;
-	protected final int POINT_VALUE;
+	private final int POINT_VALUE; // Point value of each piece
 
 	/**
 	 * Add an int field for the "rank" of each piece
 	 */
 
-	public Piece(int color, Position pos) {
+	public Piece(int color, Position pos, int pointVal) {
 		this.color = color;
 		this.pos = pos;
+		POINT_VALUE = pointVal;
 	}
 
 	public int getColor() {
