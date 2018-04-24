@@ -7,6 +7,7 @@ public abstract class Piece {
 
 	private int color;
 	private Position pos;
+	protected final int POINT_VALUE;
 
 	/**
 	 * Add an int field for the "rank" of each piece
@@ -31,4 +32,5 @@ public abstract class Piece {
 	}
 
 	public abstract boolean check(Position move);
+
 }
