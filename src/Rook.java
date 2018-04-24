@@ -1,8 +1,8 @@
 
 public class Rook extends Piece {
 
-	public Rook(String name, int color, Position pos) {
-		super(name, color, pos);
+	public Rook(int color, Position pos) {
+		super(color, pos);
 		// TODO Auto-generated constructor stub
 	}
 

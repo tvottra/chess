@@ -1,8 +1,8 @@
 
 public class Queen extends Piece {
 
-	public Queen(String name, int color, Position pos) {
-		super(name, color, pos);
+	public Queen(int color, Position pos) {
+		super(color, pos);
 		// TODO Auto-generated constructor stub
 	}
 

@@ -1,8 +1,8 @@
 
 public class Knight extends Piece {
 
-	public Knight(String name, int color, Position pos) {
-		super(name, color, pos);
+	public Knight(int color, Position pos) {
+		super(color, pos);
 		// TODO Auto-generated constructor stub
 	}
 

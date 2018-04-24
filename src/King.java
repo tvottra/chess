@@ -1,8 +1,8 @@
 
 public class King extends Piece {
 
-	public King(String name, int color, Position pos) {
-		super(name, color, pos);
+	public King(int color, Position pos) {
+		super(color, pos);
 		// TODO Auto-generated constructor stub
 	}
 
