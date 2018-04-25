@@ -7,9 +7,7 @@ public class Player {
 	public Player(int color) {
 		this.color = color;
 		pieces = new ArrayList<Piece>(16);
-		
+
 	}
-	
-	
 
 }
