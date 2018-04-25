@@ -9,4 +9,17 @@ public class Slot {
 		this.whiteControl = whiteControl;
 		this.blackControl = blackControl;
 	}
+
+	public Piece getPiece() {
+		return myPiece;
+	}
+
+	public boolean getWhiteControl() {
+		return whiteControl;
+	}
+
+	public boolean getBlackControl() {
+		return blackControl;
+	}
+
 }

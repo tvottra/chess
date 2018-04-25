@@ -10,7 +10,7 @@ public class Board {
 			// generate color pawns pawns
 			for (int x = 0; x < NUM_PAWN; x++) {
 				int temppos = pos - 1;
-				if (temppos < 1) {
+				if (temppos < 0) {
 					temppos = 0 - temppos;
 				}
 				board[temppos][x] = new Pawn(color, new Position(6, x));
@@ -26,4 +26,18 @@ public class Board {
 		}
 	}
 
+	public Piece[][] getBoard() {
+		return board;
+	}
+
+	public String toString() {
+		String x = "";
+		for (int i = 0; i < board.length; i++) {
+			for (int k = 0; k < board[i].length; k++) {
+				x += board[i][k] + " ";
+			}
+			x += "\n";
+		}
+		return x;
+	}
 }
