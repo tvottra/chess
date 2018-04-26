@@ -77,6 +77,7 @@ public class Queen extends Piece {
 			return true;
 		}
 		//check if move is diagonal to the queen; if yes, return true
+		//must check if move is behind another piece!!!!!!!!!!!!!!!!!!!!!!
 		for(int i = 1; i < board.length; i++){
 			if(move.getRow() == super.getPosition().getRow() + i && move.getCol() == super.getPosition().getCol() + i){
 				return true;
