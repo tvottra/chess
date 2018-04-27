@@ -4,7 +4,7 @@ public class Board {
 	private final int NUM_PAWN = 8;
 
 	public Board() {
-		board = new Piece[8][8];
+		board = new Slot[8][8];
 		// generates white side first, then black
 		for (int pos = 7, color = 0; color < 2; color++, pos -= 6) {
 			// generate color pawns pawns

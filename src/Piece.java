@@ -4,23 +4,20 @@
  *
  */
 public abstract class Piece {
+	private String name;
 	private int color; // 0 is white, 1 is black
 	private Position pos;
 	private final int POINT_VALUE; // Point value of each piece
-	private Board board;
 
 	/**
 	 * Add an int field for the "rank" of each piece
 	 */
 
-	public Piece(int color, Position pos, int pointVal) {
+	public Piece(String name, int color, Position pos, int pointVal) {
+		this.name = name;
 		this.color = color;
 		this.pos = pos;
 		POINT_VALUE = pointVal;
-	}
-
-	public void setBoard(Board board) {
-		this.board = board;
 	}
 
 	public int getColor() {
@@ -37,6 +34,6 @@ public abstract class Piece {
 		this.pos = move;
 	}
 
-	public abstract boolean isLegal(Position move);
+	public abstract boolean isWithinRangeOfMovement(Slot s);
 
 }
