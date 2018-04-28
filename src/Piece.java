@@ -12,7 +12,7 @@ public abstract class Piece {
 	private int color; // 0 is white, 1 is black
 	private Position pos;
 	private final int POINT_VALUE; // Point value of each piece
-	private final int MAX_LENGTH = 8; // the length of a row or column on the Board
+	private final int SIZE = 8; // the size of a row/column on the Board
 
 	/**
 	 * Constructor that initializes the piece's name, color, Position, and point
@@ -71,12 +71,12 @@ public abstract class Piece {
 	}
 
 	/**
-	 * Accessor method to return the maximum length of row OR column on the Board
+	 * Accessor method to return the size of a row/column on the Board
 	 * 
-	 * @return the max row or column length
+	 * @return the size of a row/column
 	 */
-	public int getMaxLength() {
-		return MAX_LENGTH;
+	public int getSize() {
+		return SIZE;
 	}
 
 	/**
