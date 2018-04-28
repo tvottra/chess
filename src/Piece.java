@@ -105,8 +105,9 @@ public abstract class Piece {
 
 	/**
 	 * Updates this Piece's field of control
+	 * @param currentPos - this Piece's current Position
 	 */
-	public abstract void setFieldOfControl();
+	public abstract void setFieldOfControl(Position currentPos);
 
 	/**
 	 * Checks whether the given Position is within this Piece's range of movement
