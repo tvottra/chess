@@ -1,5 +1,6 @@
 /**
  * Class that represents the position of a Piece in [row][column] format
+ * 
  * @author Arjun Agrawal
  * @author Andrew Le (documentation)
  *
@@ -95,4 +96,14 @@ public class Position {
 			return 0;
 		}
 	}
+
+	/**
+	 * toString method
+	 * 
+	 * @return the Position in the following format: [row][column]
+	 */
+	public String toString() {
+		return "[" + row + "]" + "[" + column + "]";
+	}
+
 }
