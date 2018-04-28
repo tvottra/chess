@@ -1,19 +1,22 @@
+import java.util.ArrayList;
+
 /**
  * Abstract class that represents a chess piece
  * 
  * @author Arjun Agrawal
- * @author Andrew Le
+ * @author Andrew Le (documentation)
  *
  */
 public abstract class Piece {
 	private String name;
 	private int color; // 0 is white, 1 is black
 	private Position pos;
-	private Position[][] fieldOfControl;
 	private final int POINT_VALUE; // Point value of each piece
+	private final int SIZE = 8; // the size of a row/column on the Board
 
 	/**
-	 * Constructor
+	 * Constructor that initializes the piece's name, color, Position, and point
+	 * value
 	 * 
 	 * @param name
 	 *            - the name of the piece
@@ -32,7 +35,7 @@ public abstract class Piece {
 	}
 
 	/**
-	 * Accessor method to return the piece's name
+	 * Accessor method to get the piece's name
 	 * 
 	 * @return the peice's name
 	 */
@@ -41,7 +44,7 @@ public abstract class Piece {
 	}
 
 	/**
-	 * Accessor method to return the piece's color
+	 * Accessor method to get the piece's color
 	 * 
 	 * @return the piece's color
 	 */
@@ -50,7 +53,7 @@ public abstract class Piece {
 	}
 
 	/**
-	 * Accessor method to return the piece's Position
+	 * Accessor method to get the piece's Position
 	 * 
 	 * @return the Piece's Position
 	 */
@@ -59,52 +62,52 @@ public abstract class Piece {
 	}
 
 	/**
-	 * Accessor method to return the piece's field of control
-	 * 
-	 * @return the piece's field of control
-	 */
-	public Position[][] getFieldOfControl() {
-		return fieldOfControl;
-	}
-
-	/**
 	 * Accessor method to return the piece's point value
 	 * 
-	 * @return
+	 * @return the Piece's point value
 	 */
 	public int getPointValue() {
 		return POINT_VALUE;
 	}
 
 	/**
-	 * toString
-	 * @return Piece Name + "at" + Position
+	 * Accessor method to return the size of a row/column on the Board
+	 * 
+	 * @return the size of a row/column
+	 */
+	public int getSize() {
+		return SIZE;
+	}
+
+	/**
+	 * toString method to print this Piece's information
+	 * 
+	 * @return a String in the following format: [Piece Name] + " at " + [Position]
 	 */
 	public String toString() {
-		name + " at " + pos;
+		return name + " at " + pos;
 	}
 
 	/**
-	 * Returns the Positions that would be crossed if this piece were to move to the
-	 * given destination
+	 * Returns an array of the Positions that would be crossed if this Piece were to
+	 * move to the given Position
 	 * 
 	 * @param toPos
-	 *            - the destination position
-	 * @return an array of the positions that would be crossed
+	 *            - the given Position
+	 * @return an ArrayList of the Positions that would be crossed
 	 */
-	public Position[][] move(Position toPos) {
-		if (isWithinRangeOfMovement(toPos)) {
-			return fieldOfControl;
-		} else {
-			return null;
-		}
-
-	}
-
-	public abstract void setFieldOfControl();
+	public abstract ArrayList<Position> move(Position toPos);
 
 	/**
-	 * Checks whether to given Position is within this Piece's range of movement
+	 * Calculates the Piece's field of control based on known board size and its
+	 * current position.
+	 * 
+	 * @return the Piece's field of control
+	 */
+	public abstract ArrayList<Position> getFieldOfControl();
+
+	/**
+	 * Checks whether the given Position is within this Piece's range of movement
 	 * 
 	 * @param toPos
 	 *            - the destination Position
