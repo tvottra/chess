@@ -1,4 +1,3 @@
-
 public class Rook extends Piece {
 
 	public Rook(int color, Position pos) {
@@ -11,5 +10,4 @@ public class Rook extends Piece {
 		// TODO Auto-generated method stub
 		return false;
 	}
-
 }

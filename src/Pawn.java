@@ -8,7 +8,7 @@ public class Pawn extends Piece {
 
 	@Override
 	public boolean isLegal(Position move) {
-		if (getPosition().getColumn() == move.getColumn() + 1)
+		if (getPosition().getColumn() == move.getColumn() + 1) {
 			return true;
 		else if()
 			return false;

@@ -100,7 +100,7 @@ public abstract class Piece {
 
 	/**
 	 * Calculates the Piece's field of control based on known board size and its
-	 * current position.
+	 * current position. Positions are ordered ascending in terms of row then column. E.g., (0, 0), (0, 1), (0, 2), (1, 0)...
 	 * 
 	 * @return the Piece's field of control
 	 */
