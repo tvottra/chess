@@ -71,11 +71,11 @@ public abstract class Piece {
 	}
 
 	/**
-	 * Accessor method to return the SIZE of a row/column on the Board
+	 * Accessor method to return the size of a row/column on the Board
 	 * 
 	 * @return the size of a row/column
 	 */
-	public int getSIZE() {
+	public int getSize() {
 		return SIZE;
 	}
 
