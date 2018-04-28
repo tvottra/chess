@@ -84,5 +84,9 @@ public class Tile {
 	public void setBlackControl(boolean blackControl) {
 		this.blackControl = blackControl;
 	}
+	
+	public String toString() {
+		return myPiece.toString() + " white control = " + whiteControl + " black control = " + blackControl;
+	}
 
 }
