@@ -9,7 +9,6 @@ import java.util.ArrayList;
  *
  */
 public class Rook extends Piece {
-	private ArrayList<Position> fieldOfControl;
 	private boolean hasMoved;
 
 	/**
@@ -47,10 +46,47 @@ public class Rook extends Piece {
 		hasMoved = moveState;
 	}
 
+	/**
+	 * Determines the Positions that would be crossed if this Rook were to move from
+	 * its current position to the given position
+	 * 
+	 * @param toPos
+	 *            - the given position
+	 * @return an ArrayList of crossed Positions
+	 */
+	private ArrayList<Position> getCrossedPositions(Position toPos) {
+		ArrayList<Position> positions = new ArrayList<Position>();
+		Position fromPos = getPosition();
+		// The two Positions are in the same row
+		if (fromPos.getRow() == toPos.getRow()) {
+			for (int c = fromPos.getColumn(); c < toPos.getColumn(); c++) {
+				Position pos = new Position(fromPos.getRow(), c);
+				positions.add(pos);
+			}
+		}
+		// The two Positions are in the same column
+		if (fromPos.getColumn() == toPos.getColumn()) {
+			for (int r = fromPos.getRow(); r < toPos.getRow(); r++) {
+				Position pos = new Position(r, fromPos.getColumn());
+				positions.add(pos);
+			}
+		}
+		return positions;
+	}
+
 	@Override
-	public void setFieldOfControl() {
+	public ArrayList<Position> move(Position toPos) {
+		if (isWithinRangeOfMovement(toPos)) {
+			return getCrossedPositions(toPos);
+		} else {
+			return null;
+		}
+	}
+
+	@Override
+	public ArrayList<Position> getFieldOfControl() {
 		Position pos = getPosition();
-		fieldOfControl = null;
+		ArrayList<Position> fieldOfControl = new ArrayList<Position>();
 		fieldOfControl = new ArrayList<Position>();
 		// Add all positions above current position (same column)
 		for (int r = 0; r < pos.getRow(); r++) {
@@ -58,7 +94,7 @@ public class Rook extends Piece {
 			fieldOfControl.add(p);
 		}
 		// Add all positions below current position (same column)
-		for (int r = pos.getRow() + 1; r < 8; r++) {
+		for (int r = pos.getRow() + 1; r < getMaxLength(); r++) {
 			Position p = new Position(r, pos.getColumn());
 			fieldOfControl.add(p);
 		}
@@ -68,16 +104,16 @@ public class Rook extends Piece {
 			fieldOfControl.add(p);
 		}
 		// Add all positions left of current position (same row)
-		for (int c = pos.getColumn() + 1; c < 8; c++) {
+		for (int c = pos.getColumn() + 1; c < getMaxLength(); c++) {
 			Position p = new Position(pos.getRow(), c);
 			fieldOfControl.add(p);
 		}
-
+		return fieldOfControl;
 	}
 
 	@Override
 	public boolean isWithinRangeOfMovement(Position toPos) {
-		setFieldOfControl();
+		ArrayList<Position> fieldOfControl = getFieldOfControl();
 		for (Position pos : fieldOfControl) {
 			if (pos.equals(toPos)) {
 				return true;
