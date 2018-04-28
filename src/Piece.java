@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 /**
  * Abstract class that represents a chess piece
  * 
@@ -9,7 +11,6 @@ public abstract class Piece {
 	private String name;
 	private int color; // 0 is white, 1 is black
 	private Position pos;
-	private Position[] fieldOfControl;
 	private final int POINT_VALUE; // Point value of each piece
 
 	/**
@@ -83,30 +84,17 @@ public abstract class Piece {
 	 * 
 	 * @param toPos
 	 *            - the given Position
-	 * @return an array of the Positions that would be crossed
+	 * @return an ArrayList of the Positions that would be crossed
 	 */
-	public Position[] move(Position toPos) {
-		if (isWithinRangeOfMovement(toPos)) {
-			return fieldOfControl;
-		} else {
-			return null;
-		}
-
-	}
+	public abstract ArrayList<Position> move(Position toPos);
 
 	/**
-	 * Accessor method to get this Piece's field of control
+	 * Calculates the Piece's field of control based on known board size and its current position.
 	 * 
-	 * @return the Piece's field of Control
+	 * @return the Piece's field of control
 	 */
-	public Position[] getFieldOfControl() {
-		return fieldOfControl;
-	}
+	public abstract ArrayList<Position> getFieldOfControl();
 
-	/**
-	 * Updates this Piece's field of control	 
-	 */
-	public abstract void setFieldOfControl();
 
 	/**
 	 * Checks whether the given Position is within this Piece's range of movement

@@ -15,10 +15,10 @@ public class Tile {
 	 * 
 	 * @param piece
 	 *            - the piece that occupies the Slot
-	 * @param whiteLeverage
+	 * @param whiteControl
 	 *            - whether the Tile is within the range of movement of a white
 	 *            Piece
-	 * @param blackLeverage
+	 * @param blackControl
 	 *            - whether the Tile is within the range of movement of a black
 	 *            Piece
 	 */
@@ -78,7 +78,7 @@ public class Tile {
 	/**
 	 * Mutator method to set black control of this Tile
 	 * 
-	 * @param whiteControl
+	 * @param blackControl
 	 *            - true if black has control of this Tile, false otherwise
 	 */
 	public void setBlackControl(boolean blackControl) {
