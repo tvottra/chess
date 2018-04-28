@@ -12,6 +12,7 @@ public abstract class Piece {
 	private int color; // 0 is white, 1 is black
 	private Position pos;
 	private final int POINT_VALUE; // Point value of each piece
+	private final int SIZE = 8; // the size of a row/column on the Board
 
 	/**
 	 * Constructor that initializes the piece's name, color, Position, and point
@@ -70,6 +71,15 @@ public abstract class Piece {
 	}
 
 	/**
+	 * Accessor method to return the SIZE of a row/column on the Board
+	 * 
+	 * @return the size of a row/column
+	 */
+	public int getSIZE() {
+		return SIZE;
+	}
+
+	/**
 	 * toString method to print this Piece's information
 	 * 
 	 * @return a String in the following format: [Piece Name] + " at " + [Position]
@@ -89,12 +99,12 @@ public abstract class Piece {
 	public abstract ArrayList<Position> move(Position toPos);
 
 	/**
-	 * Calculates the Piece's field of control based on known board size and its current position.
+	 * Calculates the Piece's field of control based on known board size and its
+	 * current position.
 	 * 
 	 * @return the Piece's field of control
 	 */
 	public abstract ArrayList<Position> getFieldOfControl();
-
 
 	/**
 	 * Checks whether the given Position is within this Piece's range of movement
