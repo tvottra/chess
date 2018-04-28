@@ -2,18 +2,19 @@
  * Abstract class that represents a chess piece
  * 
  * @author Arjun Agrawal
- * @author Andrew Le
+ * @author Andrew Le (documentation)
  *
  */
 public abstract class Piece {
 	private String name;
 	private int color; // 0 is white, 1 is black
 	private Position pos;
-	private Position[][] fieldOfControl;
+	private Position[] fieldOfControl;
 	private final int POINT_VALUE; // Point value of each piece
 
 	/**
-	 * Constructor
+	 * Constructor that initializes the piece's name, color, Position, and point
+	 * value
 	 * 
 	 * @param name
 	 *            - the name of the piece
@@ -32,7 +33,7 @@ public abstract class Piece {
 	}
 
 	/**
-	 * Accessor method to return the piece's name
+	 * Accessor method to get the piece's name
 	 * 
 	 * @return the peice's name
 	 */
@@ -41,7 +42,7 @@ public abstract class Piece {
 	}
 
 	/**
-	 * Accessor method to return the piece's color
+	 * Accessor method to get the piece's color
 	 * 
 	 * @return the piece's color
 	 */
@@ -50,7 +51,7 @@ public abstract class Piece {
 	}
 
 	/**
-	 * Accessor method to return the piece's Position
+	 * Accessor method to get the piece's Position
 	 * 
 	 * @return the Piece's Position
 	 */
@@ -59,40 +60,32 @@ public abstract class Piece {
 	}
 
 	/**
-	 * Accessor method to return the piece's field of control
-	 * 
-	 * @return the piece's field of control
-	 */
-	public Position[][] getFieldOfControl() {
-		return fieldOfControl;
-	}
-
-	/**
 	 * Accessor method to return the piece's point value
 	 * 
-	 * @return
+	 * @return the Piece's point value
 	 */
 	public int getPointValue() {
 		return POINT_VALUE;
 	}
 
 	/**
-	 * toString
-	 * @return Piece Name + "at" + Position
+	 * toString method to print this Piece's information
+	 * 
+	 * @return a String in the following format: [Piece Name] + " at " + [Position]
 	 */
 	public String toString() {
-		name + " at " + pos;
+		return name + " at " + pos;
 	}
 
 	/**
-	 * Returns the Positions that would be crossed if this piece were to move to the
-	 * given destination
+	 * Returns an array of the Positions that would be crossed if this Piece were to
+	 * move to the given Position
 	 * 
 	 * @param toPos
-	 *            - the destination position
-	 * @return an array of the positions that would be crossed
+	 *            - the given Position
+	 * @return an array of the Positions that would be crossed
 	 */
-	public Position[][] move(Position toPos) {
+	public Position[] move(Position toPos) {
 		if (isWithinRangeOfMovement(toPos)) {
 			return fieldOfControl;
 		} else {
@@ -101,10 +94,22 @@ public abstract class Piece {
 
 	}
 
+	/**
+	 * Accessor method to get this Piece's field of control
+	 * 
+	 * @return the Piece's field of Control
+	 */
+	public Position[] getFieldOfControl() {
+		return fieldOfControl;
+	}
+
+	/**
+	 * Updates this Piece's field of control
+	 */
 	public abstract void setFieldOfControl();
 
 	/**
-	 * Checks whether to given Position is within this Piece's range of movement
+	 * Checks whether the given Position is within this Piece's range of movement
 	 * 
 	 * @param toPos
 	 *            - the destination Position
