@@ -1,5 +1,4 @@
 
-
 /**
  * Class that represents a Rook chess piece
  */
@@ -9,8 +8,6 @@ import java.util.ArrayList;
  * @author Andrew Le
  *
  */
-=======
-
 public class Rook extends Piece {
 	private boolean hasMoved;
 
@@ -31,7 +28,7 @@ public class Rook extends Piece {
 
 	/**
 	 * Accessor method to get this Rook's move status
-	 * 
+	 *
 	 * @return true if this Rook has already moved at least once, false otherwise
 	 */
 	public boolean hasMoved() {
@@ -40,7 +37,7 @@ public class Rook extends Piece {
 
 	/**
 	 * Mutator method to update the Rook's move state
-	 * 
+	 *
 	 * @param moveState
 	 *            - true if this Rook has already moved at least once, false
 	 *            otherwise
@@ -52,7 +49,7 @@ public class Rook extends Piece {
 	/**
 	 * Determines the Positions that would be crossed if this Rook were to move from
 	 * its current position to the given position
-	 * 
+	 *
 	 * @param toPos
 	 *            - the given position
 	 * @return an ArrayList of crossed Positions
@@ -124,5 +121,4 @@ public class Rook extends Piece {
 		}
 		return false;
 	}
-
 }
