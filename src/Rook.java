@@ -1,4 +1,5 @@
 
+
 /**
  * Class that represents a Rook chess piece
  */
@@ -8,6 +9,8 @@ import java.util.ArrayList;
  * @author Andrew Le
  *
  */
+=======
+
 public class Rook extends Piece {
 	private boolean hasMoved;
 
@@ -121,4 +124,5 @@ public class Rook extends Piece {
 		}
 		return false;
 	}
+
 }
