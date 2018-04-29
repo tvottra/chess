@@ -12,9 +12,9 @@ public class Position {
 
 	/**
 	 * Constructor to initialize the row and column of this Position
-	 *
-	 * @param row
-	 * @param column
+	 * 
+	 * @param row - the row index of this Position
+	 * @param column - the column index of this Position
 	 */
 	public Position(int row, int column) {
 		this.row = row;
