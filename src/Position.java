@@ -1,14 +1,14 @@
 /**
  * Class that represents the position of a Piece in [row][column] format
- * 
- * @author Arjun Agrawal
- * @author Andrew Le (documentation)
  *
+ * @author Arjun Agrawal, Tommy V. Tran
+ * @author Andrew Le (documentation)
  */
 public class Position {
 
 	private int row;
 	private int column;
+	private final int BOARD_SIZE = 8;
 
 	/**
 	 * Constructor to initialize the row and column of this Position
@@ -22,8 +22,18 @@ public class Position {
 	}
 
 	/**
+	 * Constructor initialize a new Position with another Position's coordinates
+	 *
+	 * @param other - some other Position
+	 */
+	public Position(Position other) {
+		row = other.getRow();
+		column = other.getColumn();
+	}
+
+	/**
 	 * Accessor method to get the row index
-	 * 
+	 *
 	 * @return the row index
 	 */
 	public int getRow() {
@@ -32,7 +42,7 @@ public class Position {
 
 	/**
 	 * Accessor method to get the column index
-	 * 
+	 *
 	 * @return the column index
 	 */
 	public int getColumn() {
@@ -41,9 +51,8 @@ public class Position {
 
 	/**
 	 * Mutator method to set the row index to the given row index
-	 * 
-	 * @param row
-	 *            - the given row index
+	 *
+	 * @param row - the given row index
 	 */
 	public void setRow(int row) {
 		this.row = row;
@@ -51,9 +60,8 @@ public class Position {
 
 	/**
 	 * Mutator method to set the column index to the given column index
-	 * 
-	 * @param column
-	 *            - the given column index
+	 *
+	 * @param column - the given column index
 	 */
 
 	public void setColumn(int column) {
@@ -62,11 +70,10 @@ public class Position {
 
 	/**
 	 * Method to determine whether this Position and the given Position are equal
-	 * 
-	 * @param other
-	 *            - the given Position
+	 *
+	 * @param other - the given Position
 	 * @return true if this Position and other have the same row and column indexes,
-	 *         false otherwise
+	 * false otherwise
 	 */
 	public boolean equals(Position other) {
 		if (this.row == other.getRow() && this.column == other.getRow())
@@ -75,13 +82,11 @@ public class Position {
 	}
 
 	/**
-	 * Compares this Position to the given Position; (CURRENT POSITION IS ASSUMED AT
-	 * ( 0, 0)):
+	 * Compares this Position to some other Position
 	 *
-	 * @param other
-	 *            - the given Position
-	 * @return 1 if other is in first quadrant; 3 if other is in third quadrant; 2
-	 *         if other is in second quadrant; and 4 if other is in fourth quadrant
+	 * @param other - the given Position
+	 * @return 1 if other is in first quadrant, 2 if other is in second quadrant, 3 if other is in third quadrant,
+	 * 4 if other is in fourth quadrant, -1 if inapp
 	 */
 	public int compareTo(Position other) {
 		if (other.getRow() > this.row && other.getColumn() > this.column) {
@@ -98,12 +103,83 @@ public class Position {
 	}
 
 	/**
+	 * See whether this Position is left of the other Position
+	 *
+	 * @param other - some other Position
+	 * @return true if this Position is left of the other Position, false otherwise.
+	 */
+	public boolean isLeftOf(Position other) {
+		return this.getColumn() < other.getColumn();
+	}
+
+	/**
+	 * See whether this Position is above the other Position
+	 *
+	 * @param other - some other Position
+	 * @return true if this Position is above the other Position, false otherwise.
+	 */
+	public boolean isAbove(Position other) {
+		return this.getRow() < other.getRow();
+	}
+
+	/**
 	 * toString method
-	 * 
+	 *
 	 * @return the Position in the following format: [row][column]
 	 */
 	public String toString() {
 		return "[" + row + "]" + "[" + column + "]";
 	}
+
+	/**
+	 * Add to row this number
+	 *
+	 * @param n - number to add
+	 */
+	public void addToRow(int n) {
+		row += n;
+	}
+
+	/**
+	 * Add to column this number
+	 *
+	 * @param n - number to add
+	 */
+	public void addToColumn(int n) {
+		column += n;
+	}
+
+
+	/**
+	 * Check whether the Position is within the bounds of the board size
+	 *
+	 * @return true Position is within bounds, false otherwise
+	 */
+	public boolean isWithinBounds() {
+		return row < BOARD_SIZE && column < BOARD_SIZE;
+	}
+
+
+	/**
+	 * Mutator method to set this Position to some other Position
+	 *
+	 * @param pos some other Position
+	 */
+	public void setPosition(Position pos) {
+		row = pos.getRow();
+		column = pos.getColumn();
+	}
+
+	/**
+	 * Mutator method to set the Piece's Position to some r and c
+	 *
+	 * @param r desired row
+	 * @param c desired column
+	 */
+	public void setPosition(int r, int c) {
+		row = r;
+		column = c;
+	}
+
 
 }
