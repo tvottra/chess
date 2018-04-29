@@ -76,7 +76,7 @@ public class Position {
 	 * false otherwise
 	 */
 	public boolean equals(Position other) {
-		if (this.row == other.getRow() && this.column == other.getRow())
+		if (this.row == other.getRow() && this.column == other.getColumn())
 			return true;
 		return false;
 	}
