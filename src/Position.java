@@ -86,7 +86,7 @@ public class Position {
 	 *
 	 * @param other - the given Position
 	 * @return 1 if other is in first quadrant, 2 if other is in second quadrant, 3 if other is in third quadrant,
-	 * 4 if other is in fourth quadrant, -1 if inapp
+	 * 4 if other is in fourth quadrant, -1 if inapppropriate
 	 */
 	public int compareTo(Position other) {
 		if (other.getRow() > this.row && other.getColumn() > this.column) {
@@ -98,7 +98,7 @@ public class Position {
 		} else if (other.getRow() < this.row && other.getColumn() > this.column) {
 			return 4; // other is in fourth quadrant
 		} else {
-			return 0;
+			return -1;
 		}
 	}
 
