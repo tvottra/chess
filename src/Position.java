@@ -12,8 +12,8 @@ public class Position {
 
 	/**
 	 * Constructor to initialize the row and column of this Position
-	 * 
-	 * @param row - the row index of this Position
+	 *
+	 * @param row    - the row index of this Position
 	 * @param column - the column index of this Position
 	 */
 	public Position(int row, int column) {
@@ -109,7 +109,7 @@ public class Position {
 	 * @return true if this Position is left of the other Position, false otherwise.
 	 */
 	public boolean isLeftOf(Position other) {
-		return this.getColumn() < other.getColumn();
+		return column < other.getColumn();
 	}
 
 	/**
@@ -119,7 +119,7 @@ public class Position {
 	 * @return true if this Position is above the other Position, false otherwise.
 	 */
 	public boolean isAbove(Position other) {
-		return this.getRow() < other.getRow();
+		return row < other.getRow();
 	}
 
 	/**
@@ -137,7 +137,7 @@ public class Position {
 	 * @param n - number to add
 	 */
 	public void addToRow(int n) {
-		row += n;
+		row = row + n;
 	}
 
 	/**
@@ -146,7 +146,7 @@ public class Position {
 	 * @param n - number to add
 	 */
 	public void addToColumn(int n) {
-		column += n;
+		column = column + n;
 	}
 
 
@@ -156,7 +156,7 @@ public class Position {
 	 * @return true Position is within bounds, false otherwise
 	 */
 	public boolean isWithinBounds() {
-		return row < BOARD_SIZE && column < BOARD_SIZE;
+		return (0 <= row && 0 <= column) && (row < BOARD_SIZE && column < BOARD_SIZE);
 	}
 
 
@@ -179,6 +179,16 @@ public class Position {
 	public void setPosition(int r, int c) {
 		row = r;
 		column = c;
+	}
+
+	/**
+	 * Get the slope from this Position to another Position
+	 *
+	 * @param other - some other Position
+	 * @return the slope (e.g., an upward slope would be positive as on an xy system, even though rows and columns used)
+	 */
+	public double slopeTo(Position other) {
+		return -(row - other.getRow()) / (double) (column - other.getColumn());
 	}
 
 
