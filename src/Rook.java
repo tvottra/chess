@@ -18,7 +18,7 @@ public class Rook extends Piece {
 	 *            - the Position of the piece
 	 */
 	public Rook(int color, Position pos) {
-		super("rook", color, pos, 5);
+		super("Rook", color, pos, 5);
 		hasMoved = false;
 	}
 
