@@ -1,98 +1,143 @@
+import java.util.ArrayList;
 
 public class Queen extends Piece {
 
 	public Queen(int color, Position pos) {
-		super(color, pos, 9);
+		super("Queen", color, pos, 9);
 		// TODO Auto-generated constructor stub
 	}
 
-	@Override
-	public boolean isLegal(Position move, int[][] board) {
-		//check if move is off of board or back in same place, if yes, return false
-		if((move.getColumn() > 7 || move.getColumn() < 0) || (move.getRow() > 7 || move.getRow() < 0)){
-			return false;
-		}
-		//check if move is in the same column or row, if yes,
-		//check if move is behind another piece, if yes, return false, else truw
-		if(move.getColumn() == super.getPosition().getColumn()){
-			int rowOfOther = -1;
-			//if move is behind another piece, move is illegal
-			if(move.getRow() > super.getPosition().getRow()){
-				for(int i = super.getPosition().getRow(); i < board.length; i++){
-					if(board[i][move.getColumn()] != null){
-						rowOfOther = i;
-						break;
-					}
-				}
-				if(move.getRow() > rowOfOther){
-					return false;
-				}	
+	/**
+	 * Returns an array of the Positions that would be crossed if this Piece were to
+	 * move to the given Position
+	 * 
+	 * @param toPos
+	 *            - the given Position
+	 * @return an ArrayList of the Positions that would be crossed
+	 */
+	public ArrayList<Position> move(Position toPos){
+		ArrayList<Position> positions = new ArrayList<Position>();
+		Position fromPos = getPosition();
+		// The two Positions are in the same row
+		if (fromPos.getRow() == toPos.getRow()) {
+			int i;
+			if(fromPos.isLeftOf(toPos)) {
+				i = 1;
 			}
-			else{
-				for(int i = super.getPosition().getRow(); i >= 0; i--){
-					if(board[i][move.getColumn()] != null){
-						rowOfOther = i;
-						break;
-					}
-				}
-				if(move.getRow() < rowOfOther){
-					return false;
-				}
+			else {
+				i = -1;
 			}
-			//if move is in same place as piece of the same color, move is illegal
-			if(move.getRow() == rowOfOther && board[rowOfOther][move.getColumn()].getColor() == super.getColor()){
-					return false;
-			}
-			return true;
-		}
-		if(move.getRow() == super.getPosition().getRow()){
-			int colOfOther = -1;
-			//if move is behind another piece, move is illegal
-			if(move.getColumn() > super.getPosition().getColumn()){
-				for(int i = super.getPosition().getColumn(); i < board.length; i++){
-					if(board[move.getRow()][i] != null){
-						colOfOther = i;
-						break;
-					}
-				}
-				if(move.getColumn() > colOfOther){
-					return false;
-				}	
-			}
-			else{
-				for(int i = super.getPosition().getColumn(); i >= 0; i--){
-					if(board[move.getRow()][i] != null){
-						rowOfOther = i;
-						break;
-					}
-				}
-				if(move.getColumn() < colOfOther){
-					return false;
-				}
-			}
-			//if move is on same space as piece of same color, move is illegal
-			if(move.getColumn() == colOfOther && board[move.getRow()][colOfOther].getColor() == super.getColor()){
-					return false;
-			}
-			return true;
-		}
-		//check if move is diagonal to the queen; if yes, return true
-		//must check if move is behind another piece!!!!!!!!!!!!!!!!!!!!!!
-		for(int i = 1; i < board.length; i++){
-			if(move.getRow() == super.getPosition().getRow() + i && move.getColumn() == super.getPosition().getColumn() + i){
-				return true;
-			}
-			if(move.getRow() == super.getPosition().getRow() - i && move.getColumn() == super.getPosition().getColumn() + i){
-				return true;
-			}
-			if(move.getRow() == super.getPosition().getRow() + i && move.getColumn() == super.getPosition().getColumn() - i){
-				return true;
-			}
-			if(move.getRow() == super.getPosition().getRow() - i && move.getColumn() == super.getPosition().getColumn() - i){
-				return true;
+			for (int c = fromPos.getColumn(); c != toPos.getColumn(); c += i) {
+				Position pos = new Position(fromPos.getRow(), c);
+				positions.add(pos);
 			}
 		}
-		return false;
+		// The two Positions are in the same column
+		if (fromPos.getColumn() == toPos.getColumn()) {
+			int i;
+			if(fromPos.isAbove(toPos)) {
+				i = 1;
+			}
+			else {
+				i = -1;
+			}
+			for (int r = fromPos.getRow(); r != toPos.getRow(); r += i) {
+				Position pos = new Position(r, fromPos.getColumn());
+				positions.add(pos);
+			}
+		}
+		if (Math.abs(getPosition().slopeTo(toPos)) == 1.0) {
+			int r, c;
+			if (fromPos.isAbove(toPos)) {
+				r = 1;
+			} else {
+				r = -1;
+			}
+			if (fromPos.isLeftOf(toPos)) {
+				c = 1;
+			} else {
+				c = -1;
+			}
+			while (!fromPos.equals(toPos)) {
+				positions.add(new Position(fromPos));
+				fromPos.addToRow(r);
+				fromPos.addToColumn(c);
+			}
+		}
+		return positions;
 	}
 
+	/**
+	 * Calculates the Piece's field of control based on known board size and its
+	 * current position. Positions are ordered ascending in terms of row then column. E.g., (0, 0), (0, 1), (0, 2), (1, 0)...
+	 * 
+	 * @return the Piece's field of control
+	 */
+	public ArrayList<Position> getFieldOfControl(){
+		Position pos = new Position(getPosition());
+		ArrayList<Position> fieldOfControl = new ArrayList<Position>();
+		fieldOfControl = new ArrayList<Position>();
+
+		for (int r = 0; r < pos.getRow(); r++) {
+			Position p = new Position(r, pos.getColumn());
+			fieldOfControl.add(p);
+		}
+
+		for (int r = pos.getRow() + 1; r < getSize(); r++) {
+			Position p = new Position(r, pos.getColumn());
+			fieldOfControl.add(p);
+		}
+
+		for (int c = 0; c < pos.getColumn(); c++) {
+			Position p = new Position(pos.getRow(), c);
+			fieldOfControl.add(p);
+		}
+		
+		for (int c = pos.getColumn() + 1; c < getSize(); c++) {
+			Position p = new Position(pos.getRow(), c);
+			fieldOfControl.add(p);
+		}
+
+		while (pos.isWithinBounds()) {
+			fieldOfControl.add(new Position(pos));
+			pos.addToRow(-1);
+			pos.addToColumn(1);
+		}
+
+		pos = new Position(getPosition());
+		while (pos.isWithinBounds()) {
+			fieldOfControl.add(new Position(pos));
+			pos.addToRow(-1);
+			pos.addToColumn(-1);
+		}
+
+		pos = new Position(getPosition());
+		while (pos.isWithinBounds()) {
+			fieldOfControl.add(new Position(pos));
+			pos.addToRow(1);
+			pos.addToColumn(-1);
+		}
+
+		pos = new Position(getPosition());
+		while (pos.isWithinBounds()) {
+			fieldOfControl.add(new Position(pos));
+			pos.addToRow(1);
+			pos.addToColumn(1);
+		}
+		return fieldOfControl;
+	}
+
+	/**
+	 * Checks whether the given Position is within this Piece's range of movement
+	 * 
+	 * @param toPos
+	 *            - the destination Position
+	 * @return true if toPos is within this Piece's range of movement, false
+	 *         otherwise
+	 */
+	public boolean isWithinRangeOfMovement(Position toPos) {
+		return toPos.isWithinBounds() && (Math.abs(getPosition().slopeTo(toPos)) == 1.0
+										|| getPosition().getRow() == toPos.getRow()
+										|| getPosition().getColumn() == toPos.getColumn());
+	}
 }
