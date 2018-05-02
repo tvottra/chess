@@ -5,7 +5,7 @@
 import java.util.ArrayList;
 
 /**
- * @author Andrew Le
+ * @author Andrew
  *
  */
 public class Rook extends Piece {
@@ -28,7 +28,7 @@ public class Rook extends Piece {
 
 	/**
 	 * Accessor method to get this Rook's move status
-	 *
+	 * 
 	 * @return true if this Rook has already moved at least once, false otherwise
 	 */
 	public boolean hasMoved() {
@@ -37,7 +37,7 @@ public class Rook extends Piece {
 
 	/**
 	 * Mutator method to update the Rook's move state
-	 *
+	 * 
 	 * @param moveState
 	 *            - true if this Rook has already moved at least once, false
 	 *            otherwise
@@ -49,7 +49,7 @@ public class Rook extends Piece {
 	/**
 	 * Determines the Positions that would be crossed if this Rook were to move from
 	 * its current position to the given position
-	 *
+	 * 
 	 * @param toPos
 	 *            - the given position
 	 * @return an ArrayList of crossed Positions
@@ -75,6 +75,14 @@ public class Rook extends Piece {
 	}
 
 	@Override
+	/**
+	 * Returns an array of the Positions that would be crossed if this Rook were to
+	 * move to the given Position
+	 * 
+	 * @param toPos
+	 *            - the given Position
+	 * @return an ArrayList of the Positions that would be crossed
+	 */
 	public ArrayList<Position> move(Position toPos) {
 		if (isWithinRangeOfMovement(toPos)) {
 			return getCrossedPositions(toPos);
@@ -84,6 +92,13 @@ public class Rook extends Piece {
 	}
 
 	@Override
+	/**
+	 * Calculates the Rook's field of control based on known board size and its
+	 * current position. Positions are ordered ascending in terms of row then
+	 * column. E.g., (0, 0), (0, 1), (0, 2), (1, 0)...
+	 * 
+	 * @return the Rook's field of control
+	 */
 	public ArrayList<Position> getFieldOfControl() {
 		Position pos = getPosition();
 		ArrayList<Position> fieldOfControl = new ArrayList<Position>();
@@ -112,6 +127,14 @@ public class Rook extends Piece {
 	}
 
 	@Override
+	/**
+	 * Checks whether the given Position is within this Rook's range of movement
+	 * 
+	 * @param toPos
+	 *            - the destination Position
+	 * @return true if toPos is within this Rook's range of movement, false
+	 *         otherwise
+	 */
 	public boolean isWithinRangeOfMovement(Position toPos) {
 		ArrayList<Position> fieldOfControl = getFieldOfControl();
 		for (Position pos : fieldOfControl) {
