@@ -1,8 +1,6 @@
 /**
  * Class that represents the chess board
  * 
- * @author Tommy Tran
- * @author Arjun Agrawal
  * @author Andrew Le
  *
  */
@@ -11,39 +9,105 @@ public class Board {
 	private final int SIZE = 8;
 
 	/**
-	 * Default constructor that sets up the chess board with all pieces in their
-	 * starting positions
+	 * Default constructor that initializes the chess board according to the rules
+	 * of chess
 	 */
 	public Board() {
 		board = new Tile[8][8];
-		// generates white side first, then black
-		for (int pos = 7, color = 0; color < 2; color++, pos -= 6) {
-			// generate color pawns pawns
-			for (int x = 0; x < SIZE; x++) {
-				int temppos = pos - 1;
-				if (temppos < 0) {
-					temppos = 0 - temppos;
-				}
-				board[temppos][x] = new Pawn(color, new Position(6, x));
-			}
-			board[pos][0] = new Rook(color, new Position(7, 0));
-			board[pos][1] = new Knight(color, new Position(7, 1));
-			board[pos][2] = new Bishop(color, new Position(7, 2));
-			board[pos][3] = new Queen(color, new Position(7, 4));
-			board[pos][4] = new King(color, new Position(7, 3));
-			board[pos][5] = new Bishop(color, new Position(7, 5));
-			board[pos][6] = new Knight(color, new Position(7, 6));
-			board[pos][7] = new Rook(color, new Position(7, 0));
-		}
+		setUpWhitePieces();
+		setUpBlackPieces();
+		setUpRestOfBoard();
 	}
 
 	/**
-	 * Accessor method to get this Board
-	 * 
-	 * @return the Board
+	 * Sets up all of the white pieces
 	 */
-	public Tile[][] getBoard() {
-		return board;
+	private void setUpWhitePieces() {
+		// Set up white pawns
+		for (int c = 0; c < SIZE; c++) {
+			Position pos = new Position(6, c);
+			Piece pawn = new Pawn("pawn", 0, pos, 1);
+			board[6][c] = new Tile(pawn, true, false);
+		}
+		// Set up white rooks
+		Piece rook1 = new Rook("rook", 0, new Position(7, 0), 5);
+		board[7][0] = new Tile(rook1, true, false);
+		Piece rook2 = new Rook("rook", 0, new Position(7, 7), 5);
+		board[7][7] = new Tile(rook2, true, false);
+
+		// Set up white knights
+		Piece knight1 = new Knight("knight", 0, new Position(7, 1), 3);
+		board[7][1] = new Tile(knight1, true, false);
+		Piece knight2 = new Knight("knight", 0, new Position(7, 6), 3);
+		board[7][6] = new Tile(knight2, true, false);
+
+		// Set up white bishops
+		Piece bishop1 = new Bishop("bishop", 0, new Position(7, 2), 3);
+		board[7][2] = new Tile(bishop1, true, false);
+		Piece bishop2 = new Bishop("bishop", 0, new Position(7, 5), 3);
+		board[7][3] = new Tile(bishop2, true, false);
+
+		// Set up white queen and king
+		Piece queen = new Queen("queen", 0, new Position(7, 3), 9);
+		board[7][3] = new Tile(queen, true, false);
+		Piece king = new King("king", 0, new Position(7, 4), Integer.MAX_VALUE);
+		board[7][4] = new Tile(king, true, false);
+	}
+
+	/**
+	 * Sets up all of the black pieces
+	 */
+	private void setUpBlackPieces() {
+		// Set up black pawns
+		for (int c = 0; c < SIZE; c++) {
+			Position pos = new Position(1, c);
+			Piece pawn = new Pawn("pawn", 1, pos, 1);
+			board[1][c] = new Tile(pawn, false, true);
+		}
+
+		// Set up black rooks
+		Piece rook1 = new Rook("rook", 1, new Position(0, 0), 5);
+		board[0][0] = new Tile(rook1, false, true);
+		Piece rook2 = new Rook("rook", 1, new Position(0, 7), 5);
+		board[0][7] = new Tile(rook2, false, true);
+
+		// Set up black knights
+		Piece knight1 = new Knight("knight", 1, new Position(0, 1), 3);
+		board[0][1] = new Tile(knight1, false, true);
+		Piece knight2 = new Knight("knight", 1, new Position(0, 6), 3);
+		board[0][6] = new Tile(knight2, false, true);
+
+		// Set up black bishops
+		Piece bishop1 = new Bishop("bishop", 1, new Position(0, 2), 3);
+		board[0][2] = new Tile(bishop1, false, true);
+		Piece bishop2 = new Bishop("bishop", 1, new Position(0, 5), 3);
+		board[0][5] = new Tile(bishop2, false, true);
+
+		// Set up black queen and king
+		Piece queen = new Queen("queen", 1, new Position(0, 3), 9);
+		board[0][3] = new Tile(queen, false, true);
+		Piece king = new King("king", 1, new Position(0, 4), Integer.MAX_VALUE);
+		board[0][4] = new Tile(king, false, true);
+	}
+
+	/**
+	 * Initializes all unoccupied Tiles, along with white/black control of each Tile
+	 */
+	private void setUpRestOfBoard() {
+		// General traversal of Tiles in rows 3 and 4
+		for (int r = 3; r < 5; r++) {
+			for (int c = 0; c < SIZE; c++) {
+				board[r][c] = new Tile(null, false, false);
+			}
+		}
+		// Traversal of row 2
+		for (int c = 0; c < SIZE; c++) {
+			board[2][c] = new Tile(null, false, true);
+		}
+		// Traversal of row 5
+		for (int c = 0; c < SIZE; c++) {
+			board[5][c] = new Tile(null, true, false);
+		}
 	}
 
 	/**
@@ -66,11 +130,14 @@ public class Board {
 	public void updateControl() {
 		// TO BE IMPLEMENTED
 	}
-	
+
 	/**
 	 * Attempts to move a Piece on a Tile to the given Position
-	 * @param fromPos - the Piece's current position
-	 * @param toPos - the Position to which the Piece will be moved
+	 * 
+	 * @param fromPos
+	 *            - the Piece's current position
+	 * @param toPos
+	 *            - the Position to which the Piece will be moved
 	 */
 	public void moveMyPiece(Position fromPos, Position toPos) {
 		// TO BE IMPLEMENTED
@@ -79,16 +146,16 @@ public class Board {
 	/**
 	 * toString method
 	 * 
-	 * @return
+	 * @return the contents each Tile
 	 */
 	public String toString() {
-		String x = "";
-		for (int i = 0; i < board.length; i++) {
-			for (int k = 0; k < board[i].length; k++) {
-				x += board[i][k] + " ";
+		String output = "";
+		for (Tile[] arr : board) {
+			for (Tile tile : arr) {
+				output += tile.toString() + "\n";
 			}
-			x += "\n";
 		}
-		return x;
+		return output;
 	}
+
 }
