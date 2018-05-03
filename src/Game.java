@@ -138,7 +138,7 @@ public class Game {
 		int fromRow = fromPos.getRow();
 		int fromCol = fromPos.getColumn();
 		System.out.println(
-				gameBoard.getTile(fromRow, fromCol).getMyPiece().getName() + " at " + fromPos + " has moved to " + toPos);
+				gameBoard.getTile(fromRow, fromCol).getPiece().getName() + " at " + fromPos + " has moved to " + toPos);
 
 	}
 
@@ -212,17 +212,17 @@ public class Game {
 	 *         indexes, false otherwise
 	 */
 	private boolean isValidPiece(int row, int col, int color) {
-		if (isWithinBounds(row, col) && gameBoard.getTile(row, col).getMyPiece() != null) {
+		if (isWithinBounds(row, col) && gameBoard.getTile(row, col).getPiece() != null) {
 			// Check for player 1
 			if (color == 0) {
-				if (gameBoard.getTile(row, col).getMyPiece().getColor() == 0) {
+				if (gameBoard.getTile(row, col).getPiece().getColor() == 0) {
 					return true;
 				} else {
 					return false;
 				}
 				// Check for player 2
 			} else {
-				if (gameBoard.getTile(row, col).getMyPiece().getColor() == 1) {
+				if (gameBoard.getTile(row, col).getPiece().getColor() == 1) {
 					return true;
 				} else {
 					return false;
