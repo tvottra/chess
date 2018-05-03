@@ -33,7 +33,7 @@ public class Tile {
 	 * 
 	 * @return the Piece on this Tile
 	 */
-	public Piece getMyPiece() {
+	public Piece getPiece() {
 		return myPiece;
 	}
 
@@ -43,7 +43,7 @@ public class Tile {
 	 * @param myPiece
 	 *            - the given Piece
 	 */
-	public void setMyPiece(Piece myPiece) {
+	public void setPiece(Piece myPiece) {
 		this.myPiece = myPiece;
 	}
 
@@ -62,7 +62,7 @@ public class Tile {
 	 * @param whiteHotSpot
 	 *            - true if white has control of this Tile, false otherwise
 	 */
-	public void setWhiteHotSpot(boolean whiteHotSpot) {
+	public void setIsWhiteHotSpot(boolean whiteHotSpot) {
 		this.isWhiteHotSpot = whiteHotSpot;
 	}
 
@@ -81,7 +81,7 @@ public class Tile {
 	 * @param blackHotSpot
 	 *            - true if black has control of this Tile, false otherwise
 	 */
-	public void setBlackHotSpot(boolean blackHotSpot) {
+	public void setIsBlackHotSpot(boolean blackHotSpot) {
 		this.isBlackHotSpot = blackHotSpot;
 	}
 	
