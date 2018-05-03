@@ -35,7 +35,7 @@ public class King extends Piece {
 	 * 
 	 * @return the King's field of control
 	 */
-	public ArrayList<Position> getFieldOfControl() {
+	public ArrayList<Position> getRangeOfMovement() {
 		ArrayList<Position> field = new ArrayList<Position>();
 
 		int row = getPosition().getRow();

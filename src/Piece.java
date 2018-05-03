@@ -104,7 +104,7 @@ public abstract class Piece {
 	 * 
 	 * @return the Piece's field of control
 	 */
-	public abstract ArrayList<Position> getFieldOfControl();
+	public abstract ArrayList<Position> getRangeOfMovement();
 
 	/**
 	 * Checks whether the given Position is within this Piece's range of movement

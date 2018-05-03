@@ -79,7 +79,7 @@ public class Queen extends Piece {
 	 * 
 	 * @return the Queen's field of control
 	 */
-	public ArrayList<Position> getFieldOfControl() {
+	public ArrayList<Position> getRangeOfMovement() {
 		Position pos = new Position(getPosition());
 		ArrayList<Position> fieldOfControl = new ArrayList<Position>();
 		fieldOfControl = new ArrayList<Position>();

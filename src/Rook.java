@@ -95,7 +95,7 @@ public class Rook extends Piece {
 	 * 
 	 * @return the Rook's field of control
 	 */
-	public ArrayList<Position> getFieldOfControl() {
+	public ArrayList<Position> getRangeOfMovement() {
 		Position pos = getPosition();
 		ArrayList<Position> fieldOfControl = new ArrayList<Position>();
 		fieldOfControl = new ArrayList<Position>();
@@ -136,7 +136,7 @@ public class Rook extends Piece {
 	 *         otherwise
 	 */
 	public boolean isWithinRangeOfMovement(Position toPos) {
-		ArrayList<Position> fieldOfControl = getFieldOfControl();
+		ArrayList<Position> fieldOfControl = getRangeOfMovement();
 		for (Position pos : fieldOfControl) {
 			if (pos.equals(toPos)) {
 				return true;

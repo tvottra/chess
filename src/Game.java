@@ -332,4 +332,8 @@ public class Game {
 		return false;
 	}
 
+	public void update() {
+		gameBoard.updateHotSpots();
+	}
+
 }
