@@ -12,17 +12,13 @@ public class Rook extends Piece {
 	private boolean hasMoved;
 
 	/**
-	 * @param name
-	 *            - the name of the piece
 	 * @param color
 	 *            - the color of the piece
 	 * @param pos
 	 *            - the Position of the piece
-	 * @param pointVal
-	 *            - the point value of the Piece
 	 */
-	public Rook(String name, int color, Position pos, int pointVal) {
-		super(name, color, pos, pointVal);
+	public Rook(int color, Position pos) {
+		super("Rook", color, pos, 5);
 		hasMoved = false;
 	}
 
@@ -104,25 +100,29 @@ public class Rook extends Piece {
 		ArrayList<Position> fieldOfControl = new ArrayList<Position>();
 		fieldOfControl = new ArrayList<Position>();
 		// Add all positions above current position (same column)
-		for (int r = 0; r < pos.getRow(); r++) {
+		for (int r = pos.getRow() - 1; r >= 0; r--) {
 			Position p = new Position(r, pos.getColumn());
 			fieldOfControl.add(p);
 		}
-		// Add all positions below current position (same column)
+
+		fieldOfControl.add(pos);
 		for (int r = pos.getRow() + 1; r < getSize(); r++) {
 			Position p = new Position(r, pos.getColumn());
 			fieldOfControl.add(p);
 		}
-		// Add all positions left of current position (same row)
-		for (int c = 0; c < pos.getColumn(); c++) {
+
+		fieldOfControl.add(pos);
+		for (int c = pos.getColumn() - 1; c >= 0; c--) {
 			Position p = new Position(pos.getRow(), c);
 			fieldOfControl.add(p);
 		}
-		// Add all positions left of current position (same row)
+
+		fieldOfControl.add(pos);
 		for (int c = pos.getColumn() + 1; c < getSize(); c++) {
 			Position p = new Position(pos.getRow(), c);
 			fieldOfControl.add(p);
 		}
+
 		return fieldOfControl;
 	}
 

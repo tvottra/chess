@@ -11,43 +11,24 @@ public class Knight extends Piece {
 		super("Knight", color, pos, 3);
 		// TODO Auto-generated constructor stub
 	}
-
-	/**
-	 * Checks whether the given Position is within this Piece's range of movement
-	 * 
-	 * @param toPos
-	 *            - the destination Position
-	 * @return true if toPos is within this Piece's range of movement, false
-	 *         otherwise
-	 */
-	@Override
-	public boolean isWithinRangeOfMovement(Position move) {
-		int quadrant = this.getPosition().compareTo(move);
-		if (quadrant == 0)
-			return false;
-		else if (quadrant == 1 && ((this.getPosition().getColumn() + 1 == move.getColumn()
-				&& this.getPosition().getRow() + 3 == move.getRow())
-				|| (this.getPosition().getColumn() + 3 == move.getColumn()
-						&& this.getPosition().getRow() + 1 == move.getRow())))
-			return true;
-		else if (quadrant == 2 && ((this.getPosition().getColumn() - 1 == move.getColumn()
-				&& this.getPosition().getRow() - 3 == move.getRow())
-				|| (this.getPosition().getColumn() - 3 == move.getColumn()
-						&& this.getPosition().getRow() - 1 == move.getRow())))
-			return true;
-		else if (quadrant == -1 && ((this.getPosition().getColumn() - 1 == move.getColumn()
-				&& this.getPosition().getRow() + 3 == move.getRow())
-				|| (this.getPosition().getColumn() - 3 == move.getColumn()
-						&& this.getPosition().getRow() + 1 == move.getRow())))
-			return true;
-		else if (quadrant == -2 && ((this.getPosition().getColumn() + 1 == move.getColumn()
-				&& this.getPosition().getRow() - 3 == move.getRow())
-				|| (this.getPosition().getColumn() + 3 == move.getColumn()
-						&& this.getPosition().getRow() - 1 == move.getRow()))) {
-			return true;
-		} else {
-			return false;
-		}
+    @Override
+    public boolean isWithinRangeOfMovement(Position move) {
+        int quadrant = this.getPosition().compareTo(move);
+        if (quadrant == 0)
+            return false;
+        else if (quadrant == 1 && ((this.getPosition().getColumn() + 1 == move.getColumn() && this.getPosition().getRow() + 3 == move.getRow()) || (this.getPosition().getColumn() + 3 == move.getColumn() && this.getPosition().getRow() + 1 == move.getRow())))
+            return true;
+        else if (quadrant == 2 && ((this.getPosition().getColumn() - 1 == move.getColumn() && this.getPosition().getRow() - 3 == move.getRow()) || (this.getPosition().getColumn() - 3 == move.getColumn() && this.getPosition().getRow() - 1 == move.getRow())))
+            return true;
+        else
+        if (quadrant == -1 && ((this.getPosition().getColumn() - 1 == move.getColumn() && this.getPosition().getRow() + 3 == move.getRow()) || (this.getPosition().getColumn() - 3 == move.getColumn() && this.getPosition().getRow() + 1 == move.getRow())))
+            return true;
+        else if (quadrant == -2 && ((this.getPosition().getColumn() + 1 == move.getColumn() && this.getPosition().getRow() - 3 == move.getRow()) || (this.getPosition().getColumn() + 3 == move.getColumn() && this.getPosition().getRow() - 1 == move.getRow()))) {
+            return true;
+        }
+        else {
+            return false;
+        }
 
 	}
 
