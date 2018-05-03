@@ -12,17 +12,13 @@ public class Rook extends Piece {
 	private boolean hasMoved;
 
 	/**
-	 * @param name
-	 *            - the name of the piece
 	 * @param color
 	 *            - the color of the piece
 	 * @param pos
 	 *            - the Position of the piece
-	 * @param pointVal
-	 *            - the point value of the Piece
 	 */
-	public Rook(String name, int color, Position pos, int pointVal) {
-		super(name, color, pos, pointVal);
+	public Rook(int color, Position pos) {
+		super("Rook", color, pos, 5);
 		hasMoved = false;
 	}
 

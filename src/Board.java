@@ -28,31 +28,31 @@ public class Board {
 		// Set up white pawns
 		for (int c = 0; c < SIZE; c++) {
 			Position pos = new Position(6, c);
-			Piece pawn = new Pawn("pawn", 0, pos, 1);
+			Piece pawn = new Pawn( 0, pos);
 			board[6][c] = new Tile(pawn, true, false);
 		}
 		// Set up white rooks
-		Piece rook1 = new Rook("rook", 0, new Position(7, 0), 5);
+		Piece rook1 = new Rook(0, new Position(7, 0));
 		board[7][0] = new Tile(rook1, true, false);
-		Piece rook2 = new Rook("rook", 0, new Position(7, 7), 5);
+		Piece rook2 = new Rook(0, new Position(7, 7));
 		board[7][7] = new Tile(rook2, true, false);
 
 		// Set up white knights
-		Piece knight1 = new Knight("knight", 0, new Position(7, 1), 3);
+		Piece knight1 = new Knight(0, new Position(7, 1));
 		board[7][1] = new Tile(knight1, true, false);
-		Piece knight2 = new Knight("knight", 0, new Position(7, 6), 3);
+		Piece knight2 = new Knight( 0, new Position(7, 6));
 		board[7][6] = new Tile(knight2, true, false);
 
 		// Set up white bishops
-		Piece bishop1 = new Bishop("bishop", 0, new Position(7, 2), 3);
+		Piece bishop1 = new Bishop(0, new Position(7, 2));
 		board[7][2] = new Tile(bishop1, true, false);
-		Piece bishop2 = new Bishop("bishop", 0, new Position(7, 5), 3);
+		Piece bishop2 = new Bishop( 0, new Position(7, 5));
 		board[7][3] = new Tile(bishop2, true, false);
 
 		// Set up white queen and king
-		Piece queen = new Queen("queen", 0, new Position(7, 3), 9);
+		Piece queen = new Queen(0, new Position(7, 3));
 		board[7][3] = new Tile(queen, true, false);
-		Piece king = new King("king", 0, new Position(7, 4), Integer.MAX_VALUE);
+		Piece king = new King(0, new Position(7, 4));
 		board[7][4] = new Tile(king, true, false);
 	}
 
@@ -63,32 +63,32 @@ public class Board {
 		// Set up black pawns
 		for (int c = 0; c < SIZE; c++) {
 			Position pos = new Position(1, c);
-			Piece pawn = new Pawn("pawn", 1, pos, 1);
+			Piece pawn = new Pawn(1, pos);
 			board[1][c] = new Tile(pawn, false, true);
 		}
 
 		// Set up black rooks
-		Piece rook1 = new Rook("rook", 1, new Position(0, 0), 5);
+		Piece rook1 = new Rook(1, new Position(0, 0));
 		board[0][0] = new Tile(rook1, false, true);
-		Piece rook2 = new Rook("rook", 1, new Position(0, 7), 5);
+		Piece rook2 = new Rook( 1, new Position(0, 7));
 		board[0][7] = new Tile(rook2, false, true);
 
 		// Set up black knights
-		Piece knight1 = new Knight("knight", 1, new Position(0, 1), 3);
+		Piece knight1 = new Knight(1, new Position(0, 1));
 		board[0][1] = new Tile(knight1, false, true);
-		Piece knight2 = new Knight("knight", 1, new Position(0, 6), 3);
+		Piece knight2 = new Knight(1, new Position(0, 6));
 		board[0][6] = new Tile(knight2, false, true);
 
 		// Set up black bishops
-		Piece bishop1 = new Bishop("bishop", 1, new Position(0, 2), 3);
+		Piece bishop1 = new Bishop(1, new Position(0, 2));
 		board[0][2] = new Tile(bishop1, false, true);
-		Piece bishop2 = new Bishop("bishop", 1, new Position(0, 5), 3);
+		Piece bishop2 = new Bishop(1, new Position(0, 5));
 		board[0][5] = new Tile(bishop2, false, true);
 
 		// Set up black queen and king
-		Piece queen = new Queen("queen", 1, new Position(0, 3), 9);
+		Piece queen = new Queen(1, new Position(0, 3));
 		board[0][3] = new Tile(queen, false, true);
-		Piece king = new King("king", 1, new Position(0, 4), Integer.MAX_VALUE);
+		Piece king = new King( 1, new Position(0, 4));
 		board[0][4] = new Tile(king, false, true);
 	}
 
