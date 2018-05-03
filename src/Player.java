@@ -6,16 +6,23 @@
  */
 public class Player {
 	private String myName;
-	private boolean checkMated;
+	private int myNumber;
+	private boolean checkmated;
+	private boolean resigned;
 
 	/**
-	 * Constructor to initialize this player's name
+	 * Constructor to initialize this player's name and number
 	 * 
 	 * @param name
 	 *            - the given name
+	 * @param number
+	 *            - the given number
 	 */
-	public Player(String name) {
+	public Player(String name, int number) {
 		myName = name;
+		myNumber = number;
+		checkmated = false;
+		resigned = false;
 	}
 
 	/**
@@ -28,29 +35,75 @@ public class Player {
 	}
 
 	/**
+	 * Mutator method to change the player's name
+	 * 
+	 * @param name
+	 *            - the new name
+	 */
+	public void setName(String name) {
+		myName = name;
+	}
+
+	/**
+	 * Accessor method to get the player's number
+	 * 
+	 * @return the player's number
+	 */
+	public int getNumber() {
+		return myNumber;
+	}
+
+	/**
 	 * Accessor method to get the checkmate status
 	 * 
 	 * @return true if this player is checkmated, false otherwise
 	 */
 	public boolean isCheckMated() {
-		return checkMated;
+		return checkmated;
 	}
 
 	/**
 	 * Mutator method to set the checkmate status
 	 * 
-	 * @param checkmated
-	 *            - true for checkmate, false otherwise
+	 * @param checkmate
+	 *            - true if the player has been checkmated, false otherwise
 	 */
-	public void setCheckMate(boolean checkmated) {
-		this.checkMated = checkMated;
+	public void setCheckMate(boolean checkmate) {
+		checkmated = checkmate;
 	}
 
 	/**
-	 * Concedes the game to this player's opponent
+	 * Mutator method to set the resign status
+	 * 
+	 * @param resign
+	 *            - true if the player has resigned, false otherwise
 	 */
-	public void resign() {
-		// TO BE IMPLEMENTED
+	public void setResign(boolean resign) {
+		resigned = resign;
+	}
+
+	/**
+	 * Accessor method to get the resign status
+	 * 
+	 * @return true if the player has resigned, false otherwise
+	 */
+	public boolean isResigned() {
+		return resigned;
+	}
+
+	/**
+	 * Determines hether this player and the given player are the same player
+	 * 
+	 * @param other
+	 *            - the given player
+	 * @return true if both players are the same player, false otherwise
+	 */
+	public boolean equals(Player other) {
+		if (myName.equals(other.getName()) && myNumber == other.getNumber()) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	/**
@@ -60,6 +113,7 @@ public class Player {
 	 */
 	public boolean requestDraw(Player other) {
 		// TO BE IMPLEMENTED
+		return true;
 	}
 
 	/**
@@ -71,6 +125,14 @@ public class Player {
 	 */
 	public boolean acceptDraw(Player other) {
 		// TO BE IMPLEMENTED
+		return true;
+	}
+
+	/**
+	 * toString method to print this player's information
+	 */
+	public String toString() {
+		return myName + "(" + myNumber + ")";
 	}
 
 }

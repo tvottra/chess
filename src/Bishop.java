@@ -36,11 +36,11 @@ public class Bishop extends Piece {
 
 	@Override
 	public boolean isWithinRangeOfMovement(Position toPos) {
-		return toPos.isWithinBounds() && Math.abs(getPosition().slopeTo(toPos)) == 1.0;
+		return getRangeOfMovement().contains(toPos);
 	}
 
 	@Override
-	public ArrayList<Position> getFieldOfControl() {
+	public ArrayList<Position> getRangeOfMovement() {
 		ArrayList<Position> field = new ArrayList<Position>();
 
 
