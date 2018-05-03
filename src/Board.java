@@ -503,4 +503,8 @@ public class Board {
         return hotspots;
     }
 
+    public int getSIZE() {
+		return SIZE;
+	}
+
 }

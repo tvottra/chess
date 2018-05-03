@@ -14,13 +14,13 @@ import java.util.Scanner;
 public class Game {
 	private Player playerOne; // white
 	private Player playerTwo; // black
-	private Board board;
+	private Board gameBoard;
 	private boolean draw;
 	private boolean stalemate;
 	private boolean isPlayerOneTurn; // true if it is player 1's turn, false otherwise
 
 	/**
-	 * Constructor to initialize the players, board, and game state
+	 * Constructor to initialize the players, gameBoard, and game state
 	 * 
 	 * @param name1
 	 *            - playerOne's name
@@ -30,7 +30,7 @@ public class Game {
 	public Game(String name1, String name2) {
 		playerOne = new Player(name1, 1);
 		playerTwo = new Player(name2, 2);
-		board = new Board();
+		gameBoard = new Board();
 		draw = false;
 		stalemate = false;
 		isPlayerOneTurn = true;
@@ -66,7 +66,7 @@ public class Game {
 	 * Begins a player's turn; a player has 3 possible moves each turn: 1) move a
 	 * piece, 2) resign, or 3) request a draw
 	 * 
-	 * @param playerName
+	 * @param pl
 	 *            - the turn player
 	 * @param other
 	 *            - the opposing player
@@ -112,7 +112,7 @@ public class Game {
 	 */
 	private void continueTurn(Player pl) {
 		Scanner sc = new Scanner(System.in);
-		// Choose a tile on the board
+		// Choose a tile on the gameBoard
 		Position fromPos = choosePiece();
 		// Check whether there is a piece of correct color at the chosen tile
 		while (!isValidPiece(fromPos.getRow(), fromPos.getColumn(), pl.getNumber() - 1)) {
@@ -138,7 +138,7 @@ public class Game {
 		int fromRow = fromPos.getRow();
 		int fromCol = fromPos.getColumn();
 		System.out.println(
-				board.getTile(fromRow, fromCol).getMyPiece().getName() + " at " + fromPos + " has moved to " + toPos);
+				gameBoard.getTile(fromRow, fromCol).getMyPiece().getName() + " at " + fromPos + " has moved to " + toPos);
 
 	}
 
@@ -212,17 +212,17 @@ public class Game {
 	 *         indexes, false otherwise
 	 */
 	private boolean isValidPiece(int row, int col, int color) {
-		if (isWithinBounds(row, col) && board.getTile(row, col).getMyPiece() != null) {
+		if (isWithinBounds(row, col) && gameBoard.getTile(row, col).getMyPiece() != null) {
 			// Check for player 1
 			if (color == 0) {
-				if (board.getTile(row, col).getMyPiece().getColor() == 0) {
+				if (gameBoard.getTile(row, col).getMyPiece().getColor() == 0) {
 					return true;
 				} else {
 					return false;
 				}
 				// Check for player 2
 			} else {
-				if (board.getTile(row, col).getMyPiece().getColor() == 1) {
+				if (gameBoard.getTile(row, col).getMyPiece().getColor() == 1) {
 					return true;
 				} else {
 					return false;
@@ -252,12 +252,12 @@ public class Game {
 
 	/**
 	 * Check whether the suggested row and column indexes are within the bounds of
-	 * the board size
+	 * the gameBoard size
 	 *
 	 * @return true if the row and position are within bounds, false otherwise
 	 */
 	private boolean isWithinBounds(int row, int col) {
-		return (row >= 0 && col >= 0) && (row < board.getBoardSize() && col < board.getBoardSize());
+		return (row >= 0 && col >= 0) && (row < gameBoard.getSIZE() && col < gameBoard.getSIZE());
 	}
 
 	/**
