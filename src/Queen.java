@@ -1,5 +1,10 @@
 import java.util.ArrayList;
 
+/**
+ * 
+ * @author Jonathan
+ *
+ */
 public class Queen extends Piece {
 
 	public Queen(int color, Position pos) {
@@ -7,24 +12,24 @@ public class Queen extends Piece {
 		// TODO Auto-generated constructor stub
 	}
 
+	@Override
 	/**
-	 * Returns an array of the Positions that would be crossed if this Piece were to
+	 * Returns an array of the Positions that would be crossed if this Queen were to
 	 * move to the given Position
 	 * 
 	 * @param toPos
 	 *            - the given Position
 	 * @return an ArrayList of the Positions that would be crossed
 	 */
-	public ArrayList<Position> move(Position toPos){
+	public ArrayList<Position> move(Position toPos) {
 		ArrayList<Position> positions = new ArrayList<Position>();
 		Position fromPos = getPosition();
 		// The two Positions are in the same row
 		if (fromPos.getRow() == toPos.getRow()) {
 			int i;
-			if(fromPos.isLeftOf(toPos)) {
+			if (fromPos.isLeftOf(toPos)) {
 				i = 1;
-			}
-			else {
+			} else {
 				i = -1;
 			}
 			for (int c = fromPos.getColumn(); c != toPos.getColumn(); c += i) {
@@ -35,10 +40,9 @@ public class Queen extends Piece {
 		// The two Positions are in the same column
 		if (fromPos.getColumn() == toPos.getColumn()) {
 			int i;
-			if(fromPos.isAbove(toPos)) {
+			if (fromPos.isAbove(toPos)) {
 				i = 1;
-			}
-			else {
+			} else {
 				i = -1;
 			}
 			for (int r = fromPos.getRow(); r != toPos.getRow(); r += i) {
@@ -67,13 +71,15 @@ public class Queen extends Piece {
 		return positions;
 	}
 
+	@Override
 	/**
-	 * Calculates the Piece's field of control based on known board size and its
-	 * current position. Positions are ordered ascending in terms of row then column. E.g., (0, 0), (0, 1), (0, 2), (1, 0)...
+	 * Calculates the Queen's field of control based on known board size and its
+	 * current position. Positions are ordered ascending in terms of row then
+	 * column. E.g., (0, 0), (0, 1), (0, 2), (1, 0)...
 	 * 
-	 * @return the Piece's field of control
+	 * @return the Queen's field of control
 	 */
-	public ArrayList<Position> getFieldOfControl(){
+	public ArrayList<Position> getFieldOfControl() {
 		Position pos = new Position(getPosition());
 		ArrayList<Position> fieldOfControl = new ArrayList<Position>();
 		fieldOfControl = new ArrayList<Position>();
@@ -94,7 +100,7 @@ public class Queen extends Piece {
 			Position p = new Position(pos.getRow(), c);
 			fieldOfControl.add(p);
 		}
-
+    
 		fieldOfControl.add(pos);
 		for (int c = pos.getColumn() + 1; c < getSize(); c++) {
 			Position p = new Position(pos.getRow(), c);
@@ -130,6 +136,7 @@ public class Queen extends Piece {
 		return fieldOfControl;
 	}
 
+	@Override
 	/**
 	 * Checks whether the given Position is within this Piece's range of movement
 	 * 
@@ -140,7 +147,6 @@ public class Queen extends Piece {
 	 */
 	public boolean isWithinRangeOfMovement(Position toPos) {
 		return toPos.isWithinBounds() && (Math.abs(getPosition().slopeTo(toPos)) == 1.0
-										|| getPosition().getRow() == toPos.getRow()
-										|| getPosition().getColumn() == toPos.getColumn());
+				|| getPosition().getRow() == toPos.getRow() || getPosition().getColumn() == toPos.getColumn());
 	}
 }
