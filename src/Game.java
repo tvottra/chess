@@ -6,6 +6,7 @@
  *
  */
 import java.util.Scanner;
+
 /**
  * 
  * @author Andrew
@@ -48,7 +49,7 @@ public class Game {
 			while (isPlayerOneTurn) {
 				startPlayerTurn(playerOne, playerTwo);
 				setTurn(false);
-			} // End Player 1's turn	
+			} // End Player 1's turn
 			if (gameIsOver()) {
 				break;
 			} else {
@@ -257,7 +258,7 @@ public class Game {
 	 * @return true if the row and position are within bounds, false otherwise
 	 */
 	private boolean isWithinBounds(int row, int col) {
-		return (row >= 0 && col >= 0) && (row < gameBoard.getSIZE() && col < gameBoard.getSIZE());
+		return (row >= 0 && col >= 0) && (row < gameBoard.getSize() && col < gameBoard.getSize());
 	}
 
 	/**
@@ -291,8 +292,9 @@ public class Game {
 	}
 
 	/**
-	 * Determines whether the Piece at its current position can legally move to the
-	 * given position
+	 * Calls Board class to determine whether the Piece at its current position can
+	 * legally move to the given position; a Piece can legally move to a given
+	 * Position if upon moving, the King is not checked by any other Piece
 	 * 
 	 * @param fromPos
 	 *            - the Piece's current position
@@ -302,22 +304,26 @@ public class Game {
 	 * @return true if the move is legal, false otherwise
 	 */
 	public boolean isLegalMove(Position fromPos, Position toPos) {
-		// TO BE IMPLEMENTED
-		return true;
+		return gameBoard.isLegalMove(fromPos, toPos);
 	}
 
 	/**
-	 * Accesses the Board and attempts to move a Piece at a Tile to the given
+	 * Calls the Board class's move method and moves a Piece at a Tile to the given
 	 * Position
 	 * 
 	 * @param fromPos
 	 *            - the Piece's current position
 	 * @param toPos
 	 *            - the Position to which the Piece will be moved
+	 * @return true if the Piece was successfully moved, false otherwise
 	 */
-	public void movePiece(Position fromPos, Position toPos) {
-		// TO BE IMPLEMENTED
-		return;
+	public boolean movePiece(Position fromPos, Position toPos) {
+		if (isLegalMove(fromPos, toPos)) {
+			gameBoard.movePiece(fromPos, toPos);
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	/**
@@ -333,7 +339,7 @@ public class Game {
 	}
 
 	public void update() {
-		gameBoard.updateHotSpots();
+		gameBoard.updateHotspots();
 	}
 
 }
