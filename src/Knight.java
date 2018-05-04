@@ -4,7 +4,7 @@ import java.util.ArrayList;
  * @author Arjun
  */
 public class Knight extends Piece {
-
+  
     public Knight(int color, Position pos) {
         super("Knight", color, pos, 3);
         // TODO Auto-generated constructor stub

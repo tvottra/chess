@@ -35,7 +35,7 @@ public class King extends Piece {
 	 * 
 	 * @return the King's field of control
 	 */
-	public ArrayList<Position> getFieldOfControl() {
+	public ArrayList<Position> getRangeOfMovement() {
 		ArrayList<Position> field = new ArrayList<Position>();
 
 		int row = getPosition().getRow();
@@ -58,7 +58,8 @@ public class King extends Piece {
 			left = true;
 		}
 
-		if (bot && left) {
+		field.add(getPosition());
+		if(bot && left) {
 			field.add(new Position(row - 1, col - 1));
 		}
 		if (bot) {
@@ -70,8 +71,7 @@ public class King extends Piece {
 		if (right) {
 			field.add(new Position(row, col + 1));
 		}
-		field.add(getPosition());
-		if (left) {
+		if(left) {
 			field.add(new Position(row, col - 1));
 		}
 		if (top && left) {

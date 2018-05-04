@@ -79,26 +79,29 @@ public class Queen extends Piece {
 	 * 
 	 * @return the Queen's field of control
 	 */
-	public ArrayList<Position> getFieldOfControl() {
+	public ArrayList<Position> getRangeOfMovement() {
 		Position pos = new Position(getPosition());
 		ArrayList<Position> fieldOfControl = new ArrayList<Position>();
 		fieldOfControl = new ArrayList<Position>();
 
-		for (int r = 0; r < pos.getRow(); r++) {
+		for (int r = pos.getRow() - 1; r >= 0; r--) {
 			Position p = new Position(r, pos.getColumn());
 			fieldOfControl.add(p);
 		}
 
+		fieldOfControl.add(pos);
 		for (int r = pos.getRow() + 1; r < getSize(); r++) {
 			Position p = new Position(r, pos.getColumn());
 			fieldOfControl.add(p);
 		}
 
-		for (int c = 0; c < pos.getColumn(); c++) {
+		fieldOfControl.add(pos);
+		for (int c = pos.getColumn() - 1; c >= 0; c--) {
 			Position p = new Position(pos.getRow(), c);
 			fieldOfControl.add(p);
 		}
-
+    
+		fieldOfControl.add(pos);
 		for (int c = pos.getColumn() + 1; c < getSize(); c++) {
 			Position p = new Position(pos.getRow(), c);
 			fieldOfControl.add(p);

@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 /**
  * Class that represents the chess board
  * 
@@ -26,31 +28,31 @@ public class Board {
 		// Set up white pawns
 		for (int c = 0; c < SIZE; c++) {
 			Position pos = new Position(6, c);
-			Piece pawn = new Pawn("pawn", 0, pos, 1);
+			Piece pawn = new Pawn( 0, pos);
 			board[6][c] = new Tile(pawn, true, false);
 		}
 		// Set up white rooks
-		Piece rook1 = new Rook("rook", 0, new Position(7, 0), 5);
+		Piece rook1 = new Rook(0, new Position(7, 0));
 		board[7][0] = new Tile(rook1, true, false);
-		Piece rook2 = new Rook("rook", 0, new Position(7, 7), 5);
+		Piece rook2 = new Rook(0, new Position(7, 7));
 		board[7][7] = new Tile(rook2, true, false);
 
 		// Set up white knights
-		Piece knight1 = new Knight("knight", 0, new Position(7, 1), 3);
+		Piece knight1 = new Knight(0, new Position(7, 1));
 		board[7][1] = new Tile(knight1, true, false);
-		Piece knight2 = new Knight("knight", 0, new Position(7, 6), 3);
+		Piece knight2 = new Knight( 0, new Position(7, 6));
 		board[7][6] = new Tile(knight2, true, false);
 
 		// Set up white bishops
-		Piece bishop1 = new Bishop("bishop", 0, new Position(7, 2), 3);
+		Piece bishop1 = new Bishop(0, new Position(7, 2));
 		board[7][2] = new Tile(bishop1, true, false);
-		Piece bishop2 = new Bishop("bishop", 0, new Position(7, 5), 3);
+		Piece bishop2 = new Bishop( 0, new Position(7, 5));
 		board[7][3] = new Tile(bishop2, true, false);
 
 		// Set up white queen and king
-		Piece queen = new Queen("queen", 0, new Position(7, 3), 9);
+		Piece queen = new Queen(0, new Position(7, 3));
 		board[7][3] = new Tile(queen, true, false);
-		Piece king = new King("king", 0, new Position(7, 4), Integer.MAX_VALUE);
+		Piece king = new King(0, new Position(7, 4));
 		board[7][4] = new Tile(king, true, false);
 	}
 
@@ -61,32 +63,32 @@ public class Board {
 		// Set up black pawns
 		for (int c = 0; c < SIZE; c++) {
 			Position pos = new Position(1, c);
-			Piece pawn = new Pawn("pawn", 1, pos, 1);
+			Piece pawn = new Pawn(1, pos);
 			board[1][c] = new Tile(pawn, false, true);
 		}
 
 		// Set up black rooks
-		Piece rook1 = new Rook("rook", 1, new Position(0, 0), 5);
+		Piece rook1 = new Rook(1, new Position(0, 0));
 		board[0][0] = new Tile(rook1, false, true);
-		Piece rook2 = new Rook("rook", 1, new Position(0, 7), 5);
+		Piece rook2 = new Rook( 1, new Position(0, 7));
 		board[0][7] = new Tile(rook2, false, true);
 
 		// Set up black knights
-		Piece knight1 = new Knight("knight", 1, new Position(0, 1), 3);
+		Piece knight1 = new Knight(1, new Position(0, 1));
 		board[0][1] = new Tile(knight1, false, true);
-		Piece knight2 = new Knight("knight", 1, new Position(0, 6), 3);
+		Piece knight2 = new Knight(1, new Position(0, 6));
 		board[0][6] = new Tile(knight2, false, true);
 
 		// Set up black bishops
-		Piece bishop1 = new Bishop("bishop", 1, new Position(0, 2), 3);
+		Piece bishop1 = new Bishop(1, new Position(0, 2));
 		board[0][2] = new Tile(bishop1, false, true);
-		Piece bishop2 = new Bishop("bishop", 1, new Position(0, 5), 3);
+		Piece bishop2 = new Bishop(1, new Position(0, 5));
 		board[0][5] = new Tile(bishop2, false, true);
 
 		// Set up black queen and king
-		Piece queen = new Queen("queen", 1, new Position(0, 3), 9);
+		Piece queen = new Queen(1, new Position(0, 3));
 		board[0][3] = new Tile(queen, false, true);
-		Piece king = new King("king", 1, new Position(0, 4), Integer.MAX_VALUE);
+		Piece king = new King( 1, new Position(0, 4));
 		board[0][4] = new Tile(king, false, true);
 	}
 
@@ -123,13 +125,6 @@ public class Board {
 		return board[row][col];
 	}
 
-	/**
-	 * Called each time after a Piece is moved, looping through all of the Tiles and
-	 * updating the white and black control for each Tile
-	 */
-	public void updateControl() {
-		// TO BE IMPLEMENTED
-	}
 
 	/**
 	 * Attempts to move a Piece on a Tile to the given Position
@@ -156,6 +151,302 @@ public class Board {
 			}
 		}
 		return output;
+	}
+
+	/**
+	 * Get all the Positions currently checked by this Piece
+	 * @param piece
+	 * @return All the Positions currently checked by this Piece
+	 */
+	public ArrayList<Position> getHotSpots(Piece piece){
+	    ArrayList<Position> foc = piece.getRangeOfMovement();
+	    ArrayList<Position> hotSpots = new ArrayList<Position>();
+
+		if(piece.getName().equals("Bishop")) {
+		    int branch1end = 0;
+		    int branch2end = 0;
+		    int branch3end = 0;
+		    int branch4end = foc.size();
+		    for(int i = 1; i < foc.size(); i++) {
+		        if(piece.getPosition().equals(foc.get(i))) {
+		            if(branch1end == 0) {
+		                branch1end = i;
+                    } else if(branch2end == 0) {
+		                branch2end = i;
+                    } else if(branch3end == 0) {
+		                branch3end = i;
+                    }
+                }
+            }
+            for(int i = 1; i < branch1end; i++) {
+		        Tile currentTile = board[foc.get(i).getRow()][foc.get(i).getColumn()];
+		        if(currentTile != null) {
+		            hotSpots.add(foc.get(i));
+		            break;
+                } else {
+		            hotSpots.add(foc.get(i));
+                }
+            }
+            for(int i = branch1end + 1; i < branch2end; i++) {
+                Tile currentTile = board[foc.get(i).getRow()][foc.get(i).getColumn()];
+				if(currentTile != null) {
+					hotSpots.add(foc.get(i));
+					break;
+				} else {
+					hotSpots.add(foc.get(i));
+				}
+            }
+            for(int i = branch2end + 1; i < branch3end; i++) {
+                Tile currentTile = board[foc.get(i).getRow()][foc.get(i).getColumn()];
+				if(currentTile != null) {
+					hotSpots.add(foc.get(i));
+					break;
+				} else {
+					hotSpots.add(foc.get(i));
+				}
+            }
+            for(int i = branch3end + 1; i < branch4end; i++) {
+                Tile currentTile = board[foc.get(i).getRow()][foc.get(i).getColumn()];
+				if(currentTile != null) {
+					hotSpots.add(foc.get(i));
+					break;
+				} else {
+					hotSpots.add(foc.get(i));
+				}
+            }
+            return hotSpots;
+        }
+
+        if(piece.getName().equals("King") || piece.getName().equals("Knight")) {
+            for(int i = 0; i < foc.size(); i++) {
+                hotSpots.add(foc.get(i));
+            }
+		}
+
+        if(piece.getName().equals("Pawn")) {
+		    Tile currentTile = board[foc.get(1).getRow()][foc.get(1).getColumn()];
+		    boolean blocked = true;
+		    if(currentTile != null) {
+		        hotSpots.add(foc.get(1));
+            } else {
+                hotSpots.add(foc.get(1));
+                blocked = false;
+            }
+		    if(foc.size() == 3 && !blocked) {
+		        hotSpots.add(foc.get(2));
+            }
+            Position left = new Position(foc.get(1).getRow() + 1, foc.get(1).getColumn() - 1);
+            Position right = new Position(foc.get(1).getRow() + 1, foc.get(1).getColumn() + 1);
+            if(left.isWithinBounds()) {
+                hotSpots.add(left);
+            }
+            if(right.isWithinBounds()) {
+                hotSpots.add(right);
+            }
+            return hotSpots;
+        }
+
+        if(piece.getName().equals("Queen")) {
+		    int hbranch1end = 0;
+		    int hbranch2end = 0;
+		    int hbranch3end = 0;
+		    int hbranch4end = 0;
+		    int dbranch1end = 0;
+		    int dbranch2end = 0;
+		    int dbranch3end = 0;
+		    int dbranch4end = foc.size();
+
+		    for(int i = 0; i < foc.size(); i++) {
+                if(piece.getPosition().equals(foc.get(i))) {
+                    if(hbranch1end == 0) {
+                        hbranch1end = i;
+                    } else if(hbranch2end == 0) {
+                        hbranch2end = i;
+                    } else if(hbranch3end == 0) {
+                        hbranch3end = i;
+                    } else if(hbranch4end == 0) {
+                        hbranch4end = i;
+                    } else if(dbranch1end == 0) {
+                        dbranch1end = i;
+                    } else if(dbranch2end == 0) {
+                        dbranch2end = i;
+                    } else if(dbranch3end == 0) {
+                        dbranch3end = i;
+                    }
+                }
+            }
+
+            for(int i = 0; i < hbranch1end; i++) {
+                Tile currentTile = board[foc.get(i).getRow()][foc.get(i).getColumn()];
+                if(currentTile != null) {
+                   hotSpots.add(foc.get(i));
+                   break;
+                } else {
+                    hotSpots.add(foc.get(i));
+                }
+            }
+            for(int i = hbranch1end + 1; i < hbranch2end; i++) {
+				Tile currentTile = board[foc.get(i).getRow()][foc.get(i).getColumn()];
+				if(currentTile != null) {
+					hotSpots.add(foc.get(i));
+					break;
+				} else {
+					hotSpots.add(foc.get(i));
+				}
+            }
+            for(int i = hbranch2end + 1; i < hbranch3end; i++) {
+				Tile currentTile = board[foc.get(i).getRow()][foc.get(i).getColumn()];
+				if(currentTile != null) {
+					hotSpots.add(foc.get(i));
+					break;
+				} else {
+					hotSpots.add(foc.get(i));
+				}
+            }
+            for(int i = hbranch3end + 1; i < hbranch4end; i++) {
+				Tile currentTile = board[foc.get(i).getRow()][foc.get(i).getColumn()];
+				if(currentTile != null) {
+					hotSpots.add(foc.get(i));
+					break;
+				} else {
+					hotSpots.add(foc.get(i));
+				}
+            }
+            for(int i = hbranch4end + 1; i < dbranch1end; i++) {
+				Tile currentTile = board[foc.get(i).getRow()][foc.get(i).getColumn()];
+				if(currentTile != null) {
+					hotSpots.add(foc.get(i));
+					break;
+				} else {
+					hotSpots.add(foc.get(i));
+				}
+            }
+            for(int i = dbranch1end + 1; i < dbranch2end; i++) {
+				Tile currentTile = board[foc.get(i).getRow()][foc.get(i).getColumn()];
+				if(currentTile != null) {
+					hotSpots.add(foc.get(i));
+					break;
+				} else {
+					hotSpots.add(foc.get(i));
+				}
+            }
+            for(int i = dbranch2end + 1; i < dbranch3end; i++) {
+				Tile currentTile = board[foc.get(i).getRow()][foc.get(i).getColumn()];
+				if(currentTile != null) {
+					hotSpots.add(foc.get(i));
+					break;
+				} else {
+					hotSpots.add(foc.get(i));
+				}
+            }
+            for(int i = hbranch3end + 1; i < hbranch4end; i++) {
+				Tile currentTile = board[foc.get(i).getRow()][foc.get(i).getColumn()];
+				if(currentTile != null) {
+					hotSpots.add(foc.get(i));
+					break;
+				} else {
+					hotSpots.add(foc.get(i));
+				}
+            }
+            return hotSpots;
+        }
+
+        if(piece.getName().equals("Rook")) {
+            int hbranch1end = 0;
+            int hbranch2end = 0;
+            int hbranch3end = 0;
+            int hbranch4end = foc.size();
+            for(int i = 0; i < foc.size(); i++) {
+                if(piece.getPosition().equals(foc.get(i))) {
+                    if(hbranch1end == 0) {
+                        hbranch1end = i;
+                    } else if(hbranch2end == 0) {
+                        hbranch2end = i;
+                    } else if(hbranch3end == 0) {
+                        hbranch3end = i;
+                    } else if(hbranch4end == 0) {
+                        hbranch4end = i;
+                    }
+                }
+            }
+            for(int i = 0; i < hbranch1end; i++) {
+				Tile currentTile = board[foc.get(i).getRow()][foc.get(i).getColumn()];
+				if(currentTile != null) {
+					hotSpots.add(foc.get(i));
+					break;
+				} else {
+					hotSpots.add(foc.get(i));
+				}
+            }
+            for(int i = hbranch1end + 1; i < hbranch2end; i++) {
+				Tile currentTile = board[foc.get(i).getRow()][foc.get(i).getColumn()];
+				if(currentTile != null) {
+					hotSpots.add(foc.get(i));
+					break;
+				} else {
+					hotSpots.add(foc.get(i));
+				}
+            }
+            for(int i = hbranch2end + 1; i < hbranch3end; i++) {
+				Tile currentTile = board[foc.get(i).getRow()][foc.get(i).getColumn()];
+				if(currentTile != null) {
+					hotSpots.add(foc.get(i));
+					break;
+				} else {
+					hotSpots.add(foc.get(i));
+				}
+            }
+            for(int i = hbranch3end + 1; i < hbranch4end; i++) {
+				Tile currentTile = board[foc.get(i).getRow()][foc.get(i).getColumn()];
+				if(currentTile != null) {
+					hotSpots.add(foc.get(i));
+					break;
+				} else {
+					hotSpots.add(foc.get(i));
+				}
+            }
+
+            return hotSpots;
+        }
+
+        return hotSpots;
+    }
+
+    public int getSIZE() {
+		return SIZE;
+	}
+
+	/**
+	 * Should be called each time after a Piece is moved, looping through all of the Tiles and
+	 * updating the isWhiteHotSpot and isBlackHotSpot for each Tile
+	 */
+	public void updateHotSpots() {
+		ArrayList<Position> checkedPos;
+
+		//Look through each Piece's field of hotSpots
+		for(Tile[] t1: board) {
+			for(Tile t2: t1) {
+
+				//If there is a Piece
+				if(t2.getPiece() != null) {
+					Piece myPiece = t2.getPiece();
+					checkedPos = getHotSpots(myPiece);
+					boolean isWhite = false;
+					if(myPiece.getColor() == 0) {
+						isWhite = true;
+					}
+					//For each Position checked, update each corresponding Tile's isWhiteHotSpot and isBlackHotSpot accordingly
+					for(Position pos: checkedPos) {
+						if(isWhite) {
+							board[pos.getRow()][pos.getColumn()].setIsWhiteHotSpot(true);
+						} else {
+							board[pos.getRow()][pos.getColumn()].setIsBlackHotSpot(true);
+						}
+					}
+				}
+			}
+
+		}
 	}
 
 }
