@@ -15,7 +15,7 @@ public abstract class Piece {
 	private final int SIZE = 8; // the size of a row/column on the Board
 
 	/**
-	 * Constructor that initializes the piece's name, color, Position, and point
+	 * Constructor that initializes the Piece's name, color, Position, and point
 	 * value
 	 * 
 	 * @param name
@@ -35,7 +35,7 @@ public abstract class Piece {
 	}
 
 	/**
-	 * Accessor method to get the piece's name
+	 * Accessor method to get the Piece's name
 	 * 
 	 * @return the peice's name
 	 */
@@ -44,16 +44,16 @@ public abstract class Piece {
 	}
 
 	/**
-	 * Accessor method to get the piece's color
+	 * Accessor method to get the Piece's color
 	 * 
-	 * @return the piece's color
+	 * @return the Piece's color
 	 */
 	public int getColor() {
 		return color;
 	}
 
 	/**
-	 * Accessor method to get the piece's Position
+	 * Accessor method to get the Piece's Position
 	 * 
 	 * @return the Piece's Position
 	 */
@@ -62,7 +62,17 @@ public abstract class Piece {
 	}
 
 	/**
-	 * Accessor method to return the piece's point value
+	 * Mutator method to change the Piece's Position
+	 * 
+	 * @param pos
+	 *            - the given Position
+	 */
+	public void setPosition(Position pos) {
+		this.pos = pos;
+	}
+
+	/**
+	 * Accessor method to return the Piece's point value
 	 * 
 	 * @return the Piece's point value
 	 */
@@ -100,7 +110,8 @@ public abstract class Piece {
 
 	/**
 	 * Calculates the Piece's field of control based on known board size and its
-	 * current position. Positions are ordered ascending in terms of row then column. E.g., (0, 0), (0, 1), (0, 2), (1, 0)...
+	 * current position. Positions are ordered ascending in terms of row then
+	 * column. E.g., (0, 0), (0, 1), (0, 2), (1, 0)...
 	 * 
 	 * @return the Piece's field of control
 	 */

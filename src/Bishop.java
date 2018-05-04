@@ -1,5 +1,10 @@
 import java.util.ArrayList;
 
+/**
+ * 
+ * @author Tommy
+ * Class that represents a Bishop chess piece
+ */
 public class Bishop extends Piece {
 
 	public Bishop(int color, Position pos) {
@@ -8,6 +13,14 @@ public class Bishop extends Piece {
 	}
 
 	@Override
+	/**
+	 * Returns an array of the Positions that would be crossed if this Bishop were
+	 * to move to the given Position
+	 * 
+	 * @param toPos
+	 *            - the given Position
+	 * @return an ArrayList of the Positions that would be crossed
+	 */
 	public ArrayList<Position> move(Position toPos) {
 
 		Position currentPos = new Position(getPosition());
@@ -35,16 +48,30 @@ public class Bishop extends Piece {
 	}
 
 	@Override
+	/**
+	 * Checks whether the given Position is within this Bishop's range of movement
+	 * 
+	 * @param toPos
+	 *            - the destination Position
+	 * @return true if toPos is within this Bishop's range of movement, false
+	 *         otherwise
+	 */
 	public boolean isWithinRangeOfMovement(Position toPos) {
-		return getRangeOfMovement().contains(toPos);
+		return toPos.isWithinBounds() && Math.abs(getPosition().slopeTo(toPos)) == 1.0;
 	}
 
 	@Override
+	/**
+	 * Calculates the Bishop's field of control based on known board size and its
+	 * current position. Positions are ordered ascending in terms of row then
+	 * column. E.g., (0, 0), (0, 1), (0, 2), (1, 0)...
+	 * 
+	 * @return the Bishop's field of control
+	 */
 	public ArrayList<Position> getRangeOfMovement() {
 		ArrayList<Position> field = new ArrayList<Position>();
 
-
-		//Get quadrant 1
+		// Get quadrant 1
 		Position pos1 = new Position(getPosition());
 		while (pos1.isWithinBounds()) {
 			field.add(new Position(pos1));
@@ -52,7 +79,7 @@ public class Bishop extends Piece {
 			pos1.addToColumn(1);
 		}
 
-		//Get quadrant 2
+		// Get quadrant 2
 		Position pos2 = new Position(getPosition());
 		while (pos2.isWithinBounds()) {
 			field.add(new Position(pos2));
@@ -60,7 +87,7 @@ public class Bishop extends Piece {
 			pos2.addToColumn(-1);
 		}
 
-		//Get quadrant 3
+		// Get quadrant 3
 		Position pos3 = new Position(getPosition());
 		while (pos3.isWithinBounds()) {
 			field.add(new Position(pos3));
@@ -68,15 +95,13 @@ public class Bishop extends Piece {
 			pos3.addToColumn(-1);
 		}
 
-		//Get quadrant 4
+		// Get quadrant 4
 		Position pos4 = new Position(getPosition());
 		while (pos4.isWithinBounds()) {
 			field.add(new Position(pos4));
 			pos4.addToRow(1);
 			pos4.addToColumn(1);
 		}
-
 		return field;
-
 	}
 }
