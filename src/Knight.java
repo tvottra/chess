@@ -19,33 +19,7 @@ public class Knight extends Piece {
      */
     @Override
     public boolean isWithinRangeOfMovement(Position move) {
-        int quadrant = this.getPosition().compareTo(move);
-        if (quadrant == 0)
-            return false;
-        else if (quadrant == 1 && ((this.getPosition().getColumn() + 1 == move.getColumn()
-                && this.getPosition().getRow() + 3 == move.getRow())
-                || (this.getPosition().getColumn() + 3 == move.getColumn()
-                && this.getPosition().getRow() + 1 == move.getRow())))
-            return true;
-        else if (quadrant == 2 && ((this.getPosition().getColumn() - 1 == move.getColumn()
-                && this.getPosition().getRow() - 3 == move.getRow())
-                || (this.getPosition().getColumn() - 3 == move.getColumn()
-                && this.getPosition().getRow() - 1 == move.getRow())))
-            return true;
-        else if (quadrant == -1 && ((this.getPosition().getColumn() - 1 == move.getColumn()
-                && this.getPosition().getRow() + 3 == move.getRow())
-                || (this.getPosition().getColumn() - 3 == move.getColumn()
-                && this.getPosition().getRow() + 1 == move.getRow())))
-            return true;
-        else if (quadrant == -2 && ((this.getPosition().getColumn() + 1 == move.getColumn()
-                && this.getPosition().getRow() - 3 == move.getRow())
-                || (this.getPosition().getColumn() + 3 == move.getColumn()
-                && this.getPosition().getRow() - 1 == move.getRow()))) {
-            return true;
-        } else {
-            return false;
-        }
-
+        return getFieldOfControl().contains(move);
     }
 
     @Override
@@ -58,9 +32,12 @@ public class Knight extends Piece {
      * @return an ArrayList of the Positions that would be crossed
      */
     public ArrayList<Position> move(Position toPos) {
-        ArrayList<Position> pos = new ArrayList<Position>();
-        pos.add(toPos);
-        return pos;
+        if (isWithinRangeOfMovement(toPos)) {
+            ArrayList<Position> pos = new ArrayList<Position>();
+            pos.add(toPos);
+            return pos;
+        }
+        return null;
     }
 
     @Override
