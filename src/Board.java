@@ -271,10 +271,20 @@ public class Board {
 	 */
 	public String toString() {
 		String output = "";
+		boolean first = true;
+		int count = 0;
+		output += "   00 01 02 03 04 05 06 07\n";
 		for (Tile[] arr : board) {
 			for (Tile tile : arr) {
-				output += tile.toString() + "\n";
+				if(first) {
+					output += "0" + count + " ";
+					++count;
+					first = false;
+				}
+				output += tile.toString() + " ";
 			}
+			output += "\n";
+			first = true;
 		}
 		return output;
 	}

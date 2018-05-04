@@ -86,7 +86,13 @@ public class Tile {
 	}
 	
 	public String toString() {
-		return myPiece.toString() + " white control = " + isWhiteHotSpot + " black control = " + isBlackHotSpot;
+		//return myPiece.toString() + " white control = " + isWhiteHotSpot + " black control = " + isBlackHotSpot;
+		if(myPiece == null) {
+			return "XX";
+		}
+		else {
+			return String.format("%.1s" + myPiece.getColor(), myPiece);
+		}
 	}
 
 }

@@ -47,6 +47,7 @@ public class Game {
 		while (!gameIsOver()) {
 			// Player 1's turn
 			while (isPlayerOneTurn) {
+				System.out.println(gameBoard);
 				startPlayerTurn(playerOne, playerTwo);
 				setTurn(false);
 			} // End Player 1's turn
@@ -55,6 +56,7 @@ public class Game {
 			} else {
 				// Player 2's turn
 				while (!isPlayerOneTurn) {
+					System.out.println(gameBoard);
 					startPlayerTurn(playerTwo, playerOne);
 					setTurn(true);
 				} // End Player 2's turn
