@@ -71,7 +71,7 @@ public class Knight extends Piece {
      *
      * @return the Knight's field of control
      */
-    public ArrayList<Position> getFieldOfControl() {
+    public ArrayList<Position> getRangeOfMovement() {
         ArrayList<Position> field = new ArrayList<Position>();
         if (new Position(this.getPosition().getRow() + 2, this.getPosition().getColumn() + 1).isWithinBounds())
             field.add(new Position(this.getPosition().getRow() + 2, this.getPosition().getColumn() + 1));
