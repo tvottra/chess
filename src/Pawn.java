@@ -22,19 +22,39 @@ public class Pawn extends Piece {
 	 *         otherwise
 	 */
 	public boolean isWithinRangeOfMovement(Position toPos) {
-		if(!hasMoved) {
-			return toPos.getRow() - getPosition().getRow() == 2;
-		} else {
-			return toPos.isWithinBounds() && toPos.getRow() - getPosition().getRow() == 1;
+		if(super.getColor() == 0) {
+			if(!hasMoved) {
+				return toPos.isWithinBounds() &&
+						((getPosition().getRow() - toPos.getRow() == 2 && getPosition().getColumn() == toPos.getColumn())
+						|| (getPosition().getRow() - toPos.getRow()  == 1
+						&& Math.abs(getPosition().getColumn() - toPos.getColumn()) <= 1));
+			} else {
+				return toPos.isWithinBounds() &&
+						(getPosition().getRow() - toPos.getRow()  == 1
+						&& Math.abs(getPosition().getColumn() - toPos.getColumn()) <= 1);
+			}
 		}
+		else {
+			if(!hasMoved) {
+				return toPos.isWithinBounds() &&
+						((toPos.getRow() - getPosition().getRow() == 2 && getPosition().getColumn() == toPos.getColumn())
+						|| (toPos.getRow() - getPosition().getRow()  == 1
+						&& Math.abs(getPosition().getColumn() - toPos.getColumn()) <= 1));
+			} else {
+				return toPos.isWithinBounds() &&
+						(getPosition().getRow() - toPos.getRow()  == 1
+						&& Math.abs(getPosition().getColumn() - toPos.getColumn()) <= 1);
+			}
+		}
+		
 	}
 
 	@Override
 	/**
-	 * Calculates the King's field of control based on known board size and its
+	 * Calculates the Pawn's field of control based on known board size and its
 	 * current position. Positions are ordered ascending in terms of row then column. E.g., (0, 0), (0, 1), (0, 2), (1, 0)...
 	 * 
-	 * @return the King's field of control
+	 * @return the Pawn's field of control
 	 */
 	public ArrayList<Position> getRangeOfMovement() {
 		ArrayList<Position> field = new ArrayList<Position>();
@@ -43,10 +63,28 @@ public class Pawn extends Piece {
 		int col = getPosition().getColumn();
 
 		field.add(getPosition());
-		field.add(new Position(row, col + 1));
-		if(!hasMoved) {
-			field.add(new Position(row, col + 2));
+		if(getColor() == 1) {
+			Position pos1 = new Position(row + 1, col + 1);
+			if(pos1.isWithinBounds()) {
+				field.add(pos1);
+			}
+			Position pos2 = new Position(row + 1, col - 1);
+			if(pos2.isWithinBounds()) {
+				field.add(pos2);
+			}
+
 		}
+		else {
+			Position pos1 = new Position(row - 1, col + 1);
+			if(pos1.isWithinBounds()) {
+				field.add(pos1);
+			}
+			Position pos2 = new Position(row - 1, col - 1);
+			if(pos2.isWithinBounds()) {
+				field.add(pos2);
+			}
+		}
+		
 		return field;
 	}
 
@@ -63,8 +101,13 @@ public class Pawn extends Piece {
 		ArrayList<Position> iWillCross = new ArrayList<Position>();
 		if(isWithinRangeOfMovement(toPos)) {
 			iWillCross.add(getPosition());
-			if(toPos.getRow() - getPosition().getRow() == 2) {
-				iWillCross.add(new Position(getPosition().getRow() + 1, getPosition().getColumn()));
+			if(Math.abs(toPos.getRow() - getPosition().getRow()) == 2) {
+				if(getColor() == 1) {
+					iWillCross.add(new Position(getPosition().getRow() + 1, getPosition().getColumn()));
+				}
+				else {
+					iWillCross.add(new Position(getPosition().getRow() - 1, getPosition().getColumn()));
+				}
 			}
 			iWillCross.add(toPos);
 		}
