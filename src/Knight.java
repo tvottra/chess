@@ -19,7 +19,13 @@ public class Knight extends Piece {
      */
     @Override
     public boolean isWithinRangeOfMovement(Position move) {
-        return getFieldOfControl().contains(move);
+        ArrayList <Position> arr = getRangeOfMovement();
+        for(int i = 0; i < arr.size(); i++) {
+        		if(arr.get(i).equals(move)) {
+        		return true;
+        		}
+        }
+        return false;
     }
 
     @Override
@@ -32,12 +38,11 @@ public class Knight extends Piece {
      * @return an ArrayList of the Positions that would be crossed
      */
     public ArrayList<Position> move(Position toPos) {
+        ArrayList<Position> pos = new ArrayList<Position>();
         if (isWithinRangeOfMovement(toPos)) {
-            ArrayList<Position> pos = new ArrayList<Position>();
             pos.add(toPos);
-            return pos;
         }
-        return null;
+        return pos;
     }
 
     @Override

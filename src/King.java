@@ -25,7 +25,7 @@ public class King extends Piece {
 	 */
 	public boolean isWithinRangeOfMovement(Position toPos) {
 		return toPos.isWithinBounds() && Math.sqrt(Math.pow(getPosition().getRow() - toPos.getRow(), 2)
-				- Math.pow(getPosition().getColumn(), toPos.getColumn())) == 1;
+				- Math.pow(getPosition().getColumn() - toPos.getColumn(), 2)) == 1;
 	}
 
 	/**
@@ -51,10 +51,10 @@ public class King extends Piece {
 		if (col + 1 < 7) {
 			right = true;
 		}
-		if (row - 1 < 7) {
+		if (row - 1 >= 0) {
 			bot = true;
 		}
-		if (col - 1 < 7) {
+		if (col - 1 >= 0) {
 			left = true;
 		}
 
