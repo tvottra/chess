@@ -3,7 +3,7 @@ import java.util.ArrayList;
 /**
  * Class that represents a Pawn chess piece
  * 
- * @author Brian Qiu
+ * @author Brian
  */
 public class Pawn extends Piece {
 	private boolean promoted;
@@ -12,9 +12,9 @@ public class Pawn extends Piece {
 	 * Contructor to initialize the Pawn's color and Position
 	 * 
 	 * @param color
-	 *            - the pawn's color
+	 *            - the Pawn's color
 	 * @param pos
-	 *            - the pawn's Position
+	 *            - the Pawn's Position
 	 */
 	public Pawn(int color, Position pos) {
 		super("Pawn", color, pos, 1);
