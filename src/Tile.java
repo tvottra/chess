@@ -72,18 +72,19 @@ public class Tile {
     public boolean hasPiece() {
         return myPiece != null;
     }
-
-    /**
-     * Mutator method to set black control of this Tile
-     *
-     * @param blackHotSpot - true if black has control of this Tile, false otherwise
-     */
-    public void setIsBlackHotSpot(boolean blackHotSpot) {
-        this.isBlackHotSpot = blackHotSpot;
-    }
-
-    public String toString() {
-        return myPiece.toString() + " white control = " + isWhiteHotSpot + " black control = " + isBlackHotSpot;
-    }
+  
+	public void setIsBlackHotSpot(boolean blackHotSpot) {
+		this.isBlackHotSpot = blackHotSpot;
+	}
+	
+	public String toString() {
+		//return myPiece.toString() + " white control = " + isWhiteHotSpot + " black control = " + isBlackHotSpot;
+		if(myPiece == null) {
+			return "XX";
+		}
+		else {
+			return String.format("%.1s" + myPiece.getColor(), myPiece);
+		}
+	}
 
 }
