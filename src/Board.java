@@ -20,7 +20,7 @@ public class Board {
 		setUpWhitePieces();
 		setUpBlackPieces();
 		setUpRestOfBoard();
-		updateHotspots();
+		// updateHotspots();
 	}
 
 	/**
@@ -59,7 +59,7 @@ public class Board {
 	}
 
 	/**
-	 * Sets up all of the black pieces on the upper two rows of the board 
+	 * Sets up all of the black pieces on the upper two rows of the board
 	 */
 	private void setUpBlackPieces() {
 		// Set up black pawns
@@ -458,10 +458,11 @@ public class Board {
 	private ArrayList<Position> getRookHotspots(Piece rook) {
 		ArrayList<Position> rom = rook.getRangeOfMovement();
 		ArrayList<Position> hotSpots = new ArrayList<Position>();
-		int hbranch1end = 0;
-		int hbranch2end = 0;
-		int hbranch3end = 0;
-		int hbranch4end = rom.size();
+		rom.add(0, new Position(-1, -1)); // add a "buffer" to prevent row 0 error
+		int hbranch1end = 0; // tiles above rook on board
+		int hbranch2end = 0; // tiles below rook on board
+		int hbranch3end = 0; // tiles "left" of rook
+		int hbranch4end = rom.size(); // tiles "right" of rook
 		for (int i = 0; i < rom.size(); i++) {
 			if (rook.getPosition().equals(rom.get(i))) {
 				if (hbranch1end == 0) {
@@ -475,15 +476,23 @@ public class Board {
 				}
 			}
 		}
-		for (int i = 0; i < hbranch1end; i++) {
+
+		System.out.println("branch 1 = " + hbranch1end);
+		System.out.println("branch 2 = " + hbranch2end);
+		System.out.println("branch 3 = " + hbranch3end);
+		System.out.println("branch 4 = " + hbranch4end);
+		// Look at vector above rook
+		for (int i = 1; i < hbranch1end; i++) {
 			Tile currentTile = board[rom.get(i).getRow()][rom.get(i).getColumn()];
 			if (currentTile != null) {
+				System.out.println("br1");
 				hotSpots.add(rom.get(i));
 				break;
 			} else {
 				hotSpots.add(rom.get(i));
 			}
 		}
+		// Look at vector above rook
 		for (int i = hbranch1end + 1; i < hbranch2end; i++) {
 			Tile currentTile = board[rom.get(i).getRow()][rom.get(i).getColumn()];
 			if (currentTile != null) {
@@ -493,6 +502,7 @@ public class Board {
 				hotSpots.add(rom.get(i));
 			}
 		}
+		// Look at vector left of rook
 		for (int i = hbranch2end + 1; i < hbranch3end; i++) {
 			Tile currentTile = board[rom.get(i).getRow()][rom.get(i).getColumn()];
 			if (currentTile != null) {
@@ -502,6 +512,7 @@ public class Board {
 				hotSpots.add(rom.get(i));
 			}
 		}
+		// Look at vector right of rook
 		for (int i = hbranch3end + 1; i < hbranch4end; i++) {
 			Tile currentTile = board[rom.get(i).getRow()][rom.get(i).getColumn()];
 			if (currentTile != null) {
@@ -511,9 +522,7 @@ public class Board {
 				hotSpots.add(rom.get(i));
 			}
 		}
-
 		return hotSpots;
-
 	}
 
 	/**
