@@ -1,15 +1,22 @@
 import java.util.ArrayList;
 
 /**
- * 
- * @author Tommy
  * Class that represents a Bishop chess piece
+ * 
+ * @author Tommy Tran
  */
 public class Bishop extends Piece {
 
+	/**
+	 * Constructor to initialize the Bishop's color and Position
+	 * 
+	 * @param color
+	 *            - the Bishop's color
+	 * @param pos
+	 *            - the Bishop's Position
+	 */
 	public Bishop(int color, Position pos) {
 		super("Bishop", color, pos, 3);
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
@@ -21,7 +28,7 @@ public class Bishop extends Piece {
 	 *            - the given Position
 	 * @return an ArrayList of the Positions that would be crossed
 	 */
-	public ArrayList<Position> move(Position toPos) {
+	public ArrayList<Position> getCrossedPositions(Position toPos) {
 
 		Position currentPos = new Position(getPosition());
 		ArrayList<Position> iWillCross = new ArrayList<Position>();
@@ -49,24 +56,11 @@ public class Bishop extends Piece {
 
 	@Override
 	/**
-	 * Checks whether the given Position is within this Bishop's range of movement
-	 * 
-	 * @param toPos
-	 *            - the destination Position
-	 * @return true if toPos is within this Bishop's range of movement, false
-	 *         otherwise
-	 */
-	public boolean isWithinRangeOfMovement(Position toPos) {
-		return toPos.isWithinBounds() && Math.abs(getPosition().slopeTo(toPos)) == 1.0;
-	}
-
-	@Override
-	/**
-	 * Calculates the Bishop's field of control based on known board size and its
+	 * Calculates the Bishop's range of movement based on known board size and its
 	 * current position. Positions are ordered ascending in terms of row then
 	 * column. E.g., (0, 0), (0, 1), (0, 2), (1, 0)...
 	 * 
-	 * @return the Bishop's field of control
+	 * @return the Bishop's range of movement
 	 */
 	public ArrayList<Position> getRangeOfMovement() {
 		ArrayList<Position> field = new ArrayList<Position>();
@@ -103,5 +97,18 @@ public class Bishop extends Piece {
 			pos4.addToColumn(1);
 		}
 		return field;
+	}
+
+	@Override
+	/**
+	 * Checks whether the given Position is within this Bishop's range of movement
+	 * 
+	 * @param toPos
+	 *            - the destination Position
+	 * @return true if toPos is within this Bishop's range of movement, false
+	 *         otherwise
+	 */
+	public boolean isWithinRangeOfMovement(Position toPos) {
+		return toPos.isWithinBounds() && Math.abs(getPosition().slopeTo(toPos)) == 1.0;
 	}
 }
