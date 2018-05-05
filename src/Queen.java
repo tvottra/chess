@@ -1,15 +1,23 @@
 import java.util.ArrayList;
 
 /**
+ * Class that represents a Queen chess Piece
  * 
- * @author Jonathan
+ * @author Jonathan Lim
  *
  */
 public class Queen extends Piece {
 
+	/**
+	 * Constructor to initialize the Queen
+	 * 
+	 * @param color
+	 *            - the Queen's color
+	 * @param pos
+	 *            - the Queen's Position
+	 */
 	public Queen(int color, Position pos) {
 		super("Queen", color, pos, 9);
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
@@ -21,7 +29,7 @@ public class Queen extends Piece {
 	 *            - the given Position
 	 * @return an ArrayList of the Positions that would be crossed
 	 */
-	public ArrayList<Position> move(Position toPos) {
+	public ArrayList<Position> getCrossedPositions(Position toPos) {
 		ArrayList<Position> positions = new ArrayList<Position>();
 		Position fromPos = getPosition();
 		// The two Positions are in the same row
@@ -73,11 +81,11 @@ public class Queen extends Piece {
 
 	@Override
 	/**
-	 * Calculates the Queen's field of control based on known board size and its
+	 * Calculates the Queen's range of movement based on known board size and its
 	 * current position. Positions are ordered ascending in terms of row then
 	 * column. E.g., (0, 0), (0, 1), (0, 2), (1, 0)...
 	 * 
-	 * @return the Queen's field of control
+	 * @return the Queen's range of movement
 	 */
 	public ArrayList<Position> getRangeOfMovement() {
 		Position pos = new Position(getPosition());
@@ -100,7 +108,7 @@ public class Queen extends Piece {
 			Position p = new Position(pos.getRow(), c);
 			fieldOfControl.add(p);
 		}
-    
+
 		fieldOfControl.add(pos);
 		for (int c = pos.getColumn() + 1; c < getSize(); c++) {
 			Position p = new Position(pos.getRow(), c);
