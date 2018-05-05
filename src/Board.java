@@ -2,9 +2,8 @@ import java.util.ArrayList;
 
 /**
  * Class that represents the chess board
- * 
- * @author Andrew Le
  *
+ * @author Andrew Le
  */
 public class Board {
 	Tile[][] board;
@@ -670,5 +669,7 @@ public class Board {
 
 		}
 	}
+  
+  
 
 }
