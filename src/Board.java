@@ -20,7 +20,7 @@ public class Board {
 		setUpWhitePieces();
 		setUpBlackPieces();
 		setUpRestOfBoard();
-		//updateHotspots();
+		// updateHotspots();
 	}
 
 	/**
@@ -59,7 +59,7 @@ public class Board {
 	}
 
 	/**
-	 * Sets up all of the black pieces on the upper two rows of the board 
+	 * Sets up all of the black pieces on the upper two rows of the board
 	 */
 	private void setUpBlackPieces() {
 		// Set up black pawns
@@ -451,17 +451,18 @@ public class Board {
 	/**
 	 * Returns the hotspots for the given Rook
 	 * 
-	 * @param rook
+	 * @param pawn
 	 *            - the given Rook
 	 * @return the hotspots for the given "Rook"
 	 */
 	private ArrayList<Position> getRookHotspots(Piece rook) {
 		ArrayList<Position> rom = rook.getRangeOfMovement();
 		ArrayList<Position> hotSpots = new ArrayList<Position>();
-		int hbranch1end = 0;
-		int hbranch2end = 0;
-		int hbranch3end = 0;
-		int hbranch4end = rom.size();
+		rom.add(0, new Position(-1, -1)); // add a "buffer" to prevent row 0 error
+		int hbranch1end = 0; // tiles above rook on board
+		int hbranch2end = 0; // tiles below rook on board
+		int hbranch3end = 0; // tiles "left" of rook
+		int hbranch4end = rom.size(); // tiles "right" of rook
 		for (int i = 0; i < rom.size(); i++) {
 			if (rook.getPosition().equals(rom.get(i))) {
 				if (hbranch1end == 0) {
@@ -475,15 +476,23 @@ public class Board {
 				}
 			}
 		}
-		for (int i = 0; i < hbranch1end; i++) {
+
+		System.out.println("branch 1 = " + hbranch1end);
+		System.out.println("branch 2 = " + hbranch2end);
+		System.out.println("branch 3 = " + hbranch3end);
+		System.out.println("branch 4 = " + hbranch4end);
+		// Look at vector above rook
+		for (int i = 1; i < hbranch1end; i++) {
 			Tile currentTile = board[rom.get(i).getRow()][rom.get(i).getColumn()];
 			if (currentTile != null) {
+				System.out.println("br1");
 				hotSpots.add(rom.get(i));
 				break;
 			} else {
 				hotSpots.add(rom.get(i));
 			}
 		}
+		// Look at vector above rook
 		for (int i = hbranch1end + 1; i < hbranch2end; i++) {
 			Tile currentTile = board[rom.get(i).getRow()][rom.get(i).getColumn()];
 			if (currentTile != null) {
@@ -493,6 +502,7 @@ public class Board {
 				hotSpots.add(rom.get(i));
 			}
 		}
+		// Look at vector left of rook
 		for (int i = hbranch2end + 1; i < hbranch3end; i++) {
 			Tile currentTile = board[rom.get(i).getRow()][rom.get(i).getColumn()];
 			if (currentTile != null) {
@@ -502,6 +512,7 @@ public class Board {
 				hotSpots.add(rom.get(i));
 			}
 		}
+		// Look at vector right of rook
 		for (int i = hbranch3end + 1; i < hbranch4end; i++) {
 			Tile currentTile = board[rom.get(i).getRow()][rom.get(i).getColumn()];
 			if (currentTile != null) {
@@ -511,53 +522,57 @@ public class Board {
 				hotSpots.add(rom.get(i));
 			}
 		}
-
 		return hotSpots;
-
 	}
 
 	/**
 	 * Returns the hotspots for the given Queen
 	 * 
-	 * @param queen
+	 * @param pawn
 	 *            - the given Queen
 	 * @return the hotspots for the given "Queen"
 	 */
 	private ArrayList<Position> getQueenHotspots(Piece queen) {
 		ArrayList<Position> rom = queen.getRangeOfMovement();
-		System.out.println("My rom is " + rom);
 		ArrayList<Position> hotSpots = new ArrayList<Position>();
-
-		int hbranch1end = 0;
-		int hbranch2end = 0;
-		int hbranch3end = 0;
-		int hbranch4end = 0;
-		int dbranch1end = 0;
-		int dbranch2end = 0;
-		int dbranch3end = 0;
-		int dbranch4end = rom.size();
+		rom.add(0, new Position(-1,-1)); // add a buffer to prevent row 0 error
+		int hbranch1end = 0; // the tiles above queen
+		int hbranch2end = 0; // the tiles below queen
+		int hbranch3end = 0; // the tiles left of queen
+		int hbranch4end = 0; // the tiles right of queen
+		int dbranch1end = 0; // upper right diagonal
+		int dbranch2end = 0; // upper left diagonal
+		int dbranch3end = 0; // lower left diagonal
+		int dbranch4end = rom.size(); // lower right diagonal
 
 		for (int i = 0; i < rom.size(); i++) {
 			if (queen.getPosition().equals(rom.get(i))) {
 				if (hbranch1end == 0) {
 					hbranch1end = i;
+					System.out.println("hbranch1 = " + hbranch1end);
 				} else if (hbranch2end == 0) {
 					hbranch2end = i;
+					System.out.println("hbranch2 = " + hbranch2end);
 				} else if (hbranch3end == 0) {
 					hbranch3end = i;
+					System.out.println("hbranch3 = " + hbranch3end);
 				} else if (hbranch4end == 0) {
 					hbranch4end = i;
+					System.out.println("hbranch4 = " + hbranch4end);
 				} else if (dbranch1end == 0) {
 					dbranch1end = i;
+					System.out.println("dbranch1 = " + dbranch1end);
 				} else if (dbranch2end == 0) {
 					dbranch2end = i;
+					System.out.println("dbranch2 = " + dbranch2end);
 				} else if (dbranch3end == 0) {
 					dbranch3end = i;
+					System.out.println("dbranch3 = " + dbranch3end);
 				}
 			}
 		}
-
-		for (int i = 0; i < hbranch1end; i++) {
+		System.out.println("dbranch4 = " + dbranch4end);
+		for (int i = 1; i < hbranch1end; i++) {
 			Tile currentTile = board[rom.get(i).getRow()][rom.get(i).getColumn()];
 			if (currentTile != null) {
 				hotSpots.add(rom.get(i));
@@ -620,10 +635,10 @@ public class Board {
 				hotSpots.add(rom.get(i));
 			}
 		}
-		for (int i = hbranch3end + 1; i < hbranch4end; i++) {
+		for (int i = dbranch3end + 1; i < dbranch4end; i++) {			
 			Tile currentTile = board[rom.get(i).getRow()][rom.get(i).getColumn()];
 			if (currentTile != null) {
-				hotSpots.add(rom.get(i));
+				hotSpots.add(rom.get(i));				
 				break;
 			} else {
 				hotSpots.add(rom.get(i));
@@ -635,7 +650,7 @@ public class Board {
 	/**
 	 * Returns the hotspots for the given King
 	 * 
-	 * @param king
+	 * @param pawn
 	 *            - the given King
 	 * @return the hotspots for the given "King"
 	 */
