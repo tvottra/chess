@@ -2,27 +2,29 @@ import java.util.ArrayList;
 
 /**
  * Class that represents the chess board
- *
+ * 
  * @author Andrew Le
+ *
  */
 public class Board {
 	Tile[][] board;
 	private final int SIZE = 8;
 
 	/**
-	 * Default constructor that initializes the chess board according to the rules
-	 * of chess
+	 * Default constructor that initializes the chess board with all of the white
+	 * pieces, black pieces and the rest of the tiles; establishes the white and
+	 * black hot spots
 	 */
 	public Board() {
 		board = new Tile[8][8];
 		setUpWhitePieces();
 		setUpBlackPieces();
 		setUpRestOfBoard();
-
+		updateHotspots();
 	}
 
 	/**
-	 * Sets up all of the white pieces
+	 * Sets up all of the white pieces on the bottom two rows of the board
 	 */
 	private void setUpWhitePieces() {
 		// Set up white pawns
@@ -57,7 +59,7 @@ public class Board {
 	}
 
 	/**
-	 * Sets up all of the black pieces
+	 * Sets up all of the black pieces on the upper two rows of the board 
 	 */
 	private void setUpBlackPieces() {
 		// Set up black pawns
@@ -182,6 +184,13 @@ public class Board {
 		if (pieceToMove.getName().equals("Pawn")) {
 			if (!isWithinHotspots(pieceToMove, toPos) || !pieceToMove.isWithinRangeOfMovement(toPos)) {
 				return false;
+			} else {
+				if ((board[toRow][toCol].hasPiece()
+						&& board[toRow][toCol].getPiece().getColor() == pieceToMove.getColor())
+						|| (!board[toRow][toCol].hasPiece() && toCol != fromCol)
+						|| (board[toRow][toCol].hasPiece() && fromCol == toCol)) {
+					return false;
+				}
 			}
 		}
 		if (!isWithinHotspots(pieceToMove, toPos)) {
@@ -198,9 +207,11 @@ public class Board {
 		copy[fromRow][fromCol].setPiece(null);
 		ArrayList<Position> allHotspots = new ArrayList<Position>();
 		int myColor = pieceToMove.getColor();
+		// Copying the elements into the temporary board
 		for (int row = 0; row < SIZE; row++) {
 			for (int col = 0; col < SIZE; col++) {
 				if (copy[row][col].getPiece() != null) {
+					// Only copy the hotspots for the opposing color's pieces
 					if (myColor == 0 && copy[row][col].getPiece().getColor() == 1) {
 						ArrayList<Position> hotspots = getHotspots(copy[row][col].getPiece());
 						for (Position pos : hotspots) {
@@ -219,10 +230,10 @@ public class Board {
 			}
 		}
 
+		// See whether the move would result in a check
 		Position kingPos = findKingPosition(copy);
 		for (Position pos : allHotspots) {
 			if (kingPos.equals(pos)) {
-				System.out.println("Error at king check");
 				return false;
 			}
 		}
@@ -669,7 +680,5 @@ public class Board {
 
 		}
 	}
-  
-  
 
 }
