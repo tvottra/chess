@@ -178,12 +178,14 @@ public class Board {
 		int toRow = toPos.getRow();
 		int toCol = toPos.getColumn();
 		// Check whether the move is in range (not accounting for checks)
-		if (!isWithinHotspots(pieceToMove, toPos)) {
-			System.out.println(pieceToMove.getName());
-			for (Position pos : getHotspots(pieceToMove)) {
-				System.out.println(pos);
+
+		// Special case if the piece is a pawn
+		if (pieceToMove.getName().equals("Pawn")) {
+			if (!isWithinHotspots(pieceToMove, toPos) || !pieceToMove.isWithinRangeOfMovement(toPos)) {
+				return false;
 			}
-			System.out.println("Error at range check");
+		}
+		if (!isWithinHotspots(pieceToMove, toPos)) {
 			return false;
 		}
 		// Create a copy of the real board to determine whether the move creates a check
