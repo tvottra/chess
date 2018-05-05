@@ -109,6 +109,6 @@ public class Bishop extends Piece {
 	 *         otherwise
 	 */
 	public boolean isWithinRangeOfMovement(Position toPos) {
-		return toPos.isWithinBounds() && Math.abs(getPosition().slopeTo(toPos)) == 1.0;
+		return getRangeOfMovement().contains(toPos);
 	}
 }

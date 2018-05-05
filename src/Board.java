@@ -20,7 +20,7 @@ public class Board {
 		setUpWhitePieces();
 		setUpBlackPieces();
 		setUpRestOfBoard();
-		updateHotspots();
+		//updateHotspots();
 	}
 
 	/**
@@ -451,7 +451,7 @@ public class Board {
 	/**
 	 * Returns the hotspots for the given Rook
 	 * 
-	 * @param pawn
+	 * @param rook
 	 *            - the given Rook
 	 * @return the hotspots for the given "Rook"
 	 */
@@ -519,12 +519,13 @@ public class Board {
 	/**
 	 * Returns the hotspots for the given Queen
 	 * 
-	 * @param pawn
+	 * @param queen
 	 *            - the given Queen
 	 * @return the hotspots for the given "Queen"
 	 */
 	private ArrayList<Position> getQueenHotspots(Piece queen) {
 		ArrayList<Position> rom = queen.getRangeOfMovement();
+		System.out.println("My rom is " + rom);
 		ArrayList<Position> hotSpots = new ArrayList<Position>();
 
 		int hbranch1end = 0;
@@ -634,7 +635,7 @@ public class Board {
 	/**
 	 * Returns the hotspots for the given King
 	 * 
-	 * @param pawn
+	 * @param king
 	 *            - the given King
 	 * @return the hotspots for the given "King"
 	 */

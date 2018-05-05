@@ -58,7 +58,7 @@ public class Queen extends Piece {
 				positions.add(pos);
 			}
 		}
-		if (Math.abs(getPosition().slopeTo(toPos)) == 1.0) {
+		if (getPosition().hasAbsSlopeOfOne(toPos)) {
 			int r, c;
 			if (fromPos.isAbove(toPos)) {
 				r = 1;
@@ -83,65 +83,88 @@ public class Queen extends Piece {
 	/**
 	 * Calculates the Queen's range of movement based on known board size and its
 	 * current position. Positions are ordered ascending in terms of row then
-	 * column. E.g., (0, 0), (0, 1), (0, 2), (1, 0)...
+	 * column. E.g., (0, 0), (0, 1), (0, 2), (1, 0)... TODO:IGNORE THIS ORDERING. NO PIECES HAVE THIS ORDERING, I'M PRETTY SURE -TVT
 	 * 
 	 * @return the Queen's range of movement
 	 */
 	public ArrayList<Position> getRangeOfMovement() {
 		Position pos = new Position(getPosition());
-		ArrayList<Position> fieldOfControl = new ArrayList<Position>();
-		fieldOfControl = new ArrayList<Position>();
+		System.out.println("pos is " + pos);
+		ArrayList<Position> rom = new ArrayList<Position>();
+		System.out.println("rom created");
 
-		for (int r = pos.getRow() - 1; r >= 0; r--) {
+		//Get the top vertical vector
+		for (int r = (pos.getRow()) - 1; r >= 0; r--) {
 			Position p = new Position(r, pos.getColumn());
-			fieldOfControl.add(p);
+			System.out.println("I'm adding " + p + "to rom");
+			rom.add(p);
 		}
 
-		fieldOfControl.add(pos);
+		rom.add(pos);
+		System.out.println("State of ROM after top vertical vector: " + rom);
+
+		//Get the bottom vertical vector
 		for (int r = pos.getRow() + 1; r < getSize(); r++) {
 			Position p = new Position(r, pos.getColumn());
-			fieldOfControl.add(p);
+			System.out.println("I'm adding " + p + "to rom");
+			rom.add(p);
 		}
+		rom.add(pos);
+		System.out.println("State of ROM after bottom vertical vector: " + rom);
 
-		fieldOfControl.add(pos);
+		//Get the left horizontal vector
+
 		for (int c = pos.getColumn() - 1; c >= 0; c--) {
 			Position p = new Position(pos.getRow(), c);
-			fieldOfControl.add(p);
+			System.out.println("I'm adding " + p + "to rom");
+			rom.add(p);
 		}
 
-		fieldOfControl.add(pos);
+		rom.add(pos);
+
+		//Get the right horizontal vector
+
 		for (int c = pos.getColumn() + 1; c < getSize(); c++) {
 			Position p = new Position(pos.getRow(), c);
-			fieldOfControl.add(p);
+			System.out.println("I'm adding " + p + "to rom");
+			rom.add(p);
 		}
 
-		while (pos.isWithinBounds()) {
-			fieldOfControl.add(new Position(pos));
-			pos.addToRow(-1);
-			pos.addToColumn(1);
+		//Get the diagonals
+		Position currentPos = new Position(pos);
+		while (currentPos.isWithinBounds()) {
+			rom.add(new Position(currentPos));
+			System.out.println("I'm adding (diagonal) bl1 " + currentPos);
+			currentPos.addToRow(-1);
+			currentPos.addToColumn(1);
 		}
 
-		pos = new Position(getPosition());
-		while (pos.isWithinBounds()) {
-			fieldOfControl.add(new Position(pos));
-			pos.addToRow(-1);
-			pos.addToColumn(-1);
+		currentPos = new Position(getPosition());
+		while (currentPos.isWithinBounds()) {
+
+			rom.add(new Position(currentPos));
+			System.out.println("I'm adding (diagonal) bl2 " + currentPos);
+			currentPos.addToRow(-1);
+			currentPos.addToColumn(-1);
 		}
 
-		pos = new Position(getPosition());
-		while (pos.isWithinBounds()) {
-			fieldOfControl.add(new Position(pos));
-			pos.addToRow(1);
-			pos.addToColumn(-1);
+		currentPos = new Position(getPosition());
+		while (currentPos.isWithinBounds()) {
+
+			rom.add(new Position(currentPos));
+			System.out.println("I'm adding (diagonal) bl3 " + currentPos);
+			currentPos.addToRow(1);
+			currentPos.addToColumn(-1);
 		}
 
-		pos = new Position(getPosition());
-		while (pos.isWithinBounds()) {
-			fieldOfControl.add(new Position(pos));
-			pos.addToRow(1);
-			pos.addToColumn(1);
+		currentPos = new Position(getPosition());
+		while (currentPos.isWithinBounds()) {
+			rom.add(new Position(currentPos));
+			System.out.println("I'm adding (diagonal) bl4 " + currentPos);
+			currentPos.addToRow(1);
+			currentPos.addToColumn(1);
 		}
-		return fieldOfControl;
+		return rom;
 	}
 
 	@Override
@@ -154,7 +177,6 @@ public class Queen extends Piece {
 	 *         otherwise
 	 */
 	public boolean isWithinRangeOfMovement(Position toPos) {
-		return toPos.isWithinBounds() && (Math.abs(getPosition().slopeTo(toPos)) == 1.0
-				|| getPosition().getRow() == toPos.getRow() || getPosition().getColumn() == toPos.getColumn());
+		return getRangeOfMovement().contains(toPos);
 	}
 }

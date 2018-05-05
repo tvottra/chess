@@ -12,14 +12,11 @@ public class Tile {
 	/**
 	 * Parameter constructor to initialize a Tile on the board
 	 *
-	 * @param piece
-	 *            - the piece that occupies the Slot
-	 * @param isWhiteHotSpot
-	 *            - whether the Tile is within the range of movement of a white
-	 *            Piece
-	 * @param isBlackHotSpot
-	 *            - whether the Tile is within the range of movement of a black
-	 *            Piece
+	 * @param piece          - the piece that occupies the Slot
+	 * @param isWhiteHotSpot - whether the Tile is within the range of movement of a white
+	 *                       Piece
+	 * @param isBlackHotSpot - whether the Tile is within the range of movement of a black
+	 *                       Piece
 	 */
 	public Tile(Piece piece, boolean isWhiteHotSpot, boolean isBlackHotSpot) {
 		this.myPiece = piece;
@@ -39,8 +36,7 @@ public class Tile {
 	/**
 	 * Mutator method to set the Piece on this Tile to the given Piece
 	 *
-	 * @param myPiece
-	 *            - the given Piece
+	 * @param myPiece - the given Piece
 	 */
 	public void setPiece(Piece myPiece) {
 		this.myPiece = myPiece;
@@ -58,8 +54,7 @@ public class Tile {
 	/**
 	 * Mutator method to set white control of this Tile
 	 *
-	 * @param whiteHotSpot
-	 *            - true if white has control of this Tile, false otherwise
+	 * @param whiteHotSpot - true if white has control of this Tile, false otherwise
 	 */
 	public void setIsWhiteHotSpot(boolean whiteHotSpot) {
 		this.isWhiteHotSpot = whiteHotSpot;
@@ -77,8 +72,7 @@ public class Tile {
 	/**
 	 * Mutator method to set black control of this Tile
 	 *
-	 * @param blackHotSpot
-	 *            - true if black has control of this Tile, false otherwise
+	 * @param blackHotSpot - true if black has control of this Tile, false otherwise
 	 */
 	public void setIsBlackHotSpot(boolean blackHotSpot) {
 		this.isBlackHotSpot = blackHotSpot;
@@ -86,7 +80,7 @@ public class Tile {
 
 	/**
 	 * Determines whether this Tile has a Piece
-	 * 
+	 *
 	 * @return true if this Tile has a Piece, false otherwise
 	 */
 	public boolean hasPiece() {
@@ -95,12 +89,16 @@ public class Tile {
 
 	/**
 	 * toString method for this tile
-	 * 
+	 *
 	 * @return this tile in the following format: [Piece] white control =
-	 *         [true/false] black control [true/false]
+	 * [true/false] black control [true/false]
 	 */
 	public String toString() {
-		return myPiece.toString() + " white control = " + isWhiteHotSpot + " black control = " + isBlackHotSpot;
-	}
+		if (!hasPiece()) {
+			return "XX";
+		} else {
+			return String.format("%.1s" + myPiece.getColor(), myPiece);
+		}
 
+	}
 }
