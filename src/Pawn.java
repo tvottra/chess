@@ -22,36 +22,27 @@ public class Pawn extends Piece {
 
 	@Override
 	/**
-	 * Checks whether the given Position is within this Pawn's range of movement
+	 * Returns an array of the Positions that would be crossed if this Pawn were to
+	 * move to the given Position
 	 *
 	 * @param toPos
-	 *            - the destination Position
-	 * @return true if toPos is within this Pawn's range of movement, false
-	 *         otherwise
+	 *            - the given Position
+	 * @return an ArrayList of the Positions that would be crossed
 	 */
-	public boolean isWithinRangeOfMovement(Position toPos) {
-		if (super.getColor() == 0) {
-			if (!hasMoved()) {
-				return toPos.isWithinBounds() && ((getPosition().getRow() - toPos.getRow() == 2
-						&& getPosition().getColumn() == toPos.getColumn())
-						|| (getPosition().getRow() - toPos.getRow() == 1
-								&& Math.abs(getPosition().getColumn() - toPos.getColumn()) <= 1));
-			} else {
-				return toPos.isWithinBounds() && (getPosition().getRow() - toPos.getRow() == 1
-						&& Math.abs(getPosition().getColumn() - toPos.getColumn()) <= 1);
+	public ArrayList<Position> getCrossedPositions(Position toPos) {
+		ArrayList<Position> iWillCross = new ArrayList<Position>();
+		if (isWithinRangeOfMovement(toPos)) {
+			iWillCross.add(getPosition());
+			if (Math.abs(toPos.getRow() - getPosition().getRow()) == 2) {
+				if (getColor() == 1) {
+					iWillCross.add(new Position(getPosition().getRow() + 1, getPosition().getColumn()));
+				} else {
+					iWillCross.add(new Position(getPosition().getRow() - 1, getPosition().getColumn()));
+				}
 			}
-		} else {
-			if (!hasMoved()) {
-				return toPos.isWithinBounds() && ((toPos.getRow() - getPosition().getRow() == 2
-						&& getPosition().getColumn() == toPos.getColumn())
-						|| (toPos.getRow() - getPosition().getRow() == 1
-								&& Math.abs(getPosition().getColumn() - toPos.getColumn()) <= 1));
-			} else {
-				return toPos.isWithinBounds() && (getPosition().getRow() - toPos.getRow() == 1
-						&& Math.abs(getPosition().getColumn() - toPos.getColumn()) <= 1);
-			}
+			iWillCross.add(toPos);
 		}
-
+		return iWillCross;
 	}
 
 	@Override
@@ -109,27 +100,36 @@ public class Pawn extends Piece {
 
 	@Override
 	/**
-	 * Returns an array of the Positions that would be crossed if this Pawn were to
-	 * move to the given Position
+	 * Checks whether the given Position is within this Pawn's range of movement
 	 *
 	 * @param toPos
-	 *            - the given Position
-	 * @return an ArrayList of the Positions that would be crossed
+	 *            - the destination Position
+	 * @return true if toPos is within this Pawn's range of movement, false
+	 *         otherwise
 	 */
-	public ArrayList<Position> getCrossedPositions(Position toPos) {
-		ArrayList<Position> iWillCross = new ArrayList<Position>();
-		if (isWithinRangeOfMovement(toPos)) {
-			iWillCross.add(getPosition());
-			if (Math.abs(toPos.getRow() - getPosition().getRow()) == 2) {
-				if (getColor() == 1) {
-					iWillCross.add(new Position(getPosition().getRow() + 1, getPosition().getColumn()));
-				} else {
-					iWillCross.add(new Position(getPosition().getRow() - 1, getPosition().getColumn()));
-				}
+	public boolean isWithinRangeOfMovement(Position toPos) {
+		if (super.getColor() == 0) {
+			if (!hasMoved()) {
+				return toPos.isWithinBounds() && ((getPosition().getRow() - toPos.getRow() == 2
+						&& getPosition().getColumn() == toPos.getColumn())
+						|| (getPosition().getRow() - toPos.getRow() == 1
+								&& Math.abs(getPosition().getColumn() - toPos.getColumn()) <= 1));
+			} else {
+				return toPos.isWithinBounds() && (getPosition().getRow() - toPos.getRow() == 1
+						&& Math.abs(getPosition().getColumn() - toPos.getColumn()) <= 1);
 			}
-			iWillCross.add(toPos);
+		} else {
+			if (!hasMoved()) {
+				return toPos.isWithinBounds() && ((toPos.getRow() - getPosition().getRow() == 2
+						&& getPosition().getColumn() == toPos.getColumn())
+						|| (toPos.getRow() - getPosition().getRow() == 1
+								&& Math.abs(getPosition().getColumn() - toPos.getColumn()) <= 1));
+			} else {
+				return toPos.isWithinBounds() && (getPosition().getRow() - toPos.getRow() == 1
+						&& Math.abs(getPosition().getColumn() - toPos.getColumn()) <= 1);
+			}
 		}
-		return iWillCross;
+
 	}
 
 	public void promotion() {
