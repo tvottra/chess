@@ -3,7 +3,7 @@ import java.util.ArrayList;
 /**
  * Class that represents a Pawn chess piece
  * 
- * @author Brian
+ * @author Brian Qiu
  */
 public class Pawn extends Piece {
 	private boolean promoted;
