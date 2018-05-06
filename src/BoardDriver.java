@@ -7,13 +7,13 @@ import java.util.ArrayList;
 public class BoardDriver {
 
 	public static void main(String[] args) {
-		Board gameBoard = new Board();
+		Board myBoard = new Board();
+		System.out.print(myBoard);
+		int row = 6;
+		int col = 4;
+		Piece testPiece = myBoard.getTile(row, col).getPiece();
+		System.out.println("The piece is " + testPiece);
 
-		int row = 7;
-		int col = 0;
-		Piece testPiece = gameBoard.getTile(row, col).getPiece();
-		// System.out.println(gameBoard.getTile(row, col));
-		
 		// Range of movement test
 		System.out.println("Here is the range of movement:");
 		ArrayList<Position> range = testPiece.getRangeOfMovement();
@@ -21,8 +21,9 @@ public class BoardDriver {
 			System.out.println(pos);
 		}
 		// Hotspots test
+
+		ArrayList<Position> hotspots = myBoard.getHotspots(testPiece);
 		System.out.println("Here are the hotspots:");
-		ArrayList<Position> hotspots = gameBoard.getHotspots(testPiece);
 		for (Position pos : hotspots) {
 			System.out.println(pos);
 		}

@@ -1,8 +1,11 @@
+import com.sun.javaws.exceptions.InvalidArgumentException;
+import com.sun.tools.corba.se.idl.InvalidArgument;
+
 import java.util.ArrayList;
 
 /**
  * Class that represents a Pawn chess piece
- * 
+ *
  * @author Brian
  */
 public class Pawn extends Piece {
@@ -10,11 +13,9 @@ public class Pawn extends Piece {
 
 	/**
 	 * Contructor to initialize the Pawn's color and Position
-	 * 
-	 * @param color
-	 *            - the Pawn's color
-	 * @param pos
-	 *            - the Pawn's Position
+	 *
+	 * @param color - the Pawn's color
+	 * @param pos   - the Pawn's Position
 	 */
 	public Pawn(int color, Position pos) {
 		super("Pawn", color, pos, 1);
@@ -48,54 +49,30 @@ public class Pawn extends Piece {
 	@Override
 	/**
 	 * Calculates the Pawn's range of movement based on known board size and its
-	 * current position. Positions are ordered ascending in terms of row then
-	 * column. E.g., (0, 0), (0, 1), (0, 2), (1, 0)...
+	 * current position.
 	 *
 	 * @return the Pawn's range of movement
 	 */
-	public ArrayList<Position> getRangeOfMovement() {
-		ArrayList<Position> range = new ArrayList<Position>();
+	public ArrayList<Position> getRangeOfMovement(){
+		ArrayList<Position> rom = new ArrayList<Position>();
+		Position currentPos = new Position(getPosition());
 
-		int row = getPosition().getRow();
-		int col = getPosition().getColumn();
-
-		range.add(getPosition());
-		if (getColor() == 1) {
-			Position fPos = new Position(row + 1, col);
-			if (fPos.isWithinBounds()) {
-				range.add(fPos);
-			}
-			if (!hasMoved()) {
-				range.add(new Position(row + 2, col));
-			}
-			Position pos1 = new Position(row + 1, col + 1);
-			if (pos1.isWithinBounds()) {
-				range.add(pos1);
-			}
-			Position pos2 = new Position(row + 1, col - 1);
-			if (pos2.isWithinBounds()) {
-				range.add(pos2);
-			}
-
+		int r = 0;
+		if (getColor() == 0) {
+			r = -1;
+		} else if (getColor() == 1) {
+			r = 1;
 		} else {
-			Position fPos = new Position(row - 1, col);
-			if (fPos.isWithinBounds()) {
-				range.add(fPos);
-			}
-			if (!hasMoved()) {
-				range.add(new Position(row - 2, col));
-			}
-			Position pos1 = new Position(row - 1, col + 1);
-			if (pos1.isWithinBounds()) {
-				range.add(pos1);
-			}
-			Position pos2 = new Position(row - 1, col - 1);
-			if (pos2.isWithinBounds()) {
-				range.add(pos2);
-			}
+			System.out.println("Incorrect implementation of Pawn ROM");
 		}
 
-		return range;
+		rom.add(new Position(currentPos.getRow()+r, currentPos.getColumn())); //Add Position 1 Tile in front of Piece
+
+		if (!hasMoved()) {
+			rom.add(new Position(currentPos.getRow()+r+r, currentPos.getColumn())); //Add Position 2 Tiles in front of Piece
+		}
+
+		return rom;
 	}
 
 	@Override
@@ -113,7 +90,7 @@ public class Pawn extends Piece {
 				return toPos.isWithinBounds() && ((getPosition().getRow() - toPos.getRow() == 2
 						&& getPosition().getColumn() == toPos.getColumn())
 						|| (getPosition().getRow() - toPos.getRow() == 1
-								&& Math.abs(getPosition().getColumn() - toPos.getColumn()) <= 1));
+						&& Math.abs(getPosition().getColumn() - toPos.getColumn()) <= 1));
 			} else {
 				return toPos.isWithinBounds() && (getPosition().getRow() - toPos.getRow() == 1
 						&& Math.abs(getPosition().getColumn() - toPos.getColumn()) <= 1);
@@ -123,7 +100,7 @@ public class Pawn extends Piece {
 				return toPos.isWithinBounds() && ((toPos.getRow() - getPosition().getRow() == 2
 						&& getPosition().getColumn() == toPos.getColumn())
 						|| (toPos.getRow() - getPosition().getRow() == 1
-								&& Math.abs(getPosition().getColumn() - toPos.getColumn()) <= 1));
+						&& Math.abs(getPosition().getColumn() - toPos.getColumn()) <= 1));
 			} else {
 				return toPos.isWithinBounds() && (getPosition().getRow() - toPos.getRow() == 1
 						&& Math.abs(getPosition().getColumn() - toPos.getColumn()) <= 1);
