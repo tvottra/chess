@@ -111,6 +111,21 @@ public abstract class Piece {
 	}
 
 	/**
+	 * Compares this Piece's color with the given Piece's color
+	 * 
+	 * @param other
+	 *            - the given Piece
+	 * @return true if the Pieces are the same color, false otherwise
+	 */
+	public boolean isSameColor(Piece other) {
+		if (color == other.getColor()) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	/**
 	 * toString method to print this Piece's information
 	 *
 	 * @return a String in the following format: [Piece Name] + " at " + [Position]
