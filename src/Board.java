@@ -4,6 +4,8 @@ import java.util.ArrayList;
  * Class that represents the chess board
  *
  * @author Andrew Le
+ * @author Brian Qiu
+ * @author Tommy Tran
  */
 public class Board {
 	Tile[][] board;
