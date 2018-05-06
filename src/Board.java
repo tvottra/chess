@@ -193,7 +193,8 @@ public class Board {
 				}
 			}
 		}
-		if (!isWithinHotspots(pieceToMove, toPos)) {
+		if (!isWithinHotspots(pieceToMove, toPos)
+				|| board[toRow][toCol].getPiece().getColor() == board[fromRow][fromCol].getPiece().getColor()) {
 			return false;
 		}
 		// Create a copy of the real board to determine whether the move creates a check
