@@ -178,21 +178,21 @@ public class Board {
 		Piece pieceToMove = board[fromRow][fromCol].getPiece();
 		int toRow = toPos.getRow();
 		int toCol = toPos.getColumn();
-		// Check whether the move is in range (not accounting for checks)
 
-		// Special case if the piece is a pawn
 		if (pieceToMove.getName().equals("Pawn")) {
-			if (!isWithinHotspots(pieceToMove, toPos) || !pieceToMove.isWithinRangeOfMovement(toPos)) {
-				return false;
-			} else {
-				if ((board[toRow][toCol].hasPiece()
-						&& board[toRow][toCol].getPiece().getColor() == pieceToMove.getColor())
-						|| (!board[toRow][toCol].hasPiece() && toCol != fromCol)
-						|| (board[toRow][toCol].hasPiece() && fromCol == toCol)) {
+			if (!pieceToMove.isWithinRangeOfMovement(toPos)) {
+				if(isWithinHotspots(pieceToMove, toPos)) { //If the move is not forward but instead diagonal
+					if(board[toRow][toCol].hasPiece() && board[toRow][toCol].getPiece().getColor() != pieceToMove.getColor()) {	//Check if the diagonal is occupied by an enemy, if so, then valid move to "take" that Tile
+						//No code here. Proceed with the rest of the code to verify legality.
+					} else {
+						return false;
+					}
+				} else {
 					return false;
 				}
 			}
 		}
+
 		if (!isWithinHotspots(pieceToMove, toPos)) {
 			return false;
 		}
@@ -343,34 +343,31 @@ public class Board {
 	 * @return the hotspots for the given "Pawn"
 	 */
 	private ArrayList<Position> getPawnHotspots(Piece pawn) {
-		ArrayList<Position> rom = pawn.getRangeOfMovement();
-		ArrayList<Position> hotspots = new ArrayList<Position>();
-		Tile currentTile = board[rom.get(1).getRow()][rom.get(1).getColumn()];
-		boolean blocked = true;
-		if (currentTile != null) {
-			hotspots.add(rom.get(1));
+		ArrayList<Position> hotSpots = new ArrayList<Position>();
+		Position currentPos = pawn.getPosition();
+		int r;
+
+		if(pawn.getColor() == 0) {
+			r = -1;
 		} else {
-			hotspots.add(rom.get(1));
-			blocked = false;
+			r = 1;
 		}
-		if (rom.size() == 3 && !blocked) {
-			hotspots.add(rom.get(2));
+
+		Position leftDiag = new Position(currentPos.getRow() + r, currentPos.getColumn() - 1);
+		Position rightDiag = new Position(currentPos.getRow() + r, currentPos.getColumn() + 1);
+		if (leftDiag.isWithinBounds()) {
+			hotSpots.add(leftDiag);
 		}
-		Position left = new Position(rom.get(1).getRow() + 1, rom.get(1).getColumn() - 1);
-		Position right = new Position(rom.get(1).getRow() + 1, rom.get(1).getColumn() + 1);
-		if (left.isWithinBounds()) {
-			hotspots.add(left);
+		if (rightDiag.isWithinBounds()) {
+			hotSpots.add(rightDiag);
 		}
-		if (right.isWithinBounds()) {
-			hotspots.add(right);
-		}
-		return hotspots;
+		return hotSpots;
 	}
 
 	/**
 	 * Returns the hotspots for the given Knight
 	 * 
-	 * @param pawn
+	 * @param knight
 	 *            - the given Knight
 	 * @return the hotspots for the given "Knight"
 	 */
@@ -386,7 +383,7 @@ public class Board {
 	/**
 	 * Returns the hotspots for the given Bishop
 	 * 
-	 * @param pawn
+	 * @param bishop
 	 *            - the given Bishop
 	 * @return the hotspots for the given "Bishop"
 	 */

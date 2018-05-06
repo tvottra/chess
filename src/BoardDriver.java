@@ -9,8 +9,8 @@ public class BoardDriver {
 	public static void main(String[] args) {
 		Board myBoard = new Board();
 		System.out.print(myBoard);
-		int row = 0;
-		int col = 3;
+		int row = 6;
+		int col = 4;
 		Piece testPiece = myBoard.getTile(row, col).getPiece();
 		System.out.println("The piece is " + testPiece);
 
