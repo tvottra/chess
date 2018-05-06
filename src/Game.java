@@ -9,7 +9,7 @@ import java.util.Scanner;
 
 /**
  * 
- * @author Andrew
+ * @author Andrew Le
  *
  */
 public class Game {
@@ -47,18 +47,16 @@ public class Game {
 		while (!gameIsOver()) {
 			// Player 1's turn
 			while (isPlayerOneTurn) {
-				System.out.println(gameBoard);
 				startPlayerTurn(playerOne, playerTwo);
-				setTurn(false);
+				isPlayerOneTurn = !isPlayerOneTurn;
 			} // End Player 1's turn
 			if (gameIsOver()) {
 				break;
 			} else {
 				// Player 2's turn
 				while (!isPlayerOneTurn) {
-					System.out.println(gameBoard);
 					startPlayerTurn(playerTwo, playerOne);
-					setTurn(true);
+					isPlayerOneTurn = !isPlayerOneTurn;
 				} // End Player 2's turn
 			}
 		} // End game
@@ -102,6 +100,7 @@ public class Game {
 				setDraw(false);
 				System.out.println(
 						"Player " + pl.getNumber() + " has declined Player " + other.getNumber() + "'s draw offer.");
+				isPlayerOneTurn = !isPlayerOneTurn; // make sure the turn player's turn is not skipped
 			}
 			break;
 		}
@@ -119,14 +118,16 @@ public class Game {
 		Position fromPos = choosePiece();
 		// Check whether there is a piece of correct color at the chosen tile
 		while (!isValidPiece(fromPos.getRow(), fromPos.getColumn(), pl.getNumber() - 1)) {
-			System.out.println("Please enter valid coordinates:");
+			System.out.println("Please enter valid coordinates for the piece to be moved:");
 			fromPos = choosePiece();
 		}
+		String feedback = gameBoard.getTile(fromPos).getPiece().toString(); // contains the location of the Piece prior
+																			// to move
 		// Choose a tile to move to
 		Position toPos = chooseDestination();
 		// Check whether the Tile position is in bounds
 		while (!isWithinBounds(toPos.getRow(), toPos.getColumn())) {
-			System.out.println("Please enter valid coordinates:");
+			System.out.println("Please enter valid coordinates for the destination:");
 			toPos = chooseDestination();
 		}
 		// Check whether the supposed move is legal
@@ -135,14 +136,15 @@ public class Game {
 					+ " is not legal. Please choose another destination.");
 			toPos = chooseDestination();
 		}
-		// Move Player's piece
+		// Move Player's piece, update board
 		movePiece(fromPos, toPos);
 		// Provide feedback to user
-		int fromRow = fromPos.getRow();
-		int fromCol = fromPos.getColumn();
-		System.out.println(
-				gameBoard.getTile(fromRow, fromCol).getPiece().getName() + " at " + fromPos + " has moved to " + toPos);
-
+		System.out.println(feedback + " has moved to " + toPos);
+		// Account for promotion
+		Piece currentPiece = gameBoard.getTile(toPos).getPiece();
+		if (currentPiece.getName().equals("Pawn") && ((Pawn) (currentPiece)).isWaitingForPromotion()) {
+			promotion(currentPiece);
+		}
 	}
 
 	/**
@@ -264,6 +266,41 @@ public class Game {
 	}
 
 	/**
+	 * Calls the Board class's move method and moves a Piece at a Tile to the given
+	 * Position
+	 * 
+	 * @param fromPos
+	 *            - the Piece's current position
+	 * @param toPos
+	 *            - the Position to which the Piece will be moved
+	 * @return true if the Piece was successfully moved, false otherwise
+	 */
+	public boolean movePiece(Position fromPos, Position toPos) {
+		if (isLegalMove(fromPos, toPos)) {
+			gameBoard.movePiece(fromPos, toPos);
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	/**
+	 * Calls Board class to determine whether the Piece at its current position can
+	 * legally move to the given position; a Piece can legally move to a given
+	 * Position if upon moving, the King is not checked by any other Piece
+	 * 
+	 * @param fromPos
+	 *            - the Piece's current position
+	 * 
+	 * @param toPos
+	 *            - the Position to which the Piece will be moved
+	 * @return true if the move is legal, false otherwise
+	 */
+	public boolean isLegalMove(Position fromPos, Position toPos) {
+		return gameBoard.isLegalMove(fromPos, toPos);
+	}
+
+	/**
 	 * Mutator method that updates the draw status of the game
 	 * 
 	 * @param draw
@@ -294,41 +331,6 @@ public class Game {
 	}
 
 	/**
-	 * Calls Board class to determine whether the Piece at its current position can
-	 * legally move to the given position; a Piece can legally move to a given
-	 * Position if upon moving, the King is not checked by any other Piece
-	 * 
-	 * @param fromPos
-	 *            - the Piece's current position
-	 * 
-	 * @param toPos
-	 *            - the Position to which the Piece will be moved
-	 * @return true if the move is legal, false otherwise
-	 */
-	public boolean isLegalMove(Position fromPos, Position toPos) {
-		return gameBoard.isLegalMove(fromPos, toPos);
-	}
-
-	/**
-	 * Calls the Board class's move method and moves a Piece at a Tile to the given
-	 * Position
-	 * 
-	 * @param fromPos
-	 *            - the Piece's current position
-	 * @param toPos
-	 *            - the Position to which the Piece will be moved
-	 * @return true if the Piece was successfully moved, false otherwise
-	 */
-	public boolean movePiece(Position fromPos, Position toPos) {
-		if (isLegalMove(fromPos, toPos)) {
-			gameBoard.movePiece(fromPos, toPos);
-			return true;
-		} else {
-			return false;
-		}
-	}
-
-	/**
 	 * Determines whether there is stalemate. A game is in stalemate if and only if:
 	 * 1) the turn player is not in check and the turn player has no legal moves; 2)
 	 * threefold repitition has occurred; 3) fifty-move rule applies
@@ -340,6 +342,57 @@ public class Game {
 		return false;
 	}
 
+	/**
+	 * Prompts the user to choose a non-Pawn, non-King Piece to replace the given
+	 * Pawn. A white Pawn is promoted if it is on row 0; a black Pawn is promoted if
+	 * it is on row 7. The method removes the promoted Pawn from the board and
+	 * constructs the user's specified Piece at the current Position.
+	 * 
+	 * @param promotedPawn
+	 *            - the given promoted Pawn
+	 */
+	private void promotion(Piece promotedPawn) {
+		Scanner sc = new Scanner(System.in);
+		int myColor = promotedPawn.getColor();
+		Position currentPos = promotedPawn.getPosition();
+		System.out.println(promotedPawn + " is awaiting promotion.");
+		System.out.println("Choose a piece to replace " + promotedPawn + ":");
+		int promotionChoice = sc.nextInt();
+		System.out.println("(1) Promote to Knight");
+		System.out.println("(2) Promote to Bishop");
+		System.out.println("(3) Promote to Rook");
+		System.out.println("(4) Promote to Queen");
+		switch (promotionChoice) {
+		case 1:
+			gameBoard.getTile(currentPos.getRow(), currentPos.getColumn()).setPiece(null);
+			Piece knight = new Knight(myColor, currentPos);
+			gameBoard.getTile(currentPos.getRow(), currentPos.getColumn()).setPiece(knight);
+			System.out.println("Promotion to Knight at " + currentPos);
+			break;
+		case 2:
+			gameBoard.getTile(currentPos.getRow(), currentPos.getColumn()).setPiece(null);
+			Piece bishop = new Bishop(myColor, currentPos);
+			gameBoard.getTile(currentPos.getRow(), currentPos.getColumn()).setPiece(bishop);
+			System.out.println("Promotion to Bishop at " + currentPos);
+			break;
+		case 3:
+			gameBoard.getTile(currentPos.getRow(), currentPos.getColumn()).setPiece(null);
+			Piece rook = new Rook(myColor, currentPos);
+			gameBoard.getTile(currentPos.getRow(), currentPos.getColumn()).setPiece(rook);
+			System.out.println("Promotion to Rook at " + currentPos);
+			break;
+		case 4:
+			gameBoard.getTile(currentPos.getRow(), currentPos.getColumn()).setPiece(null);
+			Piece queen = new Queen(myColor, currentPos);
+			gameBoard.getTile(currentPos.getRow(), currentPos.getColumn()).setPiece(queen);
+			System.out.println("Promotion to Queen at " + currentPos);
+			break;
+		}
+	}
+
+	/**
+	 * Not currently used
+	 */
 	public void update() {
 		gameBoard.updateHotspots();
 	}
