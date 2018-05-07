@@ -117,7 +117,18 @@ public class Board {
 	}
 
 	/**
-	 * Accessor method to get a tile at the specified location
+	 * Accessor method to get a tile at the specified Position
+	 *
+	 * @param pos
+	 *            - the specified Position
+	 * @return the Tile at board[pos.getRow()][pos.getColumn()]
+	 */
+	public Tile getTile(Position pos) {
+		return board[pos.getRow()][pos.getColumn()];
+	}
+
+	/**
+	 * Accessor method to get a tile at the specified row and column indexes
 	 *
 	 * @param row
 	 *            - the row index of the Tile
@@ -156,10 +167,14 @@ public class Board {
 		int fromCol = fromPos.getColumn();
 		Piece pieceToMove = board[fromRow][fromCol].getPiece();
 		int toRow = toPos.getRow();
-		int toCol = toPos.getColumn();
-		board[toRow][toCol].setPiece(pieceToMove);
-		board[fromRow][fromCol].setPiece(null);
-		board[toRow][toCol].getPiece().setPosition(toPos);
+		int toCol = toPos.getColumn();		
+		if (board[toRow][toCol].hasPiece()) {
+			capturePiece(fromPos,toPos);
+		} else {
+			board[toRow][toCol].setPiece(pieceToMove);
+			board[fromRow][fromCol].setPiece(null);
+			board[toRow][toCol].getPiece().setPosition(toPos);
+		}		
 		// NullPointerException when updateHotSpots is called
 		// updateHotspots();
 		return true;
@@ -244,6 +259,30 @@ public class Board {
 			}
 		}
 		return false;
+	}
+
+	/**
+	 * Allows the Piece at the given current Position to capture another Piece of a
+	 * different color at the given destination Position. 
+	 * Precondition: there is a Piece currently at toPos 
+	 * Precondition: the Piece currently at toPos is a different color from the given moving piece
+	 * Postcondition: the moving piece is now at Position
+	 * toPos, with its position updated
+	 * Postcondition: the Piece field at piece's move-from Position is set to null.
+	 *
+	 * 
+	 * @param fromPos
+	 *            - the Position from which the Piece is moving
+	 * @param toPos
+	 *            - the destination Position
+	 * 
+	 */
+	private void capturePiece(Position fromPos, Position toPos) {
+		Piece movingPiece = board[fromPos.getRow()][fromPos.getColumn()].getPiece();
+		movingPiece.setPosition(toPos);
+		board[toPos.getRow()][toPos.getColumn()].setPiece(null);
+		board[toPos.getRow()][toPos.getColumn()].setPiece(movingPiece);	
+		board[fromPos.getRow()][fromPos.getColumn()].setPiece(null);
 	}
 
 	/**
