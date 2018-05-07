@@ -155,7 +155,7 @@ public class Board {
      * @return true if the Piece was successfully moved, false otherwise
      */
     public boolean movePiece(Position fromPos, Position toPos) {
-        if (!isLegalMove(fromPos, fromPos)) {
+        if (!isLegalMove(fromPos, toPos)) {
             return false;
         }
         int fromRow = fromPos.getRow();
@@ -240,7 +240,7 @@ public class Board {
      * @return true if toPos is within the Piece's hotspots, false otherwise
      */
     private boolean isWithinHotspots(Piece piece, Position toPos) {
-        ArrayList<Position> myHotspots = getHotspots(piece);
+        ArrayList<Position> myHotspots = getHotSpots(piece);
         for (Position pos : myHotspots) {
             if (toPos.equals(pos)) {
                 return true;
@@ -282,7 +282,7 @@ public class Board {
      * @param piece - the given Piece
      * @return all the Positions currently checked by this Piece
      */
-    public ArrayList<Position> getHotspots(Piece piece) {
+    public ArrayList<Position> getHotSpots(Piece piece) {
         if (piece.getName().equals("Pawn")) {
             return getPawnHotspots(piece);
         }
@@ -757,7 +757,7 @@ public class Board {
                 // If there is a Piece
                 if (t2.getPiece() != null) {
                     Piece myPiece = t2.getPiece();
-                    checkedPos = getHotspots(myPiece);
+                    checkedPos = getHotSpots(myPiece);
                     boolean isWhite = false;
                     if (myPiece.getColor() == 0) {
                         isWhite = true;

@@ -69,6 +69,7 @@ public class Game {
      */
     public void startPlayerTurn(Player pl, Player other) {
         Scanner sc = new Scanner(System.in);
+        System.out.println(gameBoard);
         System.out.println("It is " + pl.getName() + "'s turn. Select one option:");
         System.out.println("(1) Select a piece to move");
         System.out.println("(2) Resign");
@@ -125,18 +126,17 @@ public class Game {
             toPos = chooseDestination();
         }
         // Check whether the supposed move is legal
-        while (!isLegalMove(fromPos, toPos)) {
-            System.out.println("Move to " + toPos.getRow() + ", " + toPos.getColumn()
+        while (!movePiece(fromPos, toPos)) { 			//While move is illegal, prompt for another move. If move is legal, move is executed by Game.java's movePiece()
+            System.out.println("Move to " + toPos
                     + " is not legal. Please choose another destination.");
             toPos = chooseDestination();
         }
-        // Move Player's piece, update board
-        movePiece(fromPos, toPos);
+
         // Provide feedback to user
         System.out.println(feedback + " has moved to " + toPos);
         // Account for promotion
-        Piece currentPiece = gameBoard.getTile(toPos).getPiece();
-        if (currentPiece.getName().equals("Pawn") && ((Pawn) (currentPiece)).isWaitingForPromotion()) {
+        Piece currentPiece = gameBoard.getTile(toPos).getPiece(); //NullPointerException even though toPos on the Board SHOULD have the currentPiece by now
+        if (currentPiece != null && currentPiece.getName().equals("Pawn") && ((Pawn) (currentPiece)).isWaitingForPromotion()) {
             promotion(currentPiece);
         }
     }
@@ -257,7 +257,7 @@ public class Game {
     }
 
     /**
-     * Calls the Board class's move method and moves a Piece at a Tile to the given
+     * Calls the  Board objects's move method and moves a Piece at a Tile to the given
      * Position
      *
      * @param fromPos - the Piece's current position
@@ -265,26 +265,9 @@ public class Game {
      * @return true if the Piece was successfully moved, false otherwise
      */
     public boolean movePiece(Position fromPos, Position toPos) {
-        if (isLegalMove(fromPos, toPos)) {
-            gameBoard.movePiece(fromPos, toPos);
-            return true;
-        } else {
-            return false;
-        }
+    	return gameBoard.movePiece(new Position(fromPos), new Position(toPos));
     }
 
-    /**
-     * Calls Board class to determine whether the Piece at its current position can
-     * legally move to the given position; a Piece can legally move to a given
-     * Position if upon moving, the King is not checked by any other Piece
-     *
-     * @param fromPos - the Piece's current position
-     * @param toPos   - the Position to which the Piece will be moved
-     * @return true if the move is legal, false otherwise
-     */
-    public boolean isLegalMove(Position fromPos, Position toPos) {
-        return gameBoard.isLegalMove(fromPos, toPos);
-    }
 
     /**
      * Mutator method that updates the draw status of the game
