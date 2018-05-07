@@ -4,33 +4,29 @@
  * @author Andrew Le
  */
 public class Player {
-    private String myName;
-    private int myNumber;
-    private boolean checkmated;
-    private boolean resigned;
 
-    /**
-     * Constructor to initialize this player's name and number
-     *
-     * @param name   - the given name
-     * @param number - the given number
-     */
-    public Player(String name, int number) {
-        myName = name;
-        myNumber = number;
-        checkmated = false;
-        resigned = false;
-    }
+	private String myName;
+	private int myNumber;
+	private int myScore;
+	private boolean checkmated;
+	private boolean resigned;
 
-    /**
-     * Accessor method to get the player's name
-     *
-     * @return the player's name
-     */
-    public String getName() {
-        return myName;
-    }
-
+	/**
+	 * Constructor to initialize this player's name and number to the given values
+	 * and score to 0
+	 * 
+	 * @param name
+	 *            - the given name
+	 * @param number
+	 *            - the given number
+	 */
+	public Player(String name, int number) {
+		myName = name;
+		myNumber = number;
+		myScore = 0;
+		checkmated = false;
+		resigned = false;
+	}
     /**
      * Mutator method to change the player's name
      *
@@ -58,14 +54,34 @@ public class Player {
         return checkmated;
     }
 
-    /**
-     * Mutator method to set the checkmate status
-     *
-     * @param checkmate - true if the player has been checkmated, false otherwise
-     */
-    public void setCheckMate(boolean checkmate) {
-        checkmated = checkmate;
-    }
+
+	/**
+	 * Accessor method to get the player's score
+	 * 
+	 * @return the player's score
+	 */
+	public int getScore() {
+		return myScore;
+	}
+
+	/**
+	 * Mutator method to increment the player's score by the given value
+	 * 
+	 * @param val
+	 *            - the given value
+	 */
+	public void incrementScore(int val) {
+		myScore += val;
+	}
+
+	/**
+	 * Accessor method to get the checkmate status
+	 * 
+	 * @return true if this player is checkmated, false otherwise
+	 */
+	public boolean isCheckMated() {
+		return checkmated;
+	}
 
     /**
      * Mutator method to set the resign status
