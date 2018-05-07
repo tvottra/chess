@@ -205,6 +205,7 @@ public class Board {
                     return false; // if the Tile is NOT in the Pawn's range of movement
                 }
             }
+            return true;
         }
 
         if (!isWithinHotspots(pieceToMove, toPos)

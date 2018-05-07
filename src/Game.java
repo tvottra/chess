@@ -67,7 +67,7 @@ public class Game {
      * @param pl    - the turn player
      * @param other - the opposing player
      */
-    private void startPlayerTurn(Player pl, Player other) {
+    public void startPlayerTurn(Player pl, Player other) {
         Scanner sc = new Scanner(System.in);
         System.out.println("It is " + pl.getName() + "'s turn. Select one option:");
         System.out.println("(1) Select a piece to move");
@@ -171,7 +171,7 @@ public class Game {
      *
      * @return true if the game is over, false otherwise
      */
-    private boolean gameIsOver() {
+    public boolean gameIsOver() {
         if (playerOne.isCheckMated() || playerTwo.isCheckMated() || draw || playerOne.isResigned()
                 || playerTwo.isResigned() || stalemate) {
             return true;
@@ -295,7 +295,7 @@ public class Game {
         this.draw = draw;
     }
 
-    private Player getPlayer(int color) {
+    public Player getPlayer(int color) {
         if (color == 0) {
             return playerOne;
         } else if (color == 1) {
