@@ -2,7 +2,7 @@ import java.util.ArrayList;
 
 /**
  * Class that represents a King chess piece
- * 
+ *
  * @author Brian Qiu
  */
 public class King extends Piece {
@@ -10,7 +10,7 @@ public class King extends Piece {
 
 	/**
 	 * COnstructor to intialize the King's color and Position
-	 * 
+	 *
 	 * @param color
 	 *            - the King's color
 	 * @param pos

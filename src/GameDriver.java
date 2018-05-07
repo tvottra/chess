@@ -1,14 +1,14 @@
 import java.util.Scanner;
 
 /**
- * 
+ *
  * @author Andrew
  *
  */
 public class GameDriver {
 
 	/**
-	 * 
+	 *
 	 * @param args
 	 *            - not used
 	 */

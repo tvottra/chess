@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 /**
  * Class used to test the Board class; specifically; the hotspots and move methods
- * 
+ *
  *
  */
 public class BoardDriver {

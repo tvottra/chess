@@ -2,14 +2,14 @@ import java.util.ArrayList;
 
 /**
  * Class that represents a Bishop chess piece
- * 
+ *
  * @author Tommy Tran
  */
 public class Bishop extends Piece {
 
 	/**
 	 * Constructor to initialize the Bishop's color and Position
-	 * 
+	 *
 	 * @param color
 	 *            - the Bishop's color
 	 * @param pos
@@ -23,7 +23,7 @@ public class Bishop extends Piece {
 	/**
 	 * Returns an array of the Positions that would be crossed if this Bishop were
 	 * to move to the given Position
-	 * 
+	 *
 	 * @param toPos
 	 *            - the given Position
 	 * @return an ArrayList of the Positions that would be crossed
@@ -59,7 +59,7 @@ public class Bishop extends Piece {
 	 * Calculates the Bishop's range of movement based on known board size and its
 	 * current position. Positions are ordered ascending in terms of row then
 	 * column. E.g., (0, 0), (0, 1), (0, 2), (1, 0)...
-	 * 
+	 *
 	 * @return the Bishop's range of movement
 	 */
 	public ArrayList<Position> getRangeOfMovement() {
@@ -102,7 +102,7 @@ public class Bishop extends Piece {
 	@Override
 	/**
 	 * Checks whether the given Position is within this Bishop's range of movement
-	 * 
+	 *
 	 * @param toPos
 	 *            - the destination Position
 	 * @return true if toPos is within this Bishop's range of movement, false
