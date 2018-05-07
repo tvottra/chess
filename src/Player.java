@@ -7,11 +7,13 @@
 public class Player {
 	private String myName;
 	private int myNumber;
+	private int myScore;
 	private boolean checkmated;
 	private boolean resigned;
 
 	/**
-	 * Constructor to initialize this player's name and number
+	 * Constructor to initialize this player's name and number to the given values
+	 * and score to 0
 	 * 
 	 * @param name
 	 *            - the given name
@@ -21,6 +23,7 @@ public class Player {
 	public Player(String name, int number) {
 		myName = name;
 		myNumber = number;
+		myScore = 0;
 		checkmated = false;
 		resigned = false;
 	}
@@ -51,6 +54,25 @@ public class Player {
 	 */
 	public int getNumber() {
 		return myNumber;
+	}
+
+	/**
+	 * Accessor method to get the player's score
+	 * 
+	 * @return the player's score
+	 */
+	public int getScore() {
+		return myScore;
+	}
+
+	/**
+	 * Mutator method to increment the player's score by the given value
+	 * 
+	 * @param val
+	 *            - the given value
+	 */
+	public void incrementScore(int val) {
+		myScore += val;
 	}
 
 	/**
