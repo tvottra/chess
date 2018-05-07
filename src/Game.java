@@ -13,28 +13,28 @@ import java.util.Scanner;
  *
  */
 public class Game {
-	private Player playerOne; // white
-	private Player playerTwo; // black
+	private Player whitePlayer; // white
+	private Player blackPlayer; // black
 	private Board gameBoard;
 	private boolean draw;
 	private boolean stalemate;
-	private boolean isPlayerOneTurn; // true if it is player 1's turn, false otherwise
+	private boolean isWhiteTurn; // true if it is white's turn, false otherwise
 
 	/**
 	 * Constructor to initialize the players, gameBoard, and game state
 	 * 
 	 * @param name1
-	 *            - playerOne's name
+	 *            - whitePlayer's name
 	 * @param name2
-	 *            - playerTwo's name
+	 *            - blackPlayer's name
 	 */
 	public Game(String name1, String name2) {
-		playerOne = new Player(name1, 1);
-		playerTwo = new Player(name2, 2);
+		whitePlayer = new Player(name1, 0);
+		blackPlayer = new Player(name2, 1);
 		gameBoard = new Board();
 		draw = false;
 		stalemate = false;
-		isPlayerOneTurn = true;
+		isWhiteTurn = true;
 		playGame();
 	}
 
@@ -45,19 +45,19 @@ public class Game {
 	 */
 	public void playGame() {
 		while (!gameIsOver()) {
-			// Player 1's turn
-			while (isPlayerOneTurn) {
-				startPlayerTurn(playerOne, playerTwo);
-				isPlayerOneTurn = !isPlayerOneTurn;
-			} // End Player 1's turn
+			// White's turn
+			while (isWhiteTurn) {
+				startPlayerTurn(whitePlayer, blackPlayer);
+				isWhiteTurn = !isWhiteTurn;
+			} // End White's turn
 			if (gameIsOver()) {
 				break;
 			} else {
-				// Player 2's turn
-				while (!isPlayerOneTurn) {
-					startPlayerTurn(playerTwo, playerOne);
-					isPlayerOneTurn = !isPlayerOneTurn;
-				} // End Player 2's turn
+				// Black's turn
+				while (!isWhiteTurn) {
+					startPlayerTurn(blackPlayer, whitePlayer);
+					isWhiteTurn = !isWhiteTurn;
+				} // End Black's turn
 			}
 		} // End game
 		displayEndgame();
@@ -87,20 +87,17 @@ public class Game {
 			pl.setResign(true);
 			break;
 		case 3:
-			System.out.println(
-					"Does Player " + pl.getNumber() + " accept Player " + other.getNumber() + "'s draw offer?");
+			System.out.println("Does " + pl.getName() + " accept Player " + other.getName() + "'s draw offer?");
 			System.out.println("(1) Accept draw");
 			System.out.println("(2) Decline draw");
 			int drawChoice = sc.nextInt();
 			if (drawChoice == 1) {
 				setDraw(true);
-				System.out.println(
-						"Player " + pl.getNumber() + " has accepted Player " + other.getNumber() + "'s draw offer.");
+				System.out.println(pl.getName() + " has accepted " + other.getName() + "'s draw offer.");
 			} else {
 				setDraw(false);
-				System.out.println(
-						"Player " + pl.getNumber() + " has declined Player " + other.getNumber() + "'s draw offer.");
-				isPlayerOneTurn = !isPlayerOneTurn; // make sure the turn player's turn is not skipped
+				System.out.println(pl.getName() + " has declined " + other.getName() + "'s draw offer.");
+				isWhiteTurn = !isWhiteTurn; // make sure the turn player's turn is not skipped
 			}
 			break;
 		}
@@ -117,7 +114,7 @@ public class Game {
 		// Choose a tile on the gameBoard
 		Position fromPos = choosePiece();
 		// Check whether there is a piece of correct color at the chosen tile
-		while (!isValidPiece(fromPos.getRow(), fromPos.getColumn(), pl.getNumber() - 1)) {
+		while (!isValidPiece(fromPos.getRow(), fromPos.getColumn(), pl.getNumber())) {
 			System.out.println("Please enter valid coordinates for the piece to be moved:");
 			fromPos = choosePiece();
 		}
@@ -148,27 +145,44 @@ public class Game {
 	}
 
 	/**
-	 * Checks the endgame state and prints the appropriate message
+	 * Calls the Board class's move method and moves a Piece at a Tile to the given
+	 * Position; if a capture is made, adds the point value of the captured piece to
+	 * the turn player's score
+	 * 
+	 * @param fromPos
+	 *            - the Piece's current position
+	 * @param toPos
+	 *            - the Position to which the Piece will be moved
+	 * @return true if the Piece was successfully moved, false otherwise
 	 */
-	private void displayEndgame() {
-		if (playerOne.isCheckMated()) {
-			System.out.println(playerOne + "has been checkmated. " + playerTwo + "wins!");
+	public boolean movePiece(Position fromPos, Position toPos) {
+		if (isLegalMove(fromPos, toPos)) {
+			// If a capture is made, add points to the player's score
+			if (gameBoard.getTile(toPos).hasPiece()) {
+				Piece capturedPiece = gameBoard.getTile(toPos).getPiece();
+				incrementScore(capturedPiece.getColor(), capturedPiece.getPointValue());
+			}
+			gameBoard.movePiece(fromPos, toPos);
+			return true;
+		} else {
+			return false;
 		}
-		if (playerTwo.isCheckMated()) {
-			System.out.println(playerTwo + "has been checkmated. " + playerOne + "wins!");
-		}
-		if (draw) {
-			System.out.println("Both players have agreed to a draw.");
-		}
-		if (playerOne.isResigned()) {
-			System.out.println(playerOne + " has resigned. " + playerTwo + " wins!");
-		}
-		if (playerTwo.isResigned()) {
-			System.out.println(playerTwo + " has resigned. " + playerOne + " wins!");
-		}
-		if (stalemate) {
-			System.out.println("Stalemate: neither player wins.");
-		}
+	}
+
+	/**
+	 * Calls Board class to determine whether the Piece at its current position can
+	 * legally move to the given position; a Piece can legally move to a given
+	 * Position if upon moving, the King is not checked by any other Piece
+	 * 
+	 * @param fromPos
+	 *            - the Piece's current position
+	 * 
+	 * @param toPos
+	 *            - the Position to which the Piece will be moved
+	 * @return true if the move is legal, false otherwise
+	 */
+	public boolean isLegalMove(Position fromPos, Position toPos) {
+		return gameBoard.isLegalMove(fromPos, toPos);
 	}
 
 	/**
@@ -178,11 +192,35 @@ public class Game {
 	 * @return true if the game is over, false otherwise
 	 */
 	private boolean gameIsOver() {
-		if (playerOne.isCheckMated() || playerTwo.isCheckMated() || draw || playerOne.isResigned()
-				|| playerTwo.isResigned() || stalemate) {
+		if (whitePlayer.isCheckMated() || blackPlayer.isCheckMated() || draw || whitePlayer.isResigned()
+				|| blackPlayer.isResigned() || stalemate) {
 			return true;
 		} else {
 			return false;
+		}
+	}
+
+	/**
+	 * Checks the endgame state and prints the appropriate message
+	 */
+	private void displayEndgame() {
+		if (whitePlayer.isCheckMated()) {
+			System.out.println(whitePlayer + " has been checkmated. " + blackPlayer + "wins!");
+		}
+		if (blackPlayer.isCheckMated()) {
+			System.out.println(blackPlayer + " has been checkmated. " + whitePlayer + "wins!");
+		}
+		if (draw) {
+			System.out.println("Both players have agreed to a draw.");
+		}
+		if (whitePlayer.isResigned()) {
+			System.out.println(whitePlayer + " has resigned. " + blackPlayer + " wins!");
+		}
+		if (blackPlayer.isResigned()) {
+			System.out.println(blackPlayer + " has resigned. " + whitePlayer + " wins!");
+		}
+		if (stalemate) {
+			System.out.println("Stalemate: neither player wins.");
 		}
 	}
 
@@ -217,15 +255,15 @@ public class Game {
 	 *         indexes, false otherwise
 	 */
 	private boolean isValidPiece(int row, int col, int color) {
-		if (isWithinBounds(row, col) && gameBoard.getTile(row, col).getPiece() != null) {
-			// Check for player 1
+		if (isWithinBounds(row, col) && gameBoard.getTile(row, col).hasPiece()) {
+			// Check for White
 			if (color == 0) {
 				if (gameBoard.getTile(row, col).getPiece().getColor() == 0) {
 					return true;
 				} else {
 					return false;
 				}
-				// Check for player 2
+				// Check for Black
 			} else {
 				if (gameBoard.getTile(row, col).getPiece().getColor() == 1) {
 					return true;
@@ -266,38 +304,21 @@ public class Game {
 	}
 
 	/**
-	 * Calls the Board class's move method and moves a Piece at a Tile to the given
-	 * Position
+	 * Increments the score of the player with the color OPPOSITE of the given color
+	 * by the given value
 	 * 
-	 * @param fromPos
-	 *            - the Piece's current position
-	 * @param toPos
-	 *            - the Position to which the Piece will be moved
-	 * @return true if the Piece was successfully moved, false otherwise
+	 * @param color
+	 *            - 0 if black, 1 if white
+	 * @param val
+	 *            - the value of the captured piece
+	 * 
 	 */
-	public boolean movePiece(Position fromPos, Position toPos) {
-		if (isLegalMove(fromPos, toPos)) {
-			gameBoard.movePiece(fromPos, toPos);
-			return true;
+	private void incrementScore(int color, int val) {
+		if (color == 0) {
+			blackPlayer.incrementScore(val); // add points to black
 		} else {
-			return false;
+			whitePlayer.incrementScore(val);
 		}
-	}
-
-	/**
-	 * Calls Board class to determine whether the Piece at its current position can
-	 * legally move to the given position; a Piece can legally move to a given
-	 * Position if upon moving, the King is not checked by any other Piece
-	 * 
-	 * @param fromPos
-	 *            - the Piece's current position
-	 * 
-	 * @param toPos
-	 *            - the Position to which the Piece will be moved
-	 * @return true if the move is legal, false otherwise
-	 */
-	public boolean isLegalMove(Position fromPos, Position toPos) {
-		return gameBoard.isLegalMove(fromPos, toPos);
 	}
 
 	/**
@@ -314,10 +335,10 @@ public class Game {
 	 * Mutator method that updates the turn
 	 * 
 	 * @param turn
-	 *            - true if it is playerOne's turn, false otherwise
+	 *            - true if it is whitePlayer's turn, false otherwise
 	 */
 	public void setTurn(boolean turn) {
-		isPlayerOneTurn = turn;
+		isWhiteTurn = turn;
 	}
 
 	/**
