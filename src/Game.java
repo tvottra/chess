@@ -1,18 +1,18 @@
 
 /**
  * Class that represents a chess game containing Players and a Board
- * 
- * @author Andrew Le
  *
+ * @author Andrew Le
  */
+
 import java.util.Scanner;
+import java.util.*;
 
 /**
- * 
  * @author Andrew Le
- *
  */
 public class Game {
+
 	private Player whitePlayer; // white
 	private Player blackPlayer; // black
 	private Board gameBoard;
@@ -276,32 +276,35 @@ public class Game {
 		}
 	}
 
-	/**
-	 * Prompts the user for the row and column indexes of the Tile to which a Piece
-	 * will be moved
-	 * 
-	 * @return a Position object with the destination's coordinates
-	 */
-	private Position chooseDestination() {
-		Scanner sc = new Scanner(System.in);
-		System.out.println("Choose a tile to move to: ");
-		System.out.print("Enter the row coordinates of the tile: ");
-		int tileRow = sc.nextInt();
-		System.out.print("Enter the column coordinates of the tile: ");
-		int tileCol = sc.nextInt();
-		Position toPos = new Position(tileRow, tileCol);
-		return toPos;
-	}
+    /**
+     * Calls the Board class's move method and moves a Piece at a Tile to the given
+     * Position
+     *
+     * @param fromPos - the Piece's current position
+     * @param toPos   - the Position to which the Piece will be moved
+     * @return true if the Piece was successfully moved, false otherwise
+     */
+    public boolean movePiece(Position fromPos, Position toPos) {
+        if (isLegalMove(fromPos, toPos)) {
+            gameBoard.movePiece(fromPos, toPos);
+            return true;
+        } else {
+            return false;
+        }
+    }
 
-	/**
-	 * Check whether the suggested row and column indexes are within the bounds of
-	 * the gameBoard size
-	 *
-	 * @return true if the row and position are within bounds, false otherwise
-	 */
-	private boolean isWithinBounds(int row, int col) {
-		return (row >= 0 && col >= 0) && (row < gameBoard.getSize() && col < gameBoard.getSize());
-	}
+    /**
+     * Calls Board class to determine whether the Piece at its current position can
+     * legally move to the given position; a Piece can legally move to a given
+     * Position if upon moving, the King is not checked by any other Piece
+     *
+     * @param fromPos - the Piece's current position
+     * @param toPos   - the Position to which the Piece will be moved
+     * @return true if the move is legal, false otherwise
+     */
+    public boolean isLegalMove(Position fromPos, Position toPos) {
+        return gameBoard.isLegalMove(fromPos, toPos);
+    }
 
 	/**
 	 * Increments the score of the player with the color OPPOSITE of the given color
@@ -341,81 +344,90 @@ public class Game {
 		isWhiteTurn = turn;
 	}
 
-	/**
-	 * Mutator method that updates stalemate
-	 * 
-	 * @param stale
-	 *            - true if there is a stalemate, false otherwise
-	 */
-	public void setStalemate(boolean stale) {
-		stalemate = stale;
-	}
+    /**
+     * Determines whether there is stalemate. A game is in stalemate if and only if:
+     * 1) the turn player is not in check and the turn player has no legal moves; 2)
+     * threefold repitition has occurred; 3) fifty-move rule applies
+     *
+     * @return true if there is a stalemate, false otherwise
+     */
+    private boolean stalemate() {
+        // TO BE IMPLEMENTED
+        return false;
+    }
 
-	/**
-	 * Determines whether there is stalemate. A game is in stalemate if and only if:
-	 * 1) the turn player is not in check and the turn player has no legal moves; 2)
-	 * threefold repitition has occurred; 3) fifty-move rule applies
-	 * 
-	 * @return true if there is a stalemate, false otherwise
-	 */
-	private boolean stalemate() {
-		// TO BE IMPLEMENTED
-		return false;
-	}
+    /**
+     * Prompts the user to choose a non-Pawn, non-King Piece to replace the given
+     * Pawn. A white Pawn is promoted if it is on row 0; a black Pawn is promoted if
+     * it is on row 7. The method removes the promoted Pawn from the board and
+     * constructs the user's specified Piece at the current Position.
+     *
+     * @param promotedPawn - the given promoted Pawn
+     */
+    private void promotion(Piece promotedPawn) {
+        Scanner sc = new Scanner(System.in);
+        int myColor = promotedPawn.getColor();
+        Position currentPos = promotedPawn.getPosition();
+        System.out.println(promotedPawn + " is awaiting promotion.");
+        System.out.println("Choose a piece to replace " + promotedPawn + ":");
+        int promotionChoice = sc.nextInt();
+        System.out.println("(1) Promote to Knight");
+        System.out.println("(2) Promote to Bishop");
+        System.out.println("(3) Promote to Rook");
+        System.out.println("(4) Promote to Queen");
+        switch (promotionChoice) {
+            case 1:
+                gameBoard.getTile(currentPos.getRow(), currentPos.getColumn()).setPiece(null);
+                Piece knight = new Knight(myColor, currentPos);
+                gameBoard.getTile(currentPos.getRow(), currentPos.getColumn()).setPiece(knight);
+                System.out.println("Promotion to Knight at " + currentPos);
+                break;
+            case 2:
+                gameBoard.getTile(currentPos.getRow(), currentPos.getColumn()).setPiece(null);
+                Piece bishop = new Bishop(myColor, currentPos);
+                gameBoard.getTile(currentPos.getRow(), currentPos.getColumn()).setPiece(bishop);
+                System.out.println("Promotion to Bishop at " + currentPos);
+                break;
+            case 3:
+                gameBoard.getTile(currentPos.getRow(), currentPos.getColumn()).setPiece(null);
+                Piece rook = new Rook(myColor, currentPos);
+                gameBoard.getTile(currentPos.getRow(), currentPos.getColumn()).setPiece(rook);
+                System.out.println("Promotion to Rook at " + currentPos);
+                break;
+            case 4:
+                gameBoard.getTile(currentPos.getRow(), currentPos.getColumn()).setPiece(null);
+                Piece queen = new Queen(myColor, currentPos);
+                gameBoard.getTile(currentPos.getRow(), currentPos.getColumn()).setPiece(queen);
+                System.out.println("Promotion to Queen at " + currentPos);
+                break;
+        }
+    }
 
-	/**
-	 * Prompts the user to choose a non-Pawn, non-King Piece to replace the given
-	 * Pawn. A white Pawn is promoted if it is on row 0; a black Pawn is promoted if
-	 * it is on row 7. The method removes the promoted Pawn from the board and
-	 * constructs the user's specified Piece at the current Position.
-	 * 
-	 * @param promotedPawn
-	 *            - the given promoted Pawn
-	 */
-	private void promotion(Piece promotedPawn) {
-		Scanner sc = new Scanner(System.in);
-		int myColor = promotedPawn.getColor();
-		Position currentPos = promotedPawn.getPosition();
-		System.out.println(promotedPawn + " is awaiting promotion.");
-		System.out.println("Choose a piece to replace " + promotedPawn + ":");
-		int promotionChoice = sc.nextInt();
-		System.out.println("(1) Promote to Knight");
-		System.out.println("(2) Promote to Bishop");
-		System.out.println("(3) Promote to Rook");
-		System.out.println("(4) Promote to Queen");
-		switch (promotionChoice) {
-		case 1:
-			gameBoard.getTile(currentPos.getRow(), currentPos.getColumn()).setPiece(null);
-			Piece knight = new Knight(myColor, currentPos);
-			gameBoard.getTile(currentPos.getRow(), currentPos.getColumn()).setPiece(knight);
-			System.out.println("Promotion to Knight at " + currentPos);
-			break;
-		case 2:
-			gameBoard.getTile(currentPos.getRow(), currentPos.getColumn()).setPiece(null);
-			Piece bishop = new Bishop(myColor, currentPos);
-			gameBoard.getTile(currentPos.getRow(), currentPos.getColumn()).setPiece(bishop);
-			System.out.println("Promotion to Bishop at " + currentPos);
-			break;
-		case 3:
-			gameBoard.getTile(currentPos.getRow(), currentPos.getColumn()).setPiece(null);
-			Piece rook = new Rook(myColor, currentPos);
-			gameBoard.getTile(currentPos.getRow(), currentPos.getColumn()).setPiece(rook);
-			System.out.println("Promotion to Rook at " + currentPos);
-			break;
-		case 4:
-			gameBoard.getTile(currentPos.getRow(), currentPos.getColumn()).setPiece(null);
-			Piece queen = new Queen(myColor, currentPos);
-			gameBoard.getTile(currentPos.getRow(), currentPos.getColumn()).setPiece(queen);
-			System.out.println("Promotion to Queen at " + currentPos);
-			break;
-		}
-	}
+    /**
+     * Not currently used
+     */
+    public void update() {
+        gameBoard.updateHotspots();
+    }
 
-	/**
-	 * Not currently used
-	 */
-	public void update() {
-		gameBoard.updateHotspots();
-	}
+    public void findCheckMate() {
 
+        for (int color = 0; color < 2; color++) {
+            if (gameBoard.isKingChecked(color)) {
+                Position kingPos = gameBoard.findKingPosition(color);
+                Piece king = gameBoard.getTile(kingPos).getPiece();
+                ArrayList<Position> kingROM = king.getRangeOfMovement();
+                ArrayList<Boolean> canMove = new ArrayList<Boolean>(kingROM.size());
+                for (int i = 0; i < kingROM.size(); i++) {
+                    if (gameBoard.isLegalMove(kingPos, kingROM.get(i))) {
+                        canMove.set(i, true);
+                    }
+                    canMove.set(i, false);
+                }
+                if (!canMove.contains(new Boolean(true))) {
+                    getPlayer(color).setCheckMate(true);
+                }
+            }
+        }
+    }
 }
