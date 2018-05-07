@@ -694,6 +694,26 @@ public class Board {
         return false;
     }
 
+    public boolean isKingChecked(int color) {
+        Position kingPos = findKingPosition(board);
+        if (color == 0) {
+            ArrayList<Position> wHotspots = getWhiteHotspots(board);
+            for (Position pos : wHotspots) {
+                if (kingPos.equals(pos)) {
+                    return true;
+                }
+            }
+        } else {
+            ArrayList<Position> bHotspots = getWhiteHotspots(board);
+            for (Position pos : bHotspots) {
+                if (kingPos.equals(pos)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
     /**
      * Finds the Position of the King in the given board
      *
@@ -704,6 +724,17 @@ public class Board {
         for (int row = 0; row < SIZE; row++) {
             for (int col = 0; col < SIZE; col++) {
                 if (aBoard[row][col].getPiece() != null && aBoard[row][col].getPiece().getName().equals("King")) {
+                    return new Position(row, col);
+                }
+            }
+        }
+        return null;
+    }
+
+    public Position findKingPosition(int color) {
+        for (int row = 0; row < SIZE; row++) {
+            for (int col = 0; col < SIZE; col++) {
+                if (board[row][col].getPiece() != null && board[row][col].getPiece().getName().equals("King") && board[row][col].getPiece().getColor() == color) {
                     return new Position(row, col);
                 }
             }
