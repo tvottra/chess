@@ -13,6 +13,7 @@ public abstract class Piece {
 	private Position pos;
 	private final int POINT_VALUE; // point value of each piece
 	private final int SIZE = 8; // the size of a row/column on the Board
+
 	private boolean hasMoved;
 
 	/**
@@ -34,6 +35,19 @@ public abstract class Piece {
 		this.pos = pos;
 		POINT_VALUE = pointVal;
 		hasMoved = false;
+	}
+
+	/**
+	 * Constructor to make a new Piece out of an existing one
+	 *
+	 * @param other - some other Piece
+	 */
+	public Piece(Piece other) {
+		this.name = other.getName();
+		this.color = other.getColor();
+		this.pos = other.getPosition();
+		POINT_VALUE = getPointValue();
+		hasMoved = other.hasMoved();
 	}
 
 	/**
@@ -103,10 +117,10 @@ public abstract class Piece {
 	/**
 	 * Mutator method that updates this Piece's move status
 	 * 
-	 * @param moved
+	 * @param moveState
 	 *            - true if the Piece has already moved, false otherwise
 	 */
-	public void setMoveState(boolean moveState) {
+	public void setHasMoved(boolean moveState) {
 		hasMoved = moveState;
 	}
 
@@ -117,12 +131,8 @@ public abstract class Piece {
 	 *            - the given Piece
 	 * @return true if the Pieces are the same color, false otherwise
 	 */
-	public boolean isSameColor(Piece other) {
-		if (color == other.getColor()) {
-			return true;
-		} else {
-			return false;
-		}
+	public boolean isSameColorAs(Piece other) {
+		return color == other.getColor();
 	}
 
 	/**
@@ -164,4 +174,45 @@ public abstract class Piece {
 	 *         otherwise
 	 */
 	public abstract boolean isWithinRangeOfMovement(Position toPos);
+
+	/**
+	 * Makes and returns a copy of the Piece, based on the Piece's name
+	 * @param other
+	 * @return a fresh copy of the Piece or null if the parameter is not a valid Piece in the first place
+	 */
+	public static Piece createPiece(Piece other) {
+		if (other == null) {
+			return null;
+		}
+		Piece piece;
+		switch(other.getName()) {
+			case "Bishop":
+				piece = new Bishop(other.getColor(), other.getPosition());
+				break;
+			case "King":
+				piece = new King(other.getColor(), other.getPosition());
+				break;
+			case "Knight":
+				piece = new Knight(other.getColor(), other.getPosition());
+				break;
+
+			case "Pawn":
+				piece = new Pawn(other.getColor(), other.getPosition());
+				break;
+
+			case "Queen":
+				piece = new Queen(other.getColor(), other.getPosition());
+				break;
+
+			case "Rook":
+				piece = new Rook(other.getColor(), other.getPosition());
+				break;
+			default:
+				System.out.println("Error in creating a copy of the Piece.");
+				piece = null;
+				break;
+		}
+		return piece;
+	}
+
 }
