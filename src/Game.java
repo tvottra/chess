@@ -82,6 +82,7 @@ public class Game {
 		int playerChoice = sc.nextInt();
 		switch (playerChoice) {
 		case 1:
+			System.out.println(gameBoard);
 			continueTurn(pl);
 			break;
 		case 2:
@@ -148,7 +149,7 @@ public class Game {
 	/**
 	 * Calls the Board class's move method and moves a Piece at a Tile to the given
 	 * Position; if a capture is made, adds the point value of the captured piece to
-	 * the turn player's score
+	 * the turn player's score. Prints the board after the move is made.
 	 * 
 	 * @param fromPos
 	 *            - the Piece's current position
@@ -164,6 +165,7 @@ public class Game {
 				incrementScore(capturedPiece.getColor(), capturedPiece.getPointValue());
 			}
 			gameBoard.movePiece(new Position(fromPos), new Position(toPos));
+			System.out.println(gameBoard);
 			return true;
 		} else {
 			return false;
@@ -434,6 +436,10 @@ public class Game {
 		gameBoard.updateHotspots();
 	}
 
+	/**
+	 * Determines whether a checkmate has occurred.
+	 * Method is incomplete; must find a way to use findKingPosition() on the copy of the board
+	 */
 	public void findCheckMate() {
 
 		for (int color = 0; color < 2; color++) {
