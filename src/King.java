@@ -67,7 +67,6 @@ public class King extends Piece {
 			left = true;
 		}
 
-		field.add(getPosition());
 		if (bot && left) {
 			field.add(new Position(row - 1, col - 1));
 		}

@@ -178,7 +178,7 @@ public class Board {
 		return true;
 	}
 
-	public boolean castle(Position fromPos, Position toPos) {
+	public boolean castleAble(Position fromPos, Position toPos) {
 		Piece king = board[fromPos.getRow()][fromPos.getColumn()].getPiece();
 		Position toPosCheck;
 		Position rookToPos;
@@ -819,7 +819,7 @@ public class Board {
 		for (int i = 0; i < rom.size(); i++) {
 			hotSpots.add(rom.get(i));
 		}
-		return null;
+		return hotSpots;
 
 	}
 
@@ -895,11 +895,14 @@ public class Board {
 					if (checkedPos != null) {
 
 						for (Position pos : checkedPos) {
-							if (isWhite) {
-								board[pos.getRow()][pos.getColumn()].setIsWhiteHotSpot(true);
-							} else {
-								board[pos.getRow()][pos.getColumn()].setIsBlackHotSpot(true);
+							if(pos.isWithinBounds()) {
+								if (isWhite) {
+									board[pos.getRow()][pos.getColumn()].setIsWhiteHotSpot(true);
+								} else {
+									board[pos.getRow()][pos.getColumn()].setIsBlackHotSpot(true);
+								}
 							}
+
 						}
 					}
 				}

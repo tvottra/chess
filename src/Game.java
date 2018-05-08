@@ -128,7 +128,7 @@ public class Game {
 			System.out.println("Please enter valid coordinates for the destination:");
 			toPos = chooseDestination();
 		}
-		if(gameBoard.castle(fromPos, toPos)) {
+		if(gameBoard.castleAble(fromPos, toPos)) {
 			castle = true;
 		}
 		// Check whether the supposed move is legal
@@ -148,7 +148,7 @@ public class Game {
 		if (currentPiece != null &&currentPiece.getName().equals("Pawn") && ((Pawn) (currentPiece)).isWaitingForPromotion()) {
 			promotion(currentPiece);
 		}
-	update();
+		update();
 		System.out.println(gameBoard);}
 
 	/**
