@@ -6,7 +6,6 @@
  */
 
 import java.util.Scanner;
-import java.util.*;
 
 /**
  * @author Andrew Le
@@ -258,6 +257,7 @@ public class Game {
         System.out.print("Enter the column coordinates of the tile: ");
         int tileCol = sc.nextInt();
         Position toPos = new Position(tileRow, tileCol);
+        System.out.println();
         return toPos;
     }
 
@@ -405,8 +405,8 @@ public class Game {
      * Determines whether a checkmate has occurred.
      * Method is incomplete; must find a way to use findKingPosition() on the copy of the board
      */
-    public void findCheckMate() {
-        int color = gameBoard.isCheckmated();
+    public void findCheckmate() {
+        int color = gameBoard.getWhoIsCheckmated();
         if (color == 0) {
             whitePlayer.setCheckMate(true);
         } else if (color == 1) {

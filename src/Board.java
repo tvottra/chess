@@ -774,7 +774,7 @@ public class Board {
 	    return board;
     }
 
-    public int isCheckmated() {
+    public int getWhoIsCheckmated() {
         for (int color = 0; color < 2; color++) {
             if (isKingChecked(color, board)) {
                 Position kingPos = findKingPosition(color, board);
