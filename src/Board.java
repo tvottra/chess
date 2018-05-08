@@ -338,6 +338,11 @@ public class Board {
 	 */
 	private boolean isWithinHotspots(Piece piece, Position toPos) {
 		ArrayList<Position> myHotspots = getHotSpots(piece);
+
+		if(myHotspots == null) {
+			return false;
+		}
+
 		for (Position pos : myHotspots) {
 			if (toPos.equals(pos)) {
 				return true;
