@@ -22,11 +22,12 @@ public class BoardDriver {
 		}
 		// Hotspots test
 
-		ArrayList<Position> hotspots = myBoard.getHotspots(testPiece);
-		System.out.println("Here are the hotspots:");
-		for (Position pos : hotspots) {
+		ArrayList<Position> hotSpots = myBoard.getHotSpots(testPiece);
+		System.out.println("Here are the hotSpots:");
+		for (Position pos : hotSpots) {
 			System.out.println(pos);
 		}
 
 	}
+
 }

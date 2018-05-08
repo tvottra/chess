@@ -155,7 +155,7 @@ public class Board {
      * @return true if the Piece was successfully moved, false otherwise
      */
     public boolean movePiece(Position fromPos, Position toPos) {
-        if (!isLegalMove(fromPos, fromPos)) {
+        if (!isLegalMove(fromPos, toPos)) {
             return false;
         }
         int fromRow = fromPos.getRow();
@@ -205,6 +205,7 @@ public class Board {
                     return false; // if the Tile is NOT in the Pawn's range of movement
                 }
             }
+            return true;
         }
 
         if (!isWithinHotspots(pieceToMove, toPos)
@@ -239,7 +240,7 @@ public class Board {
      * @return true if toPos is within the Piece's hotspots, false otherwise
      */
     private boolean isWithinHotspots(Piece piece, Position toPos) {
-        ArrayList<Position> myHotspots = getHotspots(piece);
+        ArrayList<Position> myHotspots = getHotSpots(piece);
         for (Position pos : myHotspots) {
             if (toPos.equals(pos)) {
                 return true;
@@ -281,7 +282,7 @@ public class Board {
      * @param piece - the given Piece
      * @return all the Positions currently checked by this Piece
      */
-    public ArrayList<Position> getHotspots(Piece piece) {
+    public ArrayList<Position> getHotSpots(Piece piece) {
         if (piece.getName().equals("Pawn")) {
             return getPawnHotspots(piece);
         }
@@ -675,7 +676,7 @@ public class Board {
      * @return true if the King is checked, false otherwise
      */
     private boolean isKingChecked(int color, Tile[][] aBoard) {
-        Position kingPos = findKingPosition(aBoard);
+        Position kingPos = findKingPosition(color, aBoard);
         if (color == 0) {
             ArrayList<Position> wHotspots = getWhiteHotspots(aBoard);
             for (Position pos : wHotspots) {
@@ -695,15 +696,17 @@ public class Board {
     }
 
     /**
-     * Finds the Position of the King in the given board
+     * Finds the Position of the King of a given color in the given board
      *
+     * @param color  - 0 if white, 1 if black
      * @param aBoard - the given board
      * @return the Position of the King
      */
-    private Position findKingPosition(Tile[][] aBoard) {
+    private Position findKingPosition(int color, Tile[][] aBoard) {
         for (int row = 0; row < SIZE; row++) {
             for (int col = 0; col < SIZE; col++) {
-                if (aBoard[row][col].getPiece() != null && aBoard[row][col].getPiece().getName().equals("King")) {
+                if (aBoard[row][col].hasPiece() && aBoard[row][col].getPiece().getName().equals("King")
+                        && aBoard[row][col].getPiece().getColor() == color) {
                     return new Position(row, col);
                 }
             }
@@ -725,7 +728,7 @@ public class Board {
                 // If there is a Piece
                 if (t2.getPiece() != null) {
                     Piece myPiece = t2.getPiece();
-                    checkedPos = getHotspots(myPiece);
+                    checkedPos = getHotSpots(myPiece);
                     boolean isWhite = false;
                     if (myPiece.getColor() == 0) {
                         isWhite = true;
@@ -744,5 +747,4 @@ public class Board {
 
         }
     }
-
 }
