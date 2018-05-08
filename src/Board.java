@@ -164,7 +164,9 @@ public class Board {
 		int fromCol = fromPos.getColumn();
 
 		Piece pieceToMove = board[fromRow][fromCol].getPiece();
+
 		if (pieceToMove == null) {
+
 			return false;
 		}
 		int toRow = toPos.getRow();
@@ -186,11 +188,13 @@ public class Board {
 	 * @return true if the move is legal, false otherwise
 	 */
 	public boolean isLegalMove(Position fromPos, Position toPos) {
+
 		// System.out.println("IsLegalMove() called once.");
 
 		int fromRow = fromPos.getRow();
 		int fromCol = fromPos.getColumn();
 		Piece pieceToMove = Piece.createPiece(board[fromRow][fromCol].getPiece());
+
 		if (pieceToMove == null) {
 			System.out.println("Something went wrong. No Piece at fromPos."); // Debugging
 			return false;
@@ -331,7 +335,9 @@ public class Board {
 		ArrayList<Position> wHotspots = new ArrayList<Position>();
 		for (int row = 0; row < SIZE; row++) {
 			for (int col = 0; col < SIZE; col++) {
+
 				if (aBoard[row][col].hasPiece() && aBoard[row][col].getPiece().getColor() == 0) {
+
 					ArrayList<Position> myHotspots = new ArrayList<Position>();
 					for (Position pos : myHotspots) {
 						wHotspots.add(pos);
@@ -353,7 +359,9 @@ public class Board {
 		ArrayList<Position> bHotspots = new ArrayList<Position>();
 		for (int row = 0; row < SIZE; row++) {
 			for (int col = 0; col < SIZE; col++) {
+
 				if (aBoard[row][col].hasPiece() && aBoard[row][col].getPiece().getColor() == 1) {
+
 					ArrayList<Position> myHotspots = new ArrayList<Position>();
 					for (Position pos : myHotspots) {
 						bHotspots.add(pos);
@@ -380,6 +388,7 @@ public class Board {
 			r = -1;
 		} else {
 			r = 1;
+
 		}
 
 		Position leftDiag = new Position(currentPos.getRow() + r, currentPos.getColumn() - 1);
@@ -519,16 +528,19 @@ public class Board {
 				hotspots.add(rom.get(i));
 			}
 		}
+
 		// Look at vector above rook
 		for (int i = hbranch1end + 1; i < hbranch2end; i++) {
 			Tile currentTile = board[rom.get(i).getRow()][rom.get(i).getColumn()];
 			if (currentTile.hasPiece()) {
+
 				hotspots.add(rom.get(i));
 				break;
 			} else {
 				hotspots.add(rom.get(i));
 			}
 		}
+
 		// Look at vector left of rook
 		for (int i = hbranch2end + 1; i < hbranch3end; i++) {
 			Tile currentTile = board[rom.get(i).getRow()][rom.get(i).getColumn()];
@@ -539,10 +551,13 @@ public class Board {
 				hotspots.add(rom.get(i));
 			}
 		}
+
 		// Look at vector right of rook
 		for (int i = hbranch3end + 1; i < hbranch4end; i++) {
 			Tile currentTile = board[rom.get(i).getRow()][rom.get(i).getColumn()];
 			if (currentTile.hasPiece()) {
+
+
 				hotspots.add(rom.get(i));
 				break;
 			} else {
@@ -804,11 +819,38 @@ public class Board {
 				}
 				if (!canMove.contains(new Boolean(true))) {
 					return color;
+
 				}
 			}
 
 		}
 		return -1;
 	}
+
+	public Tile[][] getBoard() {
+	    return board;
+    }
+
+    public int getWhoIsCheckmated() {
+        for (int color = 0; color < 2; color++) {
+            if (isKingChecked(color, board)) {
+                Position kingPos = findKingPosition(color, board);
+                Piece king = getTile(kingPos).getPiece();
+                ArrayList<Position> kingROM = king.getRangeOfMovement();
+                ArrayList<Boolean> canMove = new ArrayList<Boolean>(kingROM.size());
+                for (int i = 0; i < kingROM.size(); i++) {
+                    if (isLegalMove(kingPos, kingROM.get(i))) {
+                        canMove.set(i, true);
+                    }
+                    canMove.set(i, false);
+                }
+                if (!canMove.contains(new Boolean(true))) {
+                    return color;
+                }
+            }
+
+        }
+        return -1;
+    }
 
 }
