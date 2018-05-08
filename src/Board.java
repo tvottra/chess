@@ -187,6 +187,17 @@ public class Board {
         int toCol = toPos.getColumn();
         if (pieceToMove.getName().equals("Pawn")) {
             if (!pieceToMove.isWithinRangeOfMovement(toPos)) {
+                if (board[fromRow][fromCol].getPiece().getColor() == 0) {
+                    if (fromRow - 2 == toRow && !((Pawn) board[fromRow][fromCol].getPiece()).hasMovedTwo() && !board[toRow][toCol].hasPiece() && !board[toRow + 1][toCol].hasPiece()) {
+                        ((Pawn) board[fromRow][toCol].getPiece()).setHasMovedTwo(true);
+                        return true;
+                    }
+                } else {
+                    if (fromRow + 2 == toRow && !((Pawn) board[fromRow][fromCol].getPiece()).hasMovedTwo() && !board[toRow][toCol].hasPiece() && !board[toRow - 1][toCol].hasPiece()) {
+                        ((Pawn) board[fromRow][toCol].getPiece()).setHasMovedTwo(true);
+                        return true;
+                    }
+                }
                 if (isWithinHotspots(pieceToMove, toPos)) { // If the move is not forward but instead diagonal
                     if (board[toRow][toCol].hasPiece()
                             && board[toRow][toCol].getPiece().getColor() != pieceToMove.getColor()) { // Check if the
@@ -198,6 +209,9 @@ public class Board {
                         // "take" that
                         // Tile
                         // No code here. Proceed with the rest of the code to verify legality.
+                    } else if (((Pawn) (board[fromRow][fromCol].getPiece())).hasMovedTwo() && !board[toRow][toCol].hasPiece() && (board[toRow][toCol - 1].hasPiece() || board[toRow][toCol + 1].
+                            hasPiece())) {
+                        return true; //empassant
                     } else {
                         return false; // if the diagonal has a Piece of the same color
                     }

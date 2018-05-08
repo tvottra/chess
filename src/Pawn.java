@@ -7,6 +7,7 @@ import java.util.ArrayList;
  * @author Brian
  */
 public class Pawn extends Piece {
+    private boolean hasMovedTwo;
 
     /**
      * Contructor to initialize the Pawn's color and Position
@@ -16,6 +17,7 @@ public class Pawn extends Piece {
      */
     public Pawn(int color, Position pos) {
         super("Pawn", color, pos, 1);
+        hasMovedTwo = false;
     }
 
     @Override
@@ -127,5 +129,13 @@ public class Pawn extends Piece {
                 return false;
             }
         }
+    }
+
+    public void setHasMovedTwo(boolean moved) {
+        hasMovedTwo = moved;
+    }
+
+    public boolean hasMovedTwo() {
+        return hasMovedTwo;
     }
 }

@@ -413,7 +413,7 @@ public class Game {
         gameBoard.updateHotspots();
     }
 
-    /**
+    /**1
      * Determines whether a checkmate has occurred.
      * Method is incomplete; must find a way to use findKingPosition() on the copy of the board
      */
