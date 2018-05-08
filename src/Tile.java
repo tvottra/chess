@@ -24,6 +24,11 @@ public class Tile {
 		this.isBlackHotSpot = isBlackHotSpot;
 	}
 
+	public Tile(Tile other) {
+		this.myPiece = Piece.createPiece(other.getPiece());
+		this.isWhiteHotSpot = other.isWhiteHotSpot();
+		this.isBlackHotSpot = other.isBlackHotSpot();
+	}
 	/**
 	 * Accessor method to get the Piece on this Tile
 	 *
@@ -95,7 +100,9 @@ public class Tile {
 	 */
 	public String toString() {
 		if (!hasPiece()) {
-			return "XX";
+			return "--";
+		} else if (myPiece.getName().equals("Knight")) {
+			return String.format("%.1s" + myPiece.getColor(), "n");
 		} else {
 			return String.format("%.1s" + myPiece.getColor(), myPiece);
 		}
