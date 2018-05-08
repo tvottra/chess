@@ -112,7 +112,9 @@ public class Game {
 		Scanner sc = new Scanner(System.in);
 		// Choose a tile on the gameBoard
 		Position fromPos = choosePiece();
+		boolean castle = false;
 		// Check whether there is a piece of correct color at the chosen tile
+
 		while (!isValidPiece(fromPos.getRow(), fromPos.getColumn(), pl.getNumber())) {
 			System.out.println("Please enter valid coordinates for the piece to be moved:");
 			fromPos = choosePiece();
@@ -126,13 +128,18 @@ public class Game {
 			System.out.println("Please enter valid coordinates for the destination:");
 			toPos = chooseDestination();
 		}
+		if(gameBoard.castle(fromPos, toPos)) {
+			castle = true;
+		}
 		// Check whether the supposed move is legal
-		while (!gameBoard.isLegalMove(fromPos, toPos)) {
+		while (!gameBoard.isLegalMove(fromPos, toPos) && !castle) {
 			System.out.println("Move to " + toPos
 					+ " is not legal. Please choose another destination.");
 			toPos = chooseDestination();
 		}
-		movePieceOnBoard(fromPos, toPos);
+		if(!castle) {
+			movePieceOnBoard(fromPos, toPos);
+		}
 		//postcondition: Piece has been moved fromfromPosto toPoson the Board
 		// Provide feedback to user
 		System.out.println(feedback + " has moved to " + toPos+"\n");

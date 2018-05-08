@@ -157,9 +157,6 @@ public class Board {
 	 * @return true if there was a Piece at fromPos on the board; false otherwise.
 	 */
 	public boolean movePiece(Position fromPos, Position toPos) {
-		if(castle(fromPos, toPos)) {
-			return true;
-		}
 
 		int fromRow = fromPos.getRow();
 		int fromCol = fromPos.getColumn();
