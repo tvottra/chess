@@ -254,15 +254,8 @@ public class Board {
 				return true;
 			}
 		} else {
-
 			return false;
 		}
-		int toRow = toPos.getRow();
-		int toCol = toPos.getColumn();
-		board[toRow][toCol].setPiece(pieceToMove);
-		board[fromRow][fromCol].setPiece(null);
-		board[toRow][toCol].getPiece().setPosition(new Position(toPos));
-		return true;
 	}
 
 
@@ -842,8 +835,7 @@ public class Board {
 	 */
 	public boolean isKingChecked(int color, Tile[][] aBoard) {
 		Position kingPos = findKingPosition(color, aBoard);
-		if (color 
-        =0) {
+		if (color==0) {
 			ArrayList<Position> wHotspots = getWhiteHotspots(aBoard);
 			for (Position pos : wHotspots) {
 				if (kingPos.equals(pos)) {
@@ -933,10 +925,6 @@ public class Board {
 	 * @return 0 if the white king is checkmated, 1 if the black king is checkmated,
 	 *         -1 otherwise
 	 */
-	public Tile[][] getBoard() {
-	    return board;
-    }
-
     public int getWhoIsCheckmated() {
         for (int color = 0; color < 2; color++) {
             if (isKingChecked(color, board)) {
