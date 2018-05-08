@@ -160,9 +160,14 @@ public class Board {
 	 * @return true if the Piece was successfully moved, false otherwise
 	 */
 	public boolean movePiece(Position fromPos, Position toPos) {
+		if(castle(fromPos, toPos)) {
+			return true;
+		}
+
 		if (!isLegalMove(fromPos, toPos)) {
 			return false;
 		}
+
 		int fromRow = fromPos.getRow();
 		int fromCol = fromPos.getColumn();
 		Piece pieceToMove = board[fromRow][fromCol].getPiece();
@@ -175,6 +180,88 @@ public class Board {
 		// updateHotspots();
 		return true;
 	}
+
+	public boolean castle(Position fromPos, Position toPos) {
+		Piece king = board[fromPos.getRow()][fromPos.getColumn()].getPiece();
+		Position toPosCheck;
+		Position rookToPos;
+		int direction = toPos.getColumn() - fromPos.getColumn();
+		Piece rook;
+
+		if(king.getColor() == 0) {
+			if (direction < 0) {
+				rook = board[7][0].getPiece();
+				toPosCheck = new Position(7, 2);
+				rookToPos = new Position(7, 3);
+			} else {
+				rook = board[7][7].getPiece();
+				toPosCheck = new Position(7, 6);
+				rookToPos = new Position(7, 5);
+			}
+		} else {
+			if(direction < 0) {
+				rook = board[0][0].getPiece();
+				toPosCheck = new Position(0, 2);
+				rookToPos = new Position(0, 3);
+			} else {
+				rook = board[0][7].getPiece();
+				toPosCheck = new Position(0, 6);
+				rookToPos = new Position(0, 5);
+			}
+		}
+
+		if(!toPos.equals(toPosCheck)) {
+			return false;
+		}
+
+		if(king.getName().equals("King") && !king.hasMoved() && rook.getName().equals("Rook") && !rook.hasMoved()) {
+			int kFromRow = fromPos.getRow();
+			int kFromCol = fromPos.getColumn();
+			int kToRow = toPos.getRow();
+			int kToCol = toPos.getColumn();
+
+			int rFromRow = rook.getPosition().getRow();
+			int rFromCol = rook.getPosition().getColumn();
+			int rToRow = rookToPos.getRow();
+			int rToCol = rookToPos.getColumn();
+
+			if(direction < 0) {
+				for(int col = king.getPosition().getColumn() - 1; col > 0; col--) {
+					if(board[king.getPosition().getRow()][col] != null) {
+						return false;
+					}
+				}
+				board[kToRow][kToCol].setPiece(king);
+				board[kFromRow][kFromCol].setPiece(null);
+				board[kToRow][kToCol].getPiece().setPosition(toPos);
+
+				board[rToRow][rToCol].setPiece(rook);
+				board[rFromRow][rFromCol].setPiece(null);
+				board[rToRow][rToCol].getPiece().setPosition(rookToPos);
+
+				return true;
+			} else {
+				for(int col = king.getPosition().getColumn() + 1; col < 7; col++) {
+					if(board[king.getPosition().getRow()][col] != null) {
+						return false;
+					}
+				}
+				board[kToRow][kToCol].setPiece(king);
+				board[kFromRow][kFromCol].setPiece(null);
+				board[kToRow][kToCol].getPiece().setPosition(toPos);
+
+				board[rToRow][rToCol].setPiece(rook);
+				board[rFromRow][rFromCol].setPiece(null);
+				board[rToRow][rToCol].getPiece().setPosition(rookToPos);
+
+				return true;
+			}
+ 		} else {
+			return false;
+		}
+	}
+
+
 
 	/**
 	 * Checks whether moving a Piece from its current Position to a given Position
@@ -769,5 +856,6 @@ public class Board {
 
 		}
 	}
+
 
 }
