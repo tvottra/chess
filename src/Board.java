@@ -747,4 +747,27 @@ public class Board {
 
         }
     }
+
+    public int isCheckmated() {
+        for (int color = 0; color < 2; color++) {
+            if (isKingChecked(color, board)) {
+                Position kingPos = findKingPosition(color, board);
+                Piece king = getTile(kingPos).getPiece();
+                ArrayList<Position> kingROM = king.getRangeOfMovement();
+                ArrayList<Boolean> canMove = new ArrayList<Boolean>(kingROM.size());
+                for (int i = 0; i < kingROM.size(); i++) {
+                    if (isLegalMove(kingPos, kingROM.get(i))) {
+                        canMove.set(i, true);
+                    }
+                    canMove.set(i, false);
+                }
+                if (!canMove.contains(new Boolean(true))) {
+                    return color;
+                }
+            }
+
+        }
+        return -1;
+    }
+
 }
