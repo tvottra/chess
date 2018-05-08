@@ -223,12 +223,14 @@ public class Board {
 			return false;
 		}
 		// Create a copy of the real board to determine whether the move creates a check
-		Tile[][] copy = new Tile[SIZE][SIZE];
-		for (int row = 0; row < SIZE; row++) {
-			for (int col = 0; col < SIZE; col++) {
-				copy[row][col] = new Tile(board[row][col]);
-			}
-		}
+//		Tile[][] copy = new Tile[SIZE][SIZE];
+//		for (int row = 0; row < SIZE; row++) {
+//			for (int col = 0; col < SIZE; col++) {
+//				copy[row][col] = new Tile(board[row][col]);
+//			}
+//		}
+		Tile[][] copy = Tile.cloneTile2DArray(board);
+
 		// Perform the move on the copy of the board
 		copy[toRow][toCol].setPiece(pieceToMove);
 		copy[fromRow][fromCol].setPiece(null);
@@ -795,5 +797,6 @@ public class Board {
         }
         return -1;
     }
+
 
 }

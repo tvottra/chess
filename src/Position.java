@@ -157,6 +157,7 @@ public class Position {
 		return (0 <= row && 0 <= column) && (row < BOARD_SIZE && column < BOARD_SIZE);
 	}
 
+
 	/**
 	 * Mutator method to set this Position to some other Position
 	 *
