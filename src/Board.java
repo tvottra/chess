@@ -8,176 +8,171 @@ import java.util.ArrayList;
  * @author Tommy Tran
  */
 public class Board {
-	Tile[][] board;
-	private final int SIZE = 8;
+    Tile[][] board;
+    private final int SIZE = 8;
+
+    /**
+     * Default constructor that initializes the chess board with all of the white
+     * pieces, black pieces and the rest of the tiles; establishes the white and
+     * black hot spots
+     */
+    public Board() {
+        board = new Tile[8][8];
+        setUpWhitePieces();
+        setUpBlackPieces();
+        setUpRestOfBoard();
+        // NullPointerException when updateHotSpots is called
+        // updateHotSpots();
+    }
+
+    /**
+     * Sets up all of the white pieces on the bottom two rows of the board
+     */
+    private void setUpWhitePieces() {
+        // Set up white pawns
+        for (int c = 0; c < SIZE; c++) {
+            Position pos = new Position(6, c);
+            Piece pawn = new Pawn(0, pos);
+            board[6][c] = new Tile(pawn, true, false);
+        }
+        // Set up white rooks
+        Piece rook1 = new Rook(0, new Position(7, 0));
+        board[7][0] = new Tile(rook1, true, false);
+        Piece rook2 = new Rook(0, new Position(7, 7));
+        board[7][7] = new Tile(rook2, true, false);
+
+        // Set up white knights
+        Piece knight1 = new Knight(0, new Position(7, 1));
+        board[7][1] = new Tile(knight1, true, false);
+        Piece knight2 = new Knight(0, new Position(7, 6));
+        board[7][6] = new Tile(knight2, true, false);
+
+        // Set up white bishops
+        Piece bishop1 = new Bishop(0, new Position(7, 2));
+        board[7][2] = new Tile(bishop1, true, false);
+        Piece bishop2 = new Bishop(0, new Position(7, 5));
+        board[7][5] = new Tile(bishop2, true, false);
+
+        // Set up white queen and king
+        Piece queen = new Queen(0, new Position(7, 3));
+        board[7][3] = new Tile(queen, true, false);
+        Piece king = new King(0, new Position(7, 4));
+        board[7][4] = new Tile(king, true, false);
+    }
+
+    /**
+     * Sets up all of the black pieces on the upper two rows of the board
+     */
+    private void setUpBlackPieces() {
+        // Set up black pawns
+        for (int c = 0; c < SIZE; c++) {
+            Position pos = new Position(1, c);
+            Piece pawn = new Pawn(1, pos);
+            board[1][c] = new Tile(pawn, false, true);
+        }
+
+        // Set up black rooks
+        Piece rook1 = new Rook(1, new Position(0, 0));
+        board[0][0] = new Tile(rook1, false, true);
+        Piece rook2 = new Rook(1, new Position(0, 7));
+        board[0][7] = new Tile(rook2, false, true);
+
+        // Set up black knights
+        Piece knight1 = new Knight(1, new Position(0, 1));
+        board[0][1] = new Tile(knight1, false, true);
+        Piece knight2 = new Knight(1, new Position(0, 6));
+        board[0][6] = new Tile(knight2, false, true);
+
+        // Set up black bishops
+        Piece bishop1 = new Bishop(1, new Position(0, 2));
+        board[0][2] = new Tile(bishop1, false, true);
+        Piece bishop2 = new Bishop(1, new Position(0, 5));
+        board[0][5] = new Tile(bishop2, false, true);
+
+        // Set up black queen and king
+        Piece queen = new Queen(1, new Position(0, 3));
+        board[0][3] = new Tile(queen, false, true);
+        Piece king = new King(1, new Position(0, 4));
+        board[0][4] = new Tile(king, false, true);
+    }
+
+    /**
+     * Initializes all unoccupied Tiles, along with white/black control of each Tile
+     */
+    private void setUpRestOfBoard() {
+        // General traversal of Tiles in rows 3 and 4
+        for (int r = 3; r < 5; r++) {
+            for (int c = 0; c < SIZE; c++) {
+                board[r][c] = new Tile(null, false, false);
+            }
+        }
+        // Traversal of row 2
+        for (int c = 0; c < SIZE; c++) {
+            board[2][c] = new Tile(null, false, true);
+        }
+        // Traversal of row 5
+        for (int c = 0; c < SIZE; c++) {
+            board[5][c] = new Tile(null, true, false);
+        }
+    }
+
+    /**
+     * Accessor method to get a tile at the specified location
+     *
+     * @param row - the row index of the Tile
+     * @param col - the column index of the Tile
+     * @return the Tile at board[row][col]
+     */
+    public Tile getTile(int row, int col) {
+        return board[row][col];
+    }
+
+    /**
+     * Accessor method to get a tile at the specified location
+     *
+     * @param pos - the position of the Tile
+     * @return the Tile at board[row][col]
+     */
+    public Tile getTile(Position pos) {
+        return board[pos.getRow()][pos.getColumn()];
+    }
+
+    /**
+     * Accessor method to return the size of one side of the board
+     *
+     * @return the size of the board
+     */
+    public int getSize() {
+        return SIZE;
+    }
 
 	/**
-	 * Default constructor that initializes the chess board with all of the white
-	 * pieces, black pieces and the rest of the tiles; establishes the white and
-	 * black hot spots
-	 */
-	public Board() {
-		board = new Tile[8][8];
-		setUpWhitePieces();
-		setUpBlackPieces();
-		setUpRestOfBoard();
-		// NullPointerException when updateHotSpots is called
-		// updateHotspots();
-	}
-
-	/**
-	 * Sets up all of the white pieces on the bottom two rows of the board
-	 */
-	private void setUpWhitePieces() {
-		// Set up white pawns
-		for (int c = 0; c < SIZE; c++) {
-			Position pos = new Position(6, c);
-			Piece pawn = new Pawn(0, pos);
-			board[6][c] = new Tile(pawn, true, false);
-		}
-		// Set up white rooks
-		Piece rook1 = new Rook(0, new Position(7, 0));
-		board[7][0] = new Tile(rook1, true, false);
-		Piece rook2 = new Rook(0, new Position(7, 7));
-		board[7][7] = new Tile(rook2, true, false);
-
-		// Set up white knights
-		Piece knight1 = new Knight(0, new Position(7, 1));
-		board[7][1] = new Tile(knight1, true, false);
-		Piece knight2 = new Knight(0, new Position(7, 6));
-		board[7][6] = new Tile(knight2, true, false);
-
-		// Set up white bishops
-		Piece bishop1 = new Bishop(0, new Position(7, 2));
-		board[7][2] = new Tile(bishop1, true, false);
-		Piece bishop2 = new Bishop(0, new Position(7, 5));
-		board[7][5] = new Tile(bishop2, true, false);
-
-		// Set up white queen and king
-		Piece queen = new Queen(0, new Position(7, 3));
-		board[7][3] = new Tile(queen, true, false);
-		Piece king = new King(0, new Position(7, 4));
-		board[7][4] = new Tile(king, true, false);
-	}
-
-	/**
-	 * Sets up all of the black pieces on the upper two rows of the board
-	 */
-	private void setUpBlackPieces() {
-		// Set up black pawns
-		for (int c = 0; c < SIZE; c++) {
-			Position pos = new Position(1, c);
-			Piece pawn = new Pawn(1, pos);
-			board[1][c] = new Tile(pawn, false, true);
-		}
-
-		// Set up black rooks
-		Piece rook1 = new Rook(1, new Position(0, 0));
-		board[0][0] = new Tile(rook1, false, true);
-		Piece rook2 = new Rook(1, new Position(0, 7));
-		board[0][7] = new Tile(rook2, false, true);
-
-		// Set up black knights
-		Piece knight1 = new Knight(1, new Position(0, 1));
-		board[0][1] = new Tile(knight1, false, true);
-		Piece knight2 = new Knight(1, new Position(0, 6));
-		board[0][6] = new Tile(knight2, false, true);
-
-		// Set up black bishops
-		Piece bishop1 = new Bishop(1, new Position(0, 2));
-		board[0][2] = new Tile(bishop1, false, true);
-		Piece bishop2 = new Bishop(1, new Position(0, 5));
-		board[0][5] = new Tile(bishop2, false, true);
-
-		// Set up black queen and king
-		Piece queen = new Queen(1, new Position(0, 3));
-		board[0][3] = new Tile(queen, false, true);
-		Piece king = new King(1, new Position(0, 4));
-		board[0][4] = new Tile(king, false, true);
-	}
-
-	/**
-	 * Initializes all unoccupied Tiles, along with white/black control of each Tile
-	 */
-	private void setUpRestOfBoard() {
-		// General traversal of Tiles in rows 3 and 4
-		for (int r = 3; r < 5; r++) {
-			for (int c = 0; c < SIZE; c++) {
-				board[r][c] = new Tile(null, false, false);
-			}
-		}
-		// Traversal of row 2
-		for (int c = 0; c < SIZE; c++) {
-			board[2][c] = new Tile(null, false, true);
-		}
-		// Traversal of row 5
-		for (int c = 0; c < SIZE; c++) {
-			board[5][c] = new Tile(null, true, false);
-		}
-	}
-
-	/**
-	 * Accessor method to get a tile at the specified location
-	 *
-	 * @param row
-	 *            - the row index of the Tile
-	 * @param col
-	 *            - the column index of the Tile
-	 * @return the Tile at board[row][col]
-	 */
-	public Tile getTile(int row, int col) {
-		return board[row][col];
-	}
-
-	/**
-	 * Accessor method to get a tile at the specified location
-	 *
-	 * @param pos
-	 *            - the position of the Tile
-	 * @return the Tile at board[row][col]
-	 */
-	public Tile getTile(Position pos) {
-		return board[pos.getRow()][pos.getColumn()];
-	}
-
-	/**
-	 * Accessor method to return the size of one side of the board
-	 *
-	 * @return the size of the board
-	 */
-	public int getSize() {
-		return SIZE;
-	}
-
-	/**
-	 * Attempts to move a Piece on a Tile to the given Position; if the move is
-	 * successful, updates the Piece's Position and the hotspots on the board
+	 * Moves a Piece at fromPos to toPos on the board without checking for legality.
 	 *
 	 * @param fromPos
 	 *            - the Piece's current position
 	 * @param toPos
 	 *            - the Position to which the Piece will be moved
-	 * @return true if the Piece was successfully moved, false otherwise
+	 *
+	 * @return true if there was a Piece at fromPos on the board; false otherwise.
 	 */
 	public boolean movePiece(Position fromPos, Position toPos) {
 		if(castle(fromPos, toPos)) {
 			return true;
 		}
 
-		if (!isLegalMove(fromPos, toPos)) {
-			return false;
-		}
-
 		int fromRow = fromPos.getRow();
 		int fromCol = fromPos.getColumn();
+
 		Piece pieceToMove = board[fromRow][fromCol].getPiece();
+		if(pieceToMove == null) {
+			return false;
+		}
 		int toRow = toPos.getRow();
 		int toCol = toPos.getColumn();
 		board[toRow][toCol].setPiece(pieceToMove);
 		board[fromRow][fromCol].setPiece(null);
-		board[toRow][toCol].getPiece().setPosition(toPos);
-		// NullPointerException when updateHotSpots is called
-		// updateHotspots();
+		board[toRow][toCol].getPiece().setPosition(new Position(toPos));
 		return true;
 	}
 
@@ -274,9 +269,16 @@ public class Board {
 	 * @return true if the move is legal, false otherwise
 	 */
 	public boolean isLegalMove(Position fromPos, Position toPos) {
+		//System.out.println("IsLegalMove() called once.");
+
 		int fromRow = fromPos.getRow();
 		int fromCol = fromPos.getColumn();
-		Piece pieceToMove = board[fromRow][fromCol].getPiece();
+		Piece pieceToMove = Piece.createPiece(board[fromRow][fromCol].getPiece());
+		if(pieceToMove == null) {
+			System.out.println("Something went wrong. No Piece at fromPos."); //Debugging
+			return false;
+		}
+
 		int toRow = toPos.getRow();
 		int toCol = toPos.getColumn();
 		if (pieceToMove.getName().equals("Pawn")) {
@@ -303,21 +305,20 @@ public class Board {
 		}
 
 		if (!isWithinHotspots(pieceToMove, toPos)
-				|| board[toRow][toCol].getPiece().isSameColor(board[fromRow][fromCol].getPiece())) {
+				|| (board[toRow][toCol].hasPiece() && board[toRow][toCol].getPiece().isSameColorAs(board[fromRow][fromCol].getPiece()))) {
 			return false;
 		}
 		// Create a copy of the real board to determine whether the move creates a check
 		Tile[][] copy = new Tile[SIZE][SIZE];
 		for (int row = 0; row < SIZE; row++) {
 			for (int col = 0; col < SIZE; col++) {
-				copy[row][col] = board[row][col];
+				copy[row][col] = new Tile(board[row][col]);
 			}
 		}
 		// Perform the move on the copy of the board
 		copy[toRow][toCol].setPiece(pieceToMove);
 		copy[fromRow][fromCol].setPiece(null);
 		// Find the hotspots and see whether the move would result in a check
-		ArrayList<Position> allHotspots = new ArrayList<Position>();
 		int myColor = pieceToMove.getColor();
 		if (isKingChecked(myColor, copy)) {
 			return false;
@@ -345,60 +346,59 @@ public class Board {
 		return false;
 	}
 
-	/**
-	 * toString method to print the Board
-	 *
-	 * @return the contents of each Tile as they would appear on a 2D board
-	 */
-	public String toString() {
-		String output = "";
-		boolean first = true;
-		int count = 0;
-		output += "   00 01 02 03 04 05 06 07\n";
-		for (Tile[] arr : board) {
-			for (Tile tile : arr) {
-				if (first) {
-					output += "0" + count + " ";
-					++count;
-					first = false;
-				}
-				output += tile.toString() + " ";
-			}
-			output += "\n";
-			first = true;
-		}
-		return output;
-	}
+    /**
+     * toString method to print the Board
+     *
+     * @return the contents of each Tile as they would appear on a 2D board
+     */
+    public String toString() {
+        String output = "";
+        boolean first = true;
+        int count = 0;
+        output += "   00 01 02 03 04 05 06 07\n";
+        for (Tile[] arr : board) {
+            for (Tile tile : arr) {
+                if (first) {
+                    output += "0" + count + " ";
+                    ++count;
+                    first = false;
+                }
+                output += tile.toString() + " ";
+            }
+            output += "\n";
+            first = true;
+        }
+        return output;
+    }
 
-	/**
-	 * Gets all the hotspots controlled by this Piece; a hotspot is defined as any
-	 * Position at which a Piece could perform a capture; calls the appropriate
-	 * helper method to get the hotspots, depending on the identity of the piece
-	 *
-	 * @param piece
-	 *            - the given Piece
-	 * @return all the Positions currently checked by this Piece
-	 */
-	public ArrayList<Position> getHotSpots(Piece piece) {
-		if (piece.getName().equals("Pawn")) {
-			return getPawnHotspots(piece);
-		}
-		if (piece.getName().equals("Knight")) {
-			return getKnightHotspots(piece);
-		}
-		if (piece.getName().equals("Bishop")) {
-			return getBishopHotspots(piece);
-		}
-		if (piece.getName().equals("Rook")) {
-			return getRookHotspots(piece);
-		}
-		if (piece.getName().equals("Queen")) {
-			return getQueenHotspots(piece);
-		}
-		if (piece.getName().equals("King")) {
-			return getKingHotspots(piece);
-		}
-		return null;
+    /**
+     * Gets all the hotspots controlled by this Piece; a hotspot is defined as any
+     * Position at which a Piece could perform a capture; calls the appropriate
+     * helper method to get the hotspots, depending on the identity of the piece
+     *
+     * @param piece - the given Piece
+     * @return all the Positions currently checked by this Piece
+     */
+    public ArrayList<Position> getHotSpots(Piece piece) {
+        if (piece.getName().equals("Pawn")) {
+            return getPawnHotspots(piece);
+        }
+        if (piece.getName().equals("Knight")) {
+            return getKnightHotspots(piece);
+        }
+        if (piece.getName().equals("Bishop")) {
+            return getBishopHotspots(piece);
+        }
+        if (piece.getName().equals("Rook")) {
+            return getRookHotspots(piece);
+        }
+        if (piece.getName().equals("Queen")) {
+            return getQueenHotspots(piece);
+        }
+        if (piece.getName().equals("King")) {
+            return getKingHotspots(piece);
+        }
+        return null;
 
 	}
 
@@ -782,7 +782,7 @@ public class Board {
 	 *            - the given board
 	 * @return true if the King is checked, false otherwise
 	 */
-	private boolean isKingChecked(int color, Tile[][] aBoard) {
+	public boolean isKingChecked(int color, Tile[][] aBoard) {
 		Position kingPos = findKingPosition(color, aBoard);
 		if (color == 0) {
 			ArrayList<Position> wHotspots = getWhiteHotspots(aBoard);
@@ -811,7 +811,7 @@ public class Board {
 	 *            - the given board
 	 * @return the Position of the King
 	 */
-	private Position findKingPosition(int color, Tile[][] aBoard) {
+	public Position findKingPosition(int color, Tile[][] aBoard) {
 		for (int row = 0; row < SIZE; row++) {
 			for (int col = 0; col < SIZE; col++) {
 				if (aBoard[row][col].hasPiece() && aBoard[row][col].getPiece().getName().equals("King")
@@ -827,7 +827,7 @@ public class Board {
 	 * Should be called each time after a Piece is moved, looping through all of the
 	 * Tiles and updating the isWhiteHotSpot and isBlackHotSpot for each Tile
 	 */
-	public void updateHotspots() {
+	public void updateHotSpots() {
 		ArrayList<Position> checkedPos;
 
 		// Look through each Piece's field of hotSpots
@@ -838,24 +838,49 @@ public class Board {
 				if (t2.getPiece() != null) {
 					Piece myPiece = t2.getPiece();
 					checkedPos = getHotSpots(myPiece);
-					boolean isWhite = false;
-					if (myPiece.getColor() == 0) {
-						isWhite = true;
-					}
+					boolean isWhite = myPiece.getColor() == 0;
 					// For each Position checked, update each corresponding Tile's isWhiteHotSpot
 					// and isBlackHotSpot accordingly
-					for (Position pos : checkedPos) {
-						if (isWhite) {
-							board[pos.getRow()][pos.getColumn()].setIsWhiteHotSpot(true);
-						} else {
-							board[pos.getRow()][pos.getColumn()].setIsBlackHotSpot(true);
-						}
-					}
+					if(checkedPos != null) {
+                        for (Position pos : checkedPos) {
+                            if (isWhite) {
+                                board[pos.getRow()][pos.getColumn()].setIsWhiteHotSpot(true);
+                            } else {
+                                board[pos.getRow()][pos.getColumn()].setIsBlackHotSpot(true);
+                            }
+                        }
+                    }
 				}
 			}
 
 		}
 	}
+
+	public Tile[][] getBoard() {
+	    return board;
+    }
+
+    public int getWhoIsCheckmated() {
+        for (int color = 0; color < 2; color++) {
+            if (isKingChecked(color, board)) {
+                Position kingPos = findKingPosition(color, board);
+                Piece king = getTile(kingPos).getPiece();
+                ArrayList<Position> kingROM = king.getRangeOfMovement();
+                ArrayList<Boolean> canMove = new ArrayList<Boolean>(kingROM.size());
+                for (int i = 0; i < kingROM.size(); i++) {
+                    if (isLegalMove(kingPos, kingROM.get(i))) {
+                        canMove.set(i, true);
+                    }
+                    canMove.set(i, false);
+                }
+                if (!canMove.contains(new Boolean(true))) {
+                    return color;
+                }
+            }
+
+        }
+        return -1;
+    }
 
 
 }
