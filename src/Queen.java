@@ -2,19 +2,16 @@ import java.util.ArrayList;
 
 /**
  * Class that represents a Queen chess Piece
- * 
- * @author Jonathan Lim
  *
+ * @author Jonathan Lim
  */
 public class Queen extends Piece {
 
 	/**
 	 * Constructor to initialize the Queen
-	 * 
-	 * @param color
-	 *            - the Queen's color
-	 * @param pos
-	 *            - the Queen's Position
+	 *
+	 * @param color - the Queen's color
+	 * @param pos   - the Queen's Position
 	 */
 	public Queen(int color, Position pos) {
 		super("Queen", color, pos, 9);
@@ -24,7 +21,7 @@ public class Queen extends Piece {
 	/**
 	 * Returns an array of the Positions that would be crossed if this Queen were to
 	 * move to the given Position
-	 * 
+	 *
 	 * @param toPos
 	 *            - the given Position
 	 * @return an ArrayList of the Positions that would be crossed
@@ -84,39 +81,32 @@ public class Queen extends Piece {
 	 * Calculates the Queen's range of movement based on known board size and its
 	 * current position. Positions are ordered ascending in terms of row then
 	 * column. E.g., (0, 0), (0, 1), (0, 2), (1, 0)... TODO:IGNORE THIS ORDERING. NO PIECES HAVE THIS ORDERING, I'M PRETTY SURE -TVT
-	 * 
+	 *
 	 * @return the Queen's range of movement
 	 */
 	public ArrayList<Position> getRangeOfMovement() {
 		Position pos = new Position(getPosition());
-		System.out.println("pos is " + pos);
 		ArrayList<Position> rom = new ArrayList<Position>();
-		System.out.println("rom created");
 
 		//Get the top vertical vector
 		for (int r = (pos.getRow()) - 1; r >= 0; r--) {
 			Position p = new Position(r, pos.getColumn());
-			System.out.println("I'm adding " + p + "to rom");
 			rom.add(p);
 		}
 
 		rom.add(pos);
-		System.out.println("State of ROM after top vertical vector: " + rom);
 
 		//Get the bottom vertical vector
 		for (int r = pos.getRow() + 1; r < getSize(); r++) {
 			Position p = new Position(r, pos.getColumn());
-			System.out.println("I'm adding " + p + "to rom");
 			rom.add(p);
 		}
 		rom.add(pos);
-		System.out.println("State of ROM after bottom vertical vector: " + rom);
 
 		//Get the left horizontal vector
 
 		for (int c = pos.getColumn() - 1; c >= 0; c--) {
 			Position p = new Position(pos.getRow(), c);
-			System.out.println("I'm adding " + p + "to rom");
 			rom.add(p);
 		}
 
@@ -126,7 +116,6 @@ public class Queen extends Piece {
 
 		for (int c = pos.getColumn() + 1; c < getSize(); c++) {
 			Position p = new Position(pos.getRow(), c);
-			System.out.println("I'm adding " + p + "to rom");
 			rom.add(p);
 		}
 
@@ -134,7 +123,6 @@ public class Queen extends Piece {
 		Position currentPos = new Position(pos);
 		while (currentPos.isWithinBounds()) {
 			rom.add(new Position(currentPos));
-			System.out.println("I'm adding (diagonal) bl1 " + currentPos);
 			currentPos.addToRow(-1);
 			currentPos.addToColumn(1);
 		}
@@ -143,7 +131,7 @@ public class Queen extends Piece {
 		while (currentPos.isWithinBounds()) {
 
 			rom.add(new Position(currentPos));
-			System.out.println("I'm adding (diagonal) bl2 " + currentPos);
+
 			currentPos.addToRow(-1);
 			currentPos.addToColumn(-1);
 		}
@@ -152,7 +140,7 @@ public class Queen extends Piece {
 		while (currentPos.isWithinBounds()) {
 
 			rom.add(new Position(currentPos));
-			System.out.println("I'm adding (diagonal) bl3 " + currentPos);
+
 			currentPos.addToRow(1);
 			currentPos.addToColumn(-1);
 		}
@@ -160,7 +148,7 @@ public class Queen extends Piece {
 		currentPos = new Position(getPosition());
 		while (currentPos.isWithinBounds()) {
 			rom.add(new Position(currentPos));
-			System.out.println("I'm adding (diagonal) bl4 " + currentPos);
+
 			currentPos.addToRow(1);
 			currentPos.addToColumn(1);
 		}
@@ -170,7 +158,7 @@ public class Queen extends Piece {
 	@Override
 	/**
 	 * Checks whether the given Position is within this Piece's range of movement
-	 * 
+	 *
 	 * @param toPos
 	 *            - the destination Position
 	 * @return true if toPos is within this Piece's range of movement, false
