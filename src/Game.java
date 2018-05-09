@@ -151,6 +151,17 @@ public class Game {
     public boolean movePiece(Position fromPos, Position toPos) {
         if (isLegalMove(fromPos, toPos)) {
             // If a capture is made, add points to the player's score
+            if (gameBoard.getTile(fromPos).getPiece().getName().equals("Pawn")) {
+                Position tempPos = null;
+                if (gameBoard.getTile(fromPos).getPiece().getColor() == 0) {
+                    tempPos = new Position(toPos.getRow(), toPos.getColumn() + 1);
+                } else {
+                    tempPos = new Position(toPos.getRow(), toPos.getColumn() - 1);
+                }
+                Piece capturedPiece = gameBoard.getTile(tempPos).getPiece();
+                incrementScore(capturedPiece.getColor(), capturedPiece.getPointValue());
+                gameBoard.setPiece(tempPos, null);
+            }
             if (gameBoard.getTile(toPos).hasPiece()) {
                 Piece capturedPiece = gameBoard.getTile(toPos).getPiece();
                 incrementScore(capturedPiece.getColor(), capturedPiece.getPointValue());
@@ -413,7 +424,8 @@ public class Game {
         gameBoard.updateHotspots();
     }
 
-    /**1
+    /**
+     * 1
      * Determines whether a checkmate has occurred.
      * Method is incomplete; must find a way to use findKingPosition() on the copy of the board
      */

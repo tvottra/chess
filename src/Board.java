@@ -783,5 +783,9 @@ public class Board {
         return -1;
     }
 
+    public void setPiece(Position pos, Piece newPiece) {
+        board[pos.getRow()][pos.getColumn()].setPiece(newPiece);
+    }
+
 
 }
