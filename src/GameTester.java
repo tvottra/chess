@@ -14,10 +14,50 @@ public class GameTester {
 		String name1 = "WHITE";
 		String name2 = "BLACK";
 		Game test = new Game(name1, name2);
-		clearBoard(test.getBoard());
-		testCastle(test.getBoard());
-		System.out.println(test.getBoard());
+		Board myBoard = test.getBoard();
+		clearBoard(myBoard);
+		generatePawns(0,myBoard);
+		setupKnight(myBoard);
+		System.out.println(myBoard);
 		test.playGame();
+	}
+
+	public static void generatePawns(int color, Board aBoard) {
+		for (int row = 0; row < aBoard.getSize(); row++) {
+			for (int col = 0; col < aBoard.getSize(); col++) {
+				aBoard.getTile(row, col).setPiece(new Pawn(color, new Position(row, col)));
+			}
+		}
+	}
+
+	/**
+	 * Determines the Position and color for a select number of Knights on the given
+	 * board
+	 * 
+	 * @param aBoard
+	 *            - the given board
+	 */
+	public static void setupKnight(Board aBoard) {
+		Position whitePos = new Position(7, 1);
+		Position blackPos = new Position(0, 1);
+		createKnight(whitePos, 0, aBoard);
+		createKnight(blackPos, 1, aBoard);
+	}
+
+	/**
+	 * 
+	 * Creates a Knight Piece on the given board with the given color and Position
+	 * 
+	 * @param pos
+	 *            - the knight's Position [row][col]
+	 * @param color
+	 *            - the knight's color; 0 = white, 1 = black
+	 * @param aBoard
+	 *            - the given board
+	 */
+	public static void createKnight(Position pos, int color, Board aBoard) {
+		Piece knight = new Knight(color, pos);
+		aBoard.getTile(pos).setPiece(knight);
 	}
 
 	/**
@@ -78,21 +118,6 @@ public class GameTester {
 		// Black pieces
 		Piece bKing = new King(1, new Position(0, 4));
 		aBoard.getTile(bKing.getPosition()).setPiece(bKing);
-
-	}
-
-	/**
-	 * 
-	 * Creates a Knight Piece on the given board
-	 * 
-	 * @param pos
-	 *            - the knight's Position [row][col]
-	 * @param color
-	 *            - the knight's color; 0 = white, 1 = black
-	 * @param aBoard
-	 *            - the given board
-	 */
-	public static void setupKnight(Position pos, int color, Board aBoard) {
 
 	}
 
