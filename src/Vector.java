@@ -13,6 +13,11 @@ public class Vector {
 		this.toPos = new Position(toPos);
 	}
 
+	public Vector(Vector other) {
+		this.fromPos = other.getFromPos();
+		this.toPos = other.getToPos();
+	}
+
 	public Position getFromPos() {
 		return fromPos;
 	}
