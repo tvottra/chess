@@ -27,15 +27,17 @@ public class AI extends Player {
 				if(Game.isValidPiece(fromPos, super.getNumber(), boardIAnalyze)) {
 					Piece myPiece = Piece.createPiece(chessBoard[r][c].getPiece());
 					ArrayList<Position> hotSpots = boardIAnalyze.getHotSpots(myPiece);						//this points to the same Board as the main Board if the main Board is passed to AI's constructor
-					Position optimalToPos = hotSpots.get(0);
-					int optimalToPosValue = 0;
-					for(Position hSpot: hotSpots) {
-						if(boardIAnalyze.getTile(hSpot).getPiece().getPointValue() > optimalToPosValue) {
-							optimalToPos = new Position(hSpot);
-							optimalToPosValue = boardIAnalyze.getTile(hSpot).getPiece().getPointValue();
+					if(hotSpots != null) {
+						Position optimalToPos = hotSpots.get(0);
+						int optimalToPosValue = 0;
+						for(Position hSpot: hotSpots) {
+							if(boardIAnalyze.isLegalMove(fromPos, hSpot) && boardIAnalyze.getTile(hSpot).hasPiece() && boardIAnalyze.getTile(hSpot).getPiece().getPointValue() > optimalToPosValue) {
+								optimalToPos = new Position(hSpot);
+								optimalToPosValue = boardIAnalyze.getTile(hSpot).getPiece().getPointValue();
+							}
 						}
+						optimalPlayPerFromPos.add(new Vector(fromPos, optimalToPos));
 					}
-					optimalPlayPerFromPos.add(new Vector(fromPos, optimalToPos));
 				}
 			}
 		}
@@ -43,12 +45,13 @@ public class AI extends Player {
 		Vector bestMove = optimalPlayPerFromPos.get(0);
 		int bestMoveValue = 0;
 		for(Vector move: optimalPlayPerFromPos) {
-			if(boardIAnalyze.getTile(move.getToPos()).getPiece().getPointValue() > bestMoveValue) {
+			if(boardIAnalyze.getTile(move.getToPos()).hasPiece() && boardIAnalyze.getTile(move.getToPos()).getPiece().getPointValue() > bestMoveValue) {
 				bestMove = new Vector(move);
 				bestMoveValue = boardIAnalyze.getTile(move.getToPos()).getPiece().getPointValue();
 			}
 		}
 
+		System.out.println("Best move: " + bestMove);
 		return bestMove;
 	}
 

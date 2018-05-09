@@ -48,7 +48,7 @@ public class Game {
 		int playerChoice = sc.nextInt();
 
 		if (playerChoice == 1) {
-			blackPlayer = new AI("Khoa", 1, gameBoard);
+			blackPlayer = new AI(blackPlayer.getName(), 1, gameBoard);
 		}
 
 		while (!gameIsOver()) {
@@ -62,7 +62,11 @@ public class Game {
 			} else {
 				// Black's turn
 				while (!isWhiteTurn) {
-					startAIPlayerTurn(blackPlayer, whitePlayer);
+					if (playerChoice == 1) {
+						startAIPlayerTurn((AI)blackPlayer, whitePlayer);
+					} else {
+						startPlayerTurn(blackPlayer, whitePlayer);
+					}
 					isWhiteTurn = !isWhiteTurn;
 				} // End Black's turn
 			}
@@ -111,13 +115,13 @@ public class Game {
 	/**
 	 * Starts a turn played by the AI. AI Never surrenders
 	 *
-	 * @param pl    - the turn player
+	 * @param myAI    - the turn player
 	 * @param other - the opposing player
 	 */
-	private void startAIPlayerTurn(Player pl, Player other) {
-		System.out.println(pl.getName() + " is looking at the board.");
+	private void startAIPlayerTurn(AI myAI, Player other) {
+		System.out.println(myAI.getName() + " is looking at the board.");
 		System.out.println(gameBoard);
-		continueAITurn(pl);
+		continueAITurn(myAI);
 	}
 
 	/**
@@ -165,20 +169,21 @@ public class Game {
 	/**
 	 * Selects the piece and destination for the player
 	 *
-	 * @param pl
+	 * @param myAI
 	- the turn player
 	 */
-	private void continueAITurn(Player pl) {
-//		pl.
-//		if (currentPiece != null &&currentPiece.getName().equals("Pawn") && ((Pawn) (currentPiece)).isWaitingForPromotion()) {
-//			promotion(currentPiece);
-//		}
+	private void continueAITurn(AI myAI) {
+		Vector bestMove = myAI.generateHighestPointValueMove();
+		if(bestMove.getFromPos() == null && bestMove.getToPos() == null) {
+			blackPlayer.isResigned();
+		}
+		movePieceOnBoard(bestMove.getFromPos(), bestMove.getToPos());
 		update();
 		System.out.println(gameBoard);}
 
 
 	/**
-	 * Moves a Piece from one Tile to another onthe board of Tiles without checking for legality; if a capture is made, adds the point value of the captured piece to
+	 * Moves a Piece from one Tile to another on the board of Tiles without checking for legality; if a capture is made, adds the point value of the captured piece to
 	 * the turn player's score.
 	 *
 	 * @param fromPos - the Piece's current position
