@@ -224,7 +224,7 @@ public class Board {
 
 			if(direction < 0) {
 				for(int col = king.getPosition().getColumn() - 1; col > 0; col--) {
-					if(board[king.getPosition().getRow()][col].hasPiece()) {
+					if(board[king.getPosition().getRow()][col] != null) {
 						return false;
 					}
 				}
@@ -239,7 +239,7 @@ public class Board {
 				return true;
 			} else {
 				for(int col = king.getPosition().getColumn() + 1; col < 7; col++) {
-					if(board[king.getPosition().getRow()][col].hasPiece()) {
+					if(board[king.getPosition().getRow()][col] != null) {
 						return false;
 					}
 				}
@@ -542,7 +542,7 @@ public class Board {
 		for (int i = 1; i < branch1end; i++) {
 			Tile currentTile = board[rom.get(i).getRow()][rom.get(i).getColumn()];
 
-			if (currentTile != null) {
+			if (currentTile.hasPiece()) {
 
 				hotspots.add(rom.get(i));
 				break;
@@ -553,7 +553,7 @@ public class Board {
 		for (int i = branch1end + 1; i < branch2end; i++) {
 			Tile currentTile = board[rom.get(i).getRow()][rom.get(i).getColumn()];
 
-			if (currentTile != null) {
+			if (currentTile.hasPiece()) {
 
 				hotspots.add(rom.get(i));
 				break;
@@ -564,7 +564,7 @@ public class Board {
 		for (int i = branch2end + 1; i < branch3end; i++) {
 			Tile currentTile = board[rom.get(i).getRow()][rom.get(i).getColumn()];
 
-			if (currentTile != null) {
+			if (currentTile.hasPiece()) {
 				hotspots.add(rom.get(i));
 				break;
 			} else {
@@ -623,7 +623,7 @@ public class Board {
 		// Look at vector above rook
 		for (int i = 1; i < hbranch1end; i++) {
 			Tile currentTile = board[rom.get(i).getRow()][rom.get(i).getColumn()];
-			if (currentTile != null) {
+			if (currentTile.hasPiece()) {
 				hotSpots.add(rom.get(i));
 				break;
 			} else {
@@ -633,7 +633,7 @@ public class Board {
 		// Look at vector above rook
 		for (int i = hbranch1end + 1; i < hbranch2end; i++) {
 			Tile currentTile = board[rom.get(i).getRow()][rom.get(i).getColumn()];
-			if (currentTile != null) {
+			if (currentTile.hasPiece()) {
 				hotSpots.add(rom.get(i));
 				break;
 			} else {
@@ -643,7 +643,7 @@ public class Board {
 		// Look at vector left of rook
 		for (int i = hbranch2end + 1; i < hbranch3end; i++) {
 			Tile currentTile = board[rom.get(i).getRow()][rom.get(i).getColumn()];
-			if (currentTile != null) {
+			if (currentTile.hasPiece()) {
 				hotSpots.add(rom.get(i));
 				break;
 			} else {
@@ -653,7 +653,7 @@ public class Board {
 		// Look at vector right of rook
 		for (int i = hbranch3end + 1; i < hbranch4end; i++) {
 			Tile currentTile = board[rom.get(i).getRow()][rom.get(i).getColumn()];
-			if (currentTile != null) {
+			if (currentTile.hasPiece()) {
 				hotSpots.add(rom.get(i));
 				break;
 			} else {
@@ -717,7 +717,7 @@ public class Board {
 		for (int i = 1; i < hbranch1end; i++) {
 			Tile currentTile = board[rom.get(i).getRow()][rom.get(i).getColumn()];
 
-			if (currentTile != null) {
+			if (currentTile.hasPiece()) {
 				hotSpots.add(rom.get(i));
 				break;
 			} else {
@@ -728,7 +728,7 @@ public class Board {
 		for (int i = hbranch1end + 1; i < hbranch2end; i++) {
 			Tile currentTile = board[rom.get(i).getRow()][rom.get(i).getColumn()];
 
-			if (currentTile != null) {
+			if (currentTile.hasPiece()) {
 				hotSpots.add(rom.get(i));
 				break;
 			} else {
@@ -739,7 +739,7 @@ public class Board {
 		for (int i = hbranch2end + 1; i < hbranch3end; i++) {
 			Tile currentTile = board[rom.get(i).getRow()][rom.get(i).getColumn()];
 
-			if (currentTile != null) {
+			if (currentTile.hasPiece()) {
 				hotSpots.add(rom.get(i));
 				break;
 			} else {
@@ -750,7 +750,7 @@ public class Board {
 		for (int i = hbranch3end + 1; i < hbranch4end; i++) {
 			Tile currentTile = board[rom.get(i).getRow()][rom.get(i).getColumn()];
 
-			if (currentTile != null) {
+			if (currentTile.hasPiece()) {
 				hotSpots.add(rom.get(i));
 				break;
 			} else {
@@ -761,7 +761,7 @@ public class Board {
 		for (int i = hbranch4end + 1; i < dbranch1end; i++) {
 			Tile currentTile = board[rom.get(i).getRow()][rom.get(i).getColumn()];
 
-			if (currentTile != null) {
+			if (currentTile.hasPiece()) {
 				hotSpots.add(rom.get(i));
 				break;
 			} else {
@@ -772,7 +772,7 @@ public class Board {
 		for (int i = dbranch1end + 1; i < dbranch2end; i++) {
 			Tile currentTile = board[rom.get(i).getRow()][rom.get(i).getColumn()];
 
-			if (currentTile != null) {
+			if (currentTile.hasPiece()) {
 				hotSpots.add(rom.get(i));
 				break;
 			} else {
@@ -783,7 +783,7 @@ public class Board {
 		for (int i = dbranch2end + 1; i < dbranch3end; i++) {
 			Tile currentTile = board[rom.get(i).getRow()][rom.get(i).getColumn()];
 
-			if (currentTile != null) {
+			if (currentTile.hasPiece()) {
 				hotSpots.add(rom.get(i));
 				break;
 			} else {
@@ -794,7 +794,7 @@ public class Board {
 		for (int i = dbranch3end + 1; i < dbranch4end; i++) {
 			Tile currentTile = board[rom.get(i).getRow()][rom.get(i).getColumn()];
 
-			if (currentTile != null) {
+			if (currentTile.hasPiece()) {
 				hotSpots.add(rom.get(i));
 				break;
 			} else {
