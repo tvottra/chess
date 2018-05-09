@@ -55,6 +55,7 @@ public class Game {
 			while (isWhiteTurn) {
 				startPlayerTurn(whitePlayer, blackPlayer);
 				isWhiteTurn = !isWhiteTurn;
+				findCheckmate();
 			} // End White's turn
 			if (gameIsOver()) {
 				break;
@@ -63,6 +64,7 @@ public class Game {
 				while (!isWhiteTurn) {
 					startPlayerTurn(blackPlayer, whitePlayer);
 					isWhiteTurn = !isWhiteTurn;
+					findCheckmate();
 				} // End Black's turn
 			}
 		} // End game
@@ -84,6 +86,7 @@ public class Game {
 		System.out.println("(1) Select a piece to move");
 		System.out.println("(2) Resign");
 		System.out.println("(3) Request draw");
+		System.out.println("(4) Pass turn: for testing only");
 		int playerChoice = sc.nextInt();
 		switch (playerChoice) {
 		case 1:
@@ -94,20 +97,28 @@ public class Game {
 			pl.setResign(true);
 			break;
 		case 3:
-			System.out.println("Does " + pl.getName() + " accept Player " + other.getName() + "'s draw offer?");
+			System.out.println("Does " + other.getName() + " accept " + pl.getName() + "'s draw offer?");
 			System.out.println("(1) Accept draw");
 			System.out.println("(2) Decline draw");
 			int drawChoice = sc.nextInt();
 			if (drawChoice == 1) {
 				setDraw(true);
-				System.out.println(pl.getName() + " has accepted " + other.getName() + "'s draw offer.");
+				System.out.println(other.getName() + " has accepted " + pl.getName() + "'s draw offer.");
 			} else {
 				setDraw(false);
-				System.out.println(pl.getName() + " has declined " + other.getName() + "'s draw offer.");
+				System.out.println(other.getName() + " has declined " + pl.getName() + "'s draw offer.");
 				isWhiteTurn = !isWhiteTurn; // make sure the turn player's turn is not skipped
 			}
 			break;
+		case 4:
+			// do nothing
+			System.out.println(pl.getName() + " has passed");
+			break;
+		default:
+				System.out.println("An invalid number was entered: please choose 1-4");
+				break;
 		}
+		
 	}
 
 	/**
@@ -136,12 +147,15 @@ public class Game {
 		// Check whether the supposed move is legal
 		while (!isValidPiece(fromPos.getRow(), fromPos.getColumn(), pl.getNumber())
 				|| !isWithinBounds(toPos.getRow(), toPos.getColumn())
-				|| !gameBoard.isLegalMove(fromPos, toPos) && !castle) {
+				|| !gameBoard.isLegalMove(fromPos, toPos) || (gameBoard.getTile(fromPos).getPiece().getName().equals("King") && !castle)) {
 			if (!isValidPiece(fromPos.getRow(), fromPos.getColumn(), pl.getNumber())) {
 				System.out.println("Invalid coordinates for the piece to be moved:");				
 			}
 			if(!isWithinBounds(toPos.getRow(), toPos.getColumn())) {
 				System.out.println("Invalid coordinates for the destination:");
+			}
+			if (gameBoard.getTile(fromPos).getPiece().getName().equals("King") && !castle) {
+				System.out.println("Illegal: cannot castle");
 			}
 			System.out.println("Move to " + toPos + " is not legal. Please repeat the move process.");
 			fromPos = choosePiece();
@@ -180,10 +194,10 @@ public class Game {
 		// If a capture is made, add points to the player's score
 		if (gameBoard.getTile(toPos).hasPiece()) {
 			Piece capturedPiece = gameBoard.getTile(toPos).getPiece();
+			System.out.println(capturedPiece + " has just been captured!");
 			incrementScore(capturedPiece.getColor(), capturedPiece.getPointValue());
 		}
 		gameBoard.movePiece(fromPos, toPos);
-
 	}
 
 	/**
