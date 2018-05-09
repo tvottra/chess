@@ -224,7 +224,7 @@ public class Board {
 
 			if(direction < 0) {
 				for(int col = king.getPosition().getColumn() - 1; col > 0; col--) {
-					if(board[king.getPosition().getRow()][col] != null) {
+					if(board[king.getPosition().getRow()][col].hasPiece()) {
 						return false;
 					}
 				}
@@ -239,7 +239,7 @@ public class Board {
 				return true;
 			} else {
 				for(int col = king.getPosition().getColumn() + 1; col < 7; col++) {
-					if(board[king.getPosition().getRow()][col] != null) {
+					if(board[king.getPosition().getRow()][col].hasPiece()) {
 						return false;
 					}
 				}

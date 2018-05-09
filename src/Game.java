@@ -132,7 +132,7 @@ public class Game {
 			castle = true;
 		}
 		// Check whether the supposed move is legal
-		while (!gameBoard.isLegalMove(fromPos, toPos) && !castle) {
+		while ( !castle && !gameBoard.isLegalMove(fromPos, toPos)) {
 			System.out.println("Move to " + toPos
 					+ " is not legal. Please choose another destination.");
 			toPos = chooseDestination();
