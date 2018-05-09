@@ -837,6 +837,7 @@ public class Board {
 	 * @return true if the King is checked, false otherwise
 	 */
 	public boolean isKingChecked(int color, Tile[][] aBoard) {
+		/*
 		Position kingPos = findKingPosition(color, aBoard);
 		if (color == 0) {
 			ArrayList<Position> bHotspots = getBlackHotspots(aBoard);
@@ -853,6 +854,8 @@ public class Board {
 				}
 			}
 		}
+		return false;
+		*/
 		return false;
 	}
 
