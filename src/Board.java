@@ -313,7 +313,7 @@ public class Board {
 			// For debugging purposes
 			if (!isWithinHotspots(pieceToMove, toPos)) {
 				System.out.println("Illegal: proposed move not within actual range of movement");
-				}
+			}
 			if ((board[toRow][toCol].hasPiece()
 					&& board[toRow][toCol].getPiece().isSameColorAs(board[fromRow][fromCol].getPiece()))) {
 				System.out.println("Illegal: can't capture your own piece");
@@ -349,7 +349,7 @@ public class Board {
 	 * @return true if toPos is within the Piece's hotspots, false otherwise
 	 */
 	private boolean isWithinHotspots(Piece piece, Position toPos) {
-		ArrayList<Position> myHotspots = getHotSpots(piece);
+		ArrayList<Position> myHotspots = getHotspots(piece);
 
 		if (myHotspots == null) {
 			return false;
@@ -398,7 +398,7 @@ public class Board {
 	 *            - the given Piece
 	 * @return all the Positions currently checked by this Piece
 	 */
-	public ArrayList<Position> getHotSpots(Piece piece) {
+	public ArrayList<Position> getHotspots(Piece piece) {
 		if (piece.getName().equals("Pawn")) {
 			return getPawnHotspots(piece);
 		}
@@ -433,9 +433,9 @@ public class Board {
 		for (int row = 0; row < SIZE; row++) {
 			for (int col = 0; col < SIZE; col++) {
 
-				if (aBoard[row][col].getPiece() != null && aBoard[row][col].getPiece().getColor() == 0) {
+				if (aBoard[row][col].hasPiece() && aBoard[row][col].getPiece().getColor() == 0) {
 
-					ArrayList<Position> myHotspots = new ArrayList<Position>();
+					ArrayList<Position> myHotspots = getHotspots(aBoard[row][col].getPiece());
 					for (Position pos : myHotspots) {
 						wHotspots.add(pos);
 					}
@@ -457,9 +457,9 @@ public class Board {
 		for (int row = 0; row < SIZE; row++) {
 			for (int col = 0; col < SIZE; col++) {
 
-				if (aBoard[row][col].getPiece() != null && aBoard[row][col].getPiece().getColor() == 1) {
+				if (aBoard[row][col].hasPiece() && aBoard[row][col].getPiece().getColor() == 1) {
 
-					ArrayList<Position> myHotspots = new ArrayList<Position>();
+					ArrayList<Position> myHotspots = getHotspots(aBoard[row][col].getPiece());
 					for (Position pos : myHotspots) {
 						bHotspots.add(pos);
 					}
@@ -891,7 +891,7 @@ public class Board {
 				// If there is a Piece
 				if (t2.getPiece() != null) {
 					Piece myPiece = t2.getPiece();
-					checkedPos = getHotSpots(myPiece);
+					checkedPos = getHotspots(myPiece);
 					boolean isWhite = myPiece.getColor() == 0;
 					// For each Position checked, update each corresponding Tile's isWhiteHotSpot
 					// and isBlackHotSpot accordingly
