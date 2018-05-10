@@ -21,11 +21,9 @@ public class Game {
 
 	/**
 	 * Constructor to initialize the players, gameBoard, and game state
-	 * 
-	 * @param name1
-	            * - whitePlayer's name
-	 * @param name2
-	            * - blackPlayer's name
+	 *
+	 * @param name1 - whitePlayer's name
+	 * @param name2 - blackPlayer's name
 	 */
 	public Game(String name1, String name2) {
 
@@ -46,48 +44,49 @@ public class Game {
 		return gameBoard;
 	}
 
-    /**
-     * Begins the chess game. The game ends when 1) a player has been checkmated, 2)
-     * both players have agreed to a draw, 3) a player resigns, or 4) there is a
-     * stalemate. Calls helper methods to display prompts and play the game
-     */
-    public void playGame() {
-        System.out.println("Would you like to play against the computer or another person?");
+	/**
+	 * Begins the chess game. The game ends when 1) a player has been checkmated, 2)
+	 * both players have agreed to a draw, 3) a player resigns, or 4) there is a
+	 * stalemate. Calls helper methods to display prompts and play the game
+	 */
+	public void playGame() {
+		System.out.println("Would you like to play against the computer or another person?");
 		System.out.println("(1) Computer");
 		System.out.println("(2) Person");
 		int playerChoice = sc.nextInt();
 
 		if (playerChoice == 1) {
 			blackPlayer = new AI(blackPlayer.getName(), 1, gameBoard);
-		}while (!gameIsOver()) {
-            // White's turn
-            while (isWhiteTurn) {
-                startPlayerTurn(whitePlayer, blackPlayer);
-                isWhiteTurn = !isWhiteTurn;
-            } // End White's turn
-            if (gameIsOver()) {
-                break;
-            } else {
-                // Black's turn
-                while (!isWhiteTurn) {
-                    if (playerChoice == 1) {
-						startAIPlayerTurn((AI)blackPlayer, whitePlayer);
-					} else {startPlayerTurn(blackPlayer, whitePlayer);}
-                    isWhiteTurn = !isWhiteTurn;
-                } // End Black's turn
-            }
-        } // End game
-        displayEndgame();
-    }
+		}
+		while (!gameIsOver()) {
+			// White's turn
+			while (isWhiteTurn) {
+				startPlayerTurn(whitePlayer, blackPlayer);
+				isWhiteTurn = !isWhiteTurn;
+			} // End White's turn
+			if (gameIsOver()) {
+				break;
+			} else {
+				// Black's turn
+				while (!isWhiteTurn) {
+					if (playerChoice == 1) {
+						startAIPlayerTurn((AI) blackPlayer, whitePlayer);
+					} else {
+						startPlayerTurn(blackPlayer, whitePlayer);
+					}
+					isWhiteTurn = !isWhiteTurn;
+				} // End Black's turn
+			}
+		} // End game
+		displayEndgame();
+	}
 
 	/**
 	 * Begins a player's turn; a player has 3 possible moves each turn: 1) move a
 	 * piece, 2) resign, or 3) request a draw
-	 * 
-	 * @param pl
-	         *    - the turn player
-	 * @param other
-	            * - the opposing player
+	 *
+	 * @param pl    - the turn player
+	 * @param other - the opposing player
 	 */
 	private void startPlayerTurn(Player pl, Player other) {
 		System.out.println("It is " + pl.getName() + "'s turn. Select one option:");
@@ -123,20 +122,20 @@ public class Game {
 	/**
 	 * Starts a turn played by the AI. AI Never surrenders
 	 *
-	 * @param myAI    - the turn player
+	 * @param myAI  - the turn player
 	 * @param other - the opposing player
 	 */
 	private void startAIPlayerTurn(AI myAI, Player other) {
 		System.out.println(myAI.getName() + " is looking at the board.");
 		System.out.println(gameBoard);
 		continueAITurn(myAI);
+
 	}
 
 	/**
 	 * Selects the piece and destination for the player
-	 * 
-	 * @param pl
-	            * - the turn player
+	 *
+	 * @param pl - the turn player
 	 */
 	private void continueTurn(Player pl) {
 		Scanner sc = new Scanner(System.in);
@@ -164,7 +163,7 @@ public class Game {
 			if (!isValidPiece(fromPos, pl.getNumber(), gameBoard)) {
 				System.out.println("Invalid coordinates for the piece to be moved:");
 			}
-			if(!isWithinBounds(toPos.getRow(), toPos.getColumn())) {
+			if (!isWithinBounds(toPos.getRow(), toPos.getColumn())) {
 				System.out.println("Invalid coordinates for the destination:");
 			}
 			System.out.println("Move to " + toPos + " is not legal. Please repeat the move process.");
@@ -185,23 +184,33 @@ public class Game {
 				&& ((Pawn) (currentPiece)).isWaitingForPromotion()) {
 			promotion(currentPiece);
 		}
-	update();
-		System.out.println(gameBoard);}
+		update();
+		System.out.println(gameBoard);
+	}
 
 	/**
 	 * Selects the piece and destination for the player
 	 *
-	 * @param myAI
-	- the turn player
+	 * @param myAI - the turn player
 	 */
 	private void continueAITurn(AI myAI) {
 		Vector bestMove = myAI.generateHighestPointValueMove();
-		if(bestMove.getFromPos() == null && bestMove.getToPos() == null) {
+		if (bestMove == null || bestMove.getFromPos() == null && bestMove.getToPos() == null) {
 			blackPlayer.isResigned();
+			return;
 		}
 		movePieceOnBoard(bestMove.getFromPos(), bestMove.getToPos());
+		String feedback = gameBoard.getTile(bestMove.getFromPos()).getPiece().toString(); // contains the location of the Piece prior
+		System.out.println(feedback + " has moved to " + bestMove.getToPos() + "\n");
+		// Account for promotion
+		Piece currentPiece = gameBoard.getTile(bestMove.getToPos()).getPiece();
+		if (currentPiece != null && currentPiece.getName().equals("Pawn")
+				&& ((Pawn) (currentPiece)).isWaitingForPromotion()) {
+			promotion(currentPiece);
+		}
 		update();
-		System.out.println(gameBoard);}
+		System.out.println(gameBoard);
+	}
 
 
 	/**
@@ -209,11 +218,8 @@ public class Game {
 	 * for legality; if a capture is made, adds the point value of the captured
 	 * piece to the turn player's score.
 	 *
-	 * @param fromPos
-	            * - the Piece's current position
-	 * @param toPos
-	          *   - the Position to which the Piece will be moved
-*
+	 * @param fromPos - the Piece's current position
+	 * @param toPos   - the Position to which the Piece will be moved
 	 */
 	public void movePieceOnBoard(Position fromPos, Position toPos) {
 		// If a capture is made, add points to the player's score
@@ -226,20 +232,20 @@ public class Game {
 	}
 
 
-    /**
-     * Checks to see if at least 1 of the conditions that would end the game is
-     * present
-     *
-     * @return true if the game is over, false otherwise
-     */
-    private boolean gameIsOver() {
-        if (whitePlayer.isCheckMated() || blackPlayer.isCheckMated() || draw || whitePlayer.isResigned()
-                || blackPlayer.isResigned() || stalemate) {
-            return true;
-        } else {
-            return false;
-        }
-    }
+	/**
+	 * Checks to see if at least 1 of the conditions that would end the game is
+	 * present
+	 *
+	 * @return true if the game is over, false otherwise
+	 */
+	private boolean gameIsOver() {
+		if (whitePlayer.isCheckMated() || blackPlayer.isCheckMated() || draw || whitePlayer.isResigned()
+				|| blackPlayer.isResigned() || stalemate) {
+			return true;
+		} else {
+			return false;
+		}
+	}
 
 	/**
 	 * Checks the endgame state and prints the appropriate message
@@ -285,20 +291,17 @@ public class Game {
 	 * First checks whether the given row and column indexes are in bounds, then
 	 * checks whether there is a Piece of the correct color at the specified row and
 	 * column indexes
-	 * 
-	 * @param row
-	          *   - the row index
-	 * @param col
-	          *   - the column index
-	 * @param color
-	            * - 0 for white, 1 for black
+	 *
+	 * @param row   - the row index
+	 * @param col   - the column index
+	 * @param color - 0 for white, 1 for black
 	 * @return true if there is a Piece of the correct color at the row and column
 	 * indexes, false otherwise
 	 */
 	public static boolean isValidPiece(int row, int col, int color, Board board) {
-		if (new Position(row, col) .isWithinBounds() && board.getTile(row, col).hasPiece()) {
+		if (new Position(row, col).isWithinBounds() && board.getTile(row, col).hasPiece()) {
 
-					return board.getTile(row, col).getPiece().getColor() == color;
+			return board.getTile(row, col).getPiece().getColor() == color;
 		} else {
 			return false;
 		}
@@ -309,7 +312,7 @@ public class Game {
 	 * checks whether there is a Piece of the correct color at the specified row and
 	 * column indexes
 	 *
-	 * @param pos - Position of the board to check at
+	 * @param pos   - Position of the board to check at
 	 * @param color - 0 for white, 1 for black
 	 * @param board to check at
 	 * @return true if there is a Piece of the correct color at the row and column
@@ -354,12 +357,9 @@ public class Game {
 	/**
 	 * Increments the score of the player with the color OPPOSITE of the given color
 	 * by the given value
-	 * 
-	 * @param color
-	            * - 0 if black, 1 if white
-	 * @param val
-	          *   - the value of the captured piece
-*
+	 *
+	 * @param color - 0 if black, 1 if white
+	 * @param val   - the value of the captured piece
 	 */
 	private void incrementScore(int color, int val) {
 		if (color == 0) {
@@ -371,9 +371,8 @@ public class Game {
 
 	/**
 	 * Accessor method to get the player with the given color
-	 * 
-	 * @param color
-	            * - 0 for white, 1 for black
+	 *
+	 * @param color - 0 for white, 1 for black
 	 * @return white player if color = 0, black player if color = 1
 	 */
 	public Player getPlayer(int color) {
@@ -386,9 +385,8 @@ public class Game {
 
 	/**
 	 * Mutator method that updates the draw status of the game
-	 * 
-	 * @param draw
-	            * - true if there is a draw, false otherwise
+	 *
+	 * @param draw - true if there is a draw, false otherwise
 	 */
 	public void setDraw(boolean draw) {
 		this.draw = draw;
@@ -396,9 +394,8 @@ public class Game {
 
 	/**
 	 * Mutator method that updates the turn
-	 * 
-	 * @param turn
-	            * - true if it is whitePlayer's turn, false otherwise
+	 *
+	 * @param turn - true if it is whitePlayer's turn, false otherwise
 	 */
 	public void setTurn(boolean turn) {
 		isWhiteTurn = turn;
@@ -406,9 +403,8 @@ public class Game {
 
 	/**
 	 * Mutator method that updates stalemate
-	 * 
-	 * @param stale
-	            * - true if there is a stalemate, false otherwise
+	 *
+	 * @param stale - true if there is a stalemate, false otherwise
 	 */
 	public void setStalemate(boolean stale) {
 		stalemate = stale;
@@ -431,9 +427,8 @@ public class Game {
 	 * Pawn. A white Pawn is promoted if it is on row 0; a black Pawn is promoted if
 	 * it is on row 7. The method removes the promoted Pawn from the board and
 	 * constructs the user's specified Piece at the current Position.
-	 * 
-	 * @param promotedPawn
-	            * - the given promoted Pawn
+	 *
+	 * @param promotedPawn - the given promoted Pawn
 	 */
 	private void promotion(Piece promotedPawn) {
 		Scanner sc = new Scanner(System.in);
@@ -481,17 +476,17 @@ public class Game {
 		gameBoard.updateHotSpots();
 	}
 
-    /**
-     * Determines whether a checkmate has occurred.
-      Method is incomplete; must find* a way to use findKingPosition() on the copy of the board
-     */
-    public void findCheckmate() {
-        int color = gameBoard.getWhoIsCheckmated();
-        if (color == 0) {
-            whitePlayer.setCheckMate(true);
-        } else if (color == 1) {
-            blackPlayer.setCheckMate(true);
-        }
+	/**
+	 * Determines whether a checkmate has occurred.
+	 * Method is incomplete; must find* a way to use findKingPosition() on the copy of the board
+	 */
+	public void findCheckmate() {
+		int color = gameBoard.getWhoIsCheckmated();
+		if (color == 0) {
+			whitePlayer.setCheckMate(true);
+		} else if (color == 1) {
+			blackPlayer.setCheckMate(true);
+		}
 
 	}
 

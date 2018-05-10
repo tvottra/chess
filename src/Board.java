@@ -274,6 +274,9 @@ public class Board {
 
 		//System.out.println("IsLegalMove() called once.");
 
+		if(!fromPos.isWithinBounds() || !toPos.isWithinBounds()) {
+			return false;
+		}
 
 
 		int fromRow = fromPos.getRow();
