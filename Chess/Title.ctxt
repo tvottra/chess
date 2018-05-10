@@ -1,11 +1,13 @@
 #BlueJ class context
 comment0.target=Title
-comment1.params=text\ s
-comment1.target=Title(java.lang.String,\ int)
+comment1.params=text\ s\ invis
+comment1.target=Title(java.lang.String,\ int,\ boolean)
 comment2.params=text
 comment2.target=void\ setText(java.lang.String)
 comment3.params=
 comment3.target=void\ act()
 comment4.params=
 comment4.target=java.lang.String\ getText()
-numComments=5
+comment5.params=
+comment5.target=void\ fadeInOut()
+numComments=6

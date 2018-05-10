@@ -24,8 +24,8 @@ public class OpeningScreen extends World
     {    
         super(800, 800, 1); 
         addObject(singlePlayer, getWidth() / 2, getWidth() / 2);
-        addObject(new Title("Chess", 100), getWidth() / 2, getWidth() / 4);
-        addObject(new Title("By Andrew Le, Tommy Tran, Arjun Agrawal, Brian Qiu, Jonathan Lim", 25), getWidth() / 2, getWidth() / 3);
+        addObject(new Title("Chess", 100, false), getWidth() / 2, getWidth() / 4);
+        addObject(new Title("By Andrew Le, Tommy Tran, Arjun Agrawal, Brian Qiu, Jonathan Lim", 25, false), getWidth() / 2, getWidth() / 3);
         addObject(twoPlayer, getWidth() / 2, 3* getWidth() / 5);
         addObject(howToPlay, getWidth() / 2, 3* getWidth() / 4);
     }

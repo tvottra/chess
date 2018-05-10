@@ -9,10 +9,13 @@ public class Title extends Actor
 {
     private String buttonText = "";
     private int size;
+    private boolean invisible;
+    GreenfootImage image = new GreenfootImage(1, 1);
  
-    public Title(String text, int s)
+    public Title(String text, int s, boolean invis)
     {
         size = s;
+        invisible = invis;
         setText(text);
     }
  
@@ -23,6 +26,9 @@ public class Title extends Actor
         GreenfootImage image=new GreenfootImage(textImg.getWidth()+8, textImg.getHeight()+8);
         image.setColor(Color.BLACK);
         image.drawImage(textImg, (image.getWidth()-textImg.getWidth())/2, (image.getHeight()-textImg.getHeight())/2);
+        if(invisible){
+            image.setTransparency(100);
+        }
         setImage(image);
     }
  
@@ -33,5 +39,28 @@ public class Title extends Actor
     public String getText()
     {
         return buttonText;
+    }
+    
+    public void fadeInOut(){
+        if(image.getTransparency() == 100){
+            invisible = true;
+        }
+        else if(image.getTransparency() > 0 && invisible){
+            image.setTransparency(image.getTransparency() - 1);
+            setimage(image);
+        }
+        else if(image.getTransparency() == 0){
+            invisible  = false;
+            image.setTransparency(image.getTransparency() + 1);
+            setimage(image);
+        }
+        else if(image.getTransparency() < 100 && !invisible){
+            image.setTransparency(image.getTransparency() + 1);
+            setimage(image);
+        }
+    }
+    
+    public GreenfootImage getImage(){
+        return image;
     }
 }

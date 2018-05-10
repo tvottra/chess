@@ -15,10 +15,29 @@ public class Game extends World{
 	private Player whitePlayer; // white
 	private Player blackPlayer; // black
 	private Board gameBoard;
+	private boolean first = true;
 	private boolean draw;
 	private boolean stalemate;
 	private boolean isWhiteTurn; // true if it is white's turn, false otherwise
 
+	/**
+	 * Constructor to initialize the players, gameBoard, and game state
+	 */
+	public Game(){
+	    super(80, 80, 10);
+		whitePlayer = new Player("A", 0);
+		blackPlayer = new Player("B", 1);
+		gameBoard = new Board();
+		for(int row = 0; row < 8; row++){
+		    for(int col = 0; col < 8; col++){
+		        addObject(gameBoard.getBoard()[row][col], col * 10 + 4, row * 10 + 5);
+		      }
+		  }
+		draw = false;
+		stalemate = false;
+		isWhiteTurn = true;		
+	}
+	
 	/**
 	 * Constructor to initialize the players, gameBoard, and game state
 	 * 
@@ -28,13 +47,13 @@ public class Game extends World{
 	 *            - blackPlayer's name
 	 */
 	public Game(String name1, String name2) {
-	    super(8, 8, 100);
+	    super(80, 80, 10);
 		whitePlayer = new Player(name1, 0);
 		blackPlayer = new Player(name2, 1);
 		gameBoard = new Board();
 		for(int row = 0; row < 8; row++){
 		    for(int col = 0; col < 8; col++){
-		        addObject(gameBoard.getBoard()[row][col], col, row);
+		        addObject(gameBoard.getBoard()[row][col], col * 10 + 4, row * 10 + 5);
 		      }
 		  }
 		draw = false;
@@ -57,23 +76,18 @@ public class Game extends World{
 	 * stalemate. Calls helper methods to display prompts and play the game
 	 */
 	public void playGame() {
-		while (!gameIsOver()) {
-			// White's turn
-			while (isWhiteTurn) {
-				startPlayerTurn(whitePlayer, blackPlayer);
-				isWhiteTurn = !isWhiteTurn;
-			} // End White's turn
-			if (gameIsOver()) {
-				break;
-			} else {
-				// Black's turn
-				while (!isWhiteTurn) {
-					startPlayerTurn(blackPlayer, whitePlayer);
-					isWhiteTurn = !isWhiteTurn;
-				} // End Black's turn
+		
+	    if (gameIsOver()) {
+				displayEndgame();
 			}
-		} // End game
-		displayEndgame();
+			// White's turn
+		if (isWhiteTurn) {
+				startPlayerTurn(whitePlayer, blackPlayer);
+			} // End White's turn
+		else {
+			// Black's turn
+		    startPlayerTurn(blackPlayer, whitePlayer);
+				} // End Black's turn
 	}
 
 	/**
@@ -87,7 +101,7 @@ public class Game extends World{
 	 */
 	private void startPlayerTurn(Player pl, Player other) {
 		Scanner sc = new Scanner(System.in);
-		System.out.println("It is " + pl.getName() + "'s turn. Select one option:");
+		addObject(new Title("It is " + pl.getName() + "'s turn.", 100, true), getWidth() / 2, getWidth() / 2);
 		System.out.println("(1) Select a piece to move");
 		System.out.println("(2) Resign");
 		System.out.println("(3) Request draw");
@@ -444,6 +458,17 @@ public class Game extends World{
 	}
 	
 	public void act(){
-	    
+	    if(first){
+	        Title turn = new Title("It is " + whitePlayer.getName() + "'s turn.", 100, true);
+	        addObject(turn, getWidth() / 2, getWidth() / 2);
+	        Greenfoot.setSpeed(1);
+	        turn.getImage().setTransparency(turn.getImage().getTransparency() - 1);
+	        while(turn.getImage().getTransparency() != 100){
+	            turn.fadeInOut();
+	            Greenfoot.delay(1);
+	        }
+	        Greenfoot.setSpeed(50);
+	        first = false;
+	    }
 	}
 }
