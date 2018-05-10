@@ -6,18 +6,17 @@ import java.util.ArrayList;
  * @author Brian
  */
 public class Pawn extends Piece {
+    private boolean hasMovedTwo;
 
-	/**
-	 * Contructor to initialize the Pawn's color and Position
-	 *
-	 * @param color
-	 *            - the Pawn's color
-	 * @param pos
-	 *            - the Pawn's Position
-	 */
-	public Pawn(int color, Position pos) {
-		super("Pawn", color, pos, 1);
-	}
+    /**
+     * Contructor to initialize the Pawn's color and Position
+     *
+     * @param color* - the Pawn's color
+     * @param pos*   - the Pawn's Position
+     */
+    public Pawn(int color, Position pos) {
+        super("Pawn", color, pos, 1);
+    hasMovedTwo = false;}
 
 	@Override
 	/**
@@ -100,7 +99,7 @@ public class Pawn extends Piece {
 	/**
 	 * Determines whther this Pawn need to be promoted; a white Pawn is promoted if
 	 * it is on row 0; a black Pawn is promoted if it is on row 7.
-	 * 
+	 *
 	 * @return true if this Pawn should be promoted, false otherwise
 	 */
 	public boolean isWaitingForPromotion() {
@@ -109,4 +108,13 @@ public class Pawn extends Piece {
 		} else
 			return false;
 	}
+
+    public void setHasMovedTwo(boolean moved) {
+        hasMovedTwo = moved;
+    }
+
+    public boolean hasMovedTwo() {
+        return hasMovedTwo;
+    }
+
 }
