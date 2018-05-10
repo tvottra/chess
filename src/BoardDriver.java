@@ -9,7 +9,7 @@ public class BoardDriver {
 	public static void main(String[] args) {
 		Board myBoard = new Board();
 		System.out.print(myBoard);
-		int row = 6;
+		int row = 7;
 		int col = 4;
 		Piece testPiece = myBoard.getTile(row, col).getPiece();
 		System.out.println("The piece is " + testPiece);
@@ -24,8 +24,12 @@ public class BoardDriver {
 
 		ArrayList<Position> hotSpots = myBoard.getHotSpots(testPiece);
 		System.out.println("Here are the hotSpots:");
-		for (Position pos : hotSpots) {
-			System.out.println(pos);
+		if(hotSpots == null) {
+			System.out.println("hotSpots is null");
+		} else {
+			for (Position pos : hotSpots) {
+				System.out.println(pos);
+			}
 		}
 
 	}

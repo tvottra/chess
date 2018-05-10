@@ -13,3 +13,5 @@ gen
 /.settings/org.eclipse.jdt.core.prefs
 /.classpath
 /Tests/
+/src/.DS_Store
+
