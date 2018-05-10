@@ -151,20 +151,19 @@ public class Game {
     public boolean movePiece(Position fromPos, Position toPos) {
         if (isLegalMove(fromPos, toPos)) {
             // If a capture is made, add points to the player's score
-            if (gameBoard.getTile(fromPos).getPiece().getName().equals("Pawn")) {
+            if (gameBoard.getTile(toPos).hasPiece()) {
+                Piece capturedPiece = gameBoard.getTile(toPos).getPiece();
+                incrementScore(capturedPiece.getColor(), capturedPiece.getPointValue());
+            } else if (gameBoard.getTile(fromPos).getPiece().getName().equals("Pawn") && ((fromPos.getColumn() + 1 == toPos.getColumn() && fromPos.getRow() + 1 == toPos.getRow()) || (fromPos.getColumn() - 1 == toPos.getColumn() && fromPos.getRow() - 1 == toPos.getRow()))) {
                 Position tempPos = null;
                 if (gameBoard.getTile(fromPos).getPiece().getColor() == 0) {
-                    tempPos = new Position(toPos.getRow(), toPos.getColumn() + 1);
+                    tempPos = new Position(toPos.getRow() + 1, toPos.getColumn());
                 } else {
-                    tempPos = new Position(toPos.getRow(), toPos.getColumn() - 1);
+                    tempPos = new Position(toPos.getRow() - 1, toPos.getColumn());
                 }
                 Piece capturedPiece = gameBoard.getTile(tempPos).getPiece();
                 incrementScore(capturedPiece.getColor(), capturedPiece.getPointValue());
                 gameBoard.setPiece(tempPos, null);
-            }
-            if (gameBoard.getTile(toPos).hasPiece()) {
-                Piece capturedPiece = gameBoard.getTile(toPos).getPiece();
-                incrementScore(capturedPiece.getColor(), capturedPiece.getPointValue());
             }
             gameBoard.movePiece(new Position(fromPos), new Position(toPos));
             System.out.println(gameBoard);
