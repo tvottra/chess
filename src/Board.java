@@ -369,7 +369,7 @@ public class Board {
 	 * @return true if toPos is within the Piece's hotspots, false otherwise
 	 */
 	private boolean isWithinHotspots(Piece piece, Position toPos) {
-		ArrayList<Position> myHotspots = getHotspots(piece);
+		ArrayList<Position> myHotspots = getHotSpots(piece);
 
 		if (myHotspots == null) {
 			return false;
@@ -417,7 +417,7 @@ public class Board {
 	 * @param piece - the given Piece
 	 * @return all the Positions currently checked by this Piece
 	 */
-	public ArrayList<Position> getHotspots(Piece piece) {
+	public ArrayList<Position> getHotSpots(Piece piece) {
 		if (piece.getName().equals("Pawn")) {
 			return getPawnHotspots(piece);
 		}
@@ -453,7 +453,7 @@ public class Board {
 
 				if (aBoard[row][col].hasPiece() && aBoard[row][col].getPiece().getColor() == 0) {
 
-					ArrayList<Position> myHotspots = getHotspots(aBoard[row][col].getPiece());
+					ArrayList<Position> myHotspots = getHotSpots(aBoard[row][col].getPiece());
 					for (Position pos : myHotspots) {
 						wHotspots.add(pos);
 					}
@@ -476,7 +476,7 @@ public class Board {
 
 				if (aBoard[row][col].hasPiece() && aBoard[row][col].getPiece().getColor() == 1) {
 
-					ArrayList<Position> myHotspots = getHotspots(aBoard[row][col].getPiece());
+					ArrayList<Position> myHotspots = getHotSpots(aBoard[row][col].getPiece());
 					for (Position pos : myHotspots) {
 						bHotspots.add(pos);
 					}
@@ -928,7 +928,7 @@ public class Board {
 				// If there is a Piece
 				if (t2.getPiece() != null) {
 					Piece myPiece = t2.getPiece();
-					checkedPos = getHotspots(myPiece);
+					checkedPos = getHotSpots(myPiece);
 					boolean isWhite = myPiece.getColor() == 0;
 					// For each Position checked, update each corresponding Tile's isWhiteHotSpot
 					// and isBlackHotSpot accordingly
