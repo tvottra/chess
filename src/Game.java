@@ -130,13 +130,15 @@ public class Game {
 			toPos = chooseDestination();
 		}		
 		boolean castle = false;
+		String feedback = "";
 		if (gameBoard.castleAble(fromPos, toPos)) {
 			castle = true;
+			feedback = "King";
 		}
 		// Check whether the supposed move is legal
-		while (!isValidPiece(fromPos.getRow(), fromPos.getColumn(), pl.getNumber())
+		while (!castle && !isValidPiece(fromPos.getRow(), fromPos.getColumn(), pl.getNumber())
 				|| !isWithinBounds(toPos.getRow(), toPos.getColumn())
-				|| !gameBoard.isLegalMove(fromPos, toPos) && !castle) {
+				|| !castle && !gameBoard.isLegalMove(fromPos, toPos)) {
 			if (!isValidPiece(fromPos.getRow(), fromPos.getColumn(), pl.getNumber())) {
 				System.out.println("Invalid coordinates for the piece to be moved:");				
 			}
@@ -146,8 +148,10 @@ public class Game {
 			System.out.println("Move to " + toPos + " is not legal. Please repeat the move process.");
 			fromPos = choosePiece();
 			toPos = chooseDestination();
-		}		
-		String feedback = gameBoard.getTile(fromPos).getPiece().toString(); // contains the location of the Piece prior
+		}
+		if(!castle) {
+			feedback = gameBoard.getTile(fromPos).getPiece().toString(); // contains the location of the Piece prior
+		}
 		// to move		
 		if (!castle) {
 			movePieceOnBoard(fromPos, toPos);

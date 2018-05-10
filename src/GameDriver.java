@@ -20,6 +20,7 @@ public class GameDriver {
 		System.out.print("Please enter Player 2's name (black): ");
 		String nameTwo = sc.nextLine();
 		Game startGame = new Game(nameOne, nameTwo);
+		startGame.playGame();
 	}
 
 }
