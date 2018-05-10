@@ -239,9 +239,13 @@ public class Board {
 			int rToRow = rookToPos.getRow();
 			int rToCol = rookToPos.getColumn();
 
-			if (direction < 0) {
-				for (int col = king.getPosition().getColumn() - 1; col > 0; col--) {
-					if (board[king.getPosition().getRow()][col] != null) {
+			if(direction < 0) {
+				for(int col = king.getPosition().getColumn() - 1; col > 0; col--) {
+					if(board[king.getPosition().getRow()][col].hasPiece()) {
+
+// 			if (direction < 0) {
+// 				for (int col = king.getPosition().getColumn() - 1; col > 0; col--) {
+// 					if (board[king.getPosition().getRow()][col] != null) { the above block was previously this block. Note that the above block checks for the Tile not having a null Piece while this block checks for the Tile not being null.
 						return false;
 					}
 				}
@@ -255,6 +259,8 @@ public class Board {
 
 				return true;
 			} else {
+				for(int col = king.getPosition().getColumn() + 1; col < 7; col++) {
+					if(board[king.getPosition().getRow()][col].hasPiece()) {
 				for (int col = king.getPosition().getColumn() + 1; col < 7; col++) {
 					if (board[king.getPosition().getRow()][col] != null) {
 						return false;
