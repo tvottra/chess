@@ -17,7 +17,10 @@ public class GameTester {
 		Board myBoard = test.getBoard();
 		clearBoard(myBoard);
 		generatePawns(1, myBoard);
-		setupQueens(myBoard);
+		setupPawns(myBoard);
+		for (int i = 2; i < 6; i++) {
+			clearRow(i, myBoard);
+		}
 		System.out.println(myBoard);
 		test.playGame();
 	}
@@ -28,6 +31,39 @@ public class GameTester {
 				aBoard.getTile(row, col).setPiece(new Pawn(color, new Position(row, col)));
 			}
 		}
+	}
+
+	/**
+	 * Determines the Position and color for the 16 pawns in the given board
+	 * 
+	 * @param aBoard
+	 *            - the given board
+	 */
+	public static void setupPawns(Board aBoard) {
+		int wRow = 6;
+		int bRow = 1;
+		for (int col = 0; col < aBoard.getSize(); col++) {
+			Position whitePos = new Position(wRow, col);
+			createPawns(whitePos, 0, aBoard);
+			Position blackPos = new Position(bRow, col);
+			createPawns(blackPos, 1, aBoard);
+		}
+	}
+
+	/**
+	 * 
+	 * Creates a Pawn Piece on the given board with the given color and Position
+	 * 
+	 * @param pos
+	 *            - the pawn's Position [row][col]
+	 * @param color
+	 *            - the pawn's color; 0 = white, 1 = black
+	 * @param aBoard
+	 *            - the given board
+	 */
+	public static void createPawns(Position pos, int color, Board aBoard) {
+		Piece pawn = new Pawn(color, pos);
+		aBoard.getTile(pos).setPiece(pawn);
 	}
 
 	/**
@@ -59,8 +95,8 @@ public class GameTester {
 	 *            - the given board
 	 */
 	public static void createRooks(Position pos, int color, Board aBoard) {
-		Piece Rook = new Rook(color, pos);
-		aBoard.getTile(pos).setPiece(Rook);
+		Piece rook = new Rook(color, pos);
+		aBoard.getTile(pos).setPiece(rook);
 	}
 
 	/**
@@ -136,8 +172,8 @@ public class GameTester {
 	 *            - the given board
 	 */
 	public static void setupQueens(Board aBoard) {
-		Position whitePos = new Position(7, 4);
-		Position blackPos = new Position(0, 4);
+		Position whitePos = new Position(7, 3);
+		Position blackPos = new Position(0, 3);
 		createQueens(whitePos, 0, aBoard);
 		createQueens(blackPos, 1, aBoard);
 	}
@@ -165,8 +201,8 @@ public class GameTester {
 	 *            - the given board
 	 */
 	public static void setupKings(Board aBoard) {
-		Position whitePos = new Position(7, 5);
-		Position blackPos = new Position(0, 5);
+		Position whitePos = new Position(7, 4);
+		Position blackPos = new Position(0, 4);
 		createKings(whitePos, 0, aBoard);
 		createKings(blackPos, 1, aBoard);
 	}
