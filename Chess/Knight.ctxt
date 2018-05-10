@@ -1,0 +1,14 @@
+#BlueJ class context
+comment0.target=Knight
+comment0.text=\r\n\ Class\ that\ represents\ a\ Knihgt\ chess\ piece\r\n\ \r\n\ @author\ Arjun\ Agrawal\r\n
+comment1.params=color\ pos
+comment1.target=Knight(int,\ Position)
+comment1.text=\r\n\ Contructor\ to\ initialize\ the\ Pawn's\ color\ and\ position\r\n\ \r\n\ @param\ color\r\n\ \ \ \ \ \ \ \ \ \ \ \ -\ the\ Knight's\ color\r\n\ @param\ pos\r\n\ \ \ \ \ \ \ \ \ \ \ \ -\ the\ Knight's\ Position\r\n
+comment2.params=toPos
+comment2.target=java.util.ArrayList\ getCrossedPositions(Position)
+comment3.params=
+comment3.target=java.util.ArrayList\ getRangeOfMovement()
+comment4.params=move
+comment4.target=boolean\ isWithinRangeOfMovement(Position)
+comment4.text=\r\n\ Checks\ whether\ the\ given\ Position\ is\ within\ this\ Knight's\ range\ of\ movement\r\n\r\n\ @param\ move\r\n\ \ \ \ \ \ \ \ \ \ \ \ -\ the\ destination\ Position\r\n\ @return\ true\ if\ toPos\ is\ within\ this\ Knight's\ range\ of\ movement,\ false\r\n\ \ \ \ \ \ \ \ \ otherwise\r\n
+numComments=5

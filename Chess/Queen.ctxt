@@ -1,0 +1,13 @@
+#BlueJ class context
+comment0.target=Queen
+comment0.text=\r\n\ Class\ that\ represents\ a\ Queen\ chess\ Piece\r\n\r\n\ @author\ Jonathan\ Lim\r\n
+comment1.params=color\ pos
+comment1.target=Queen(int,\ Position)
+comment1.text=\r\n\ Constructor\ to\ initialize\ the\ Queen\r\n\r\n\ @param\ color\ -\ the\ Queen's\ color\r\n\ @param\ pos\ \ \ -\ the\ Queen's\ Position\r\n
+comment2.params=toPos
+comment2.target=java.util.ArrayList\ getCrossedPositions(Position)
+comment3.params=
+comment3.target=java.util.ArrayList\ getRangeOfMovement()
+comment4.params=toPos
+comment4.target=boolean\ isWithinRangeOfMovement(Position)
+numComments=5

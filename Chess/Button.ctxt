@@ -1,0 +1,16 @@
+#BlueJ class context
+comment0.target=Button
+comment0.text=\r\n\ Write\ a\ description\ of\ class\ SinglePlayerButton\ here.\r\n\ \r\n\ @author\ (your\ name)\ \r\n\ @version\ (a\ version\ number\ or\ a\ date)\r\n
+comment1.params=playerCount
+comment1.target=Button(int)
+comment2.params=text
+comment2.target=void\ setText(java.lang.String)
+comment3.params=
+comment3.target=void\ act()
+comment4.params=
+comment4.target=java.lang.String\ getText()
+comment5.params=
+comment5.target=boolean\ clicked()
+comment6.params=click
+comment6.target=void\ setClicked(boolean)
+numComments=7

@@ -1,0 +1,15 @@
+#BlueJ class context
+comment0.target=King
+comment0.text=\r\n\ Class\ that\ represents\ a\ King\ chess\ piece\r\n\ \r\n\ @author\ Brian\ Qiu\r\n
+comment1.params=color\ pos
+comment1.target=King(int,\ Position)
+comment1.text=\r\n\ COnstructor\ to\ intialize\ the\ King's\ color\ and\ Position\r\n\ \r\n\ @param\ color\r\n\ \ \ \ \ \ \ \ \ \ \ \ -\ the\ King's\ color\r\n\ @param\ pos\r\n\ \ \ \ \ \ \ \ \ \ \ \ -\ the\ King's\ position\r\n
+comment2.params=toPos
+comment2.target=java.util.ArrayList\ getCrossedPositions(Position)
+comment2.text=\r\n\ Returns\ an\ array\ of\ the\ Positions\ that\ would\ be\ crossed\ if\ this\ King\ were\ to\r\n\ move\ to\ the\ given\ Position\r\n\r\n\ @param\ toPos\r\n\ \ \ \ \ \ \ \ \ \ \ \ -\ the\ given\ Position\r\n\ @return\ an\ ArrayList\ of\ the\ Positions\ that\ would\ be\ crossed\r\n
+comment3.params=
+comment3.target=java.util.ArrayList\ getRangeOfMovement()
+comment3.text=\r\n\ Calculates\ the\ King's\ range\ of\ movement\ based\ on\ known\ board\ size\ and\ its\r\n\ current\ position.\ Positions\ are\ ordered\ ascending\ in\ terms\ of\ row\ then\r\n\ column.\ E.g.,\ (0,\ 0),\ (0,\ 1),\ (0,\ 2),\ (1,\ 0)...\r\n\r\n\ @return\ the\ King's\ range\ of\ movement\r\n
+comment4.params=toPos
+comment4.target=boolean\ isWithinRangeOfMovement(Position)
+numComments=5
