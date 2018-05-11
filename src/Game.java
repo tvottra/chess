@@ -32,7 +32,7 @@ public class Game {
 		gameBoard = new Board();
 		draw = false;
 		stalemate = false;
-		isWhiteTurn = true;		
+		isWhiteTurn = true;
 	}
 
 	/**
@@ -115,10 +115,10 @@ public class Game {
 			System.out.println(pl.getName() + " has passed");
 			break;
 		default:
-				System.out.println("An invalid number was entered: please choose 1-4");
-				break;
+			System.out.println("An invalid number was entered: please choose 1-4");
+			break;
 		}
-		
+
 	}
 
 	/**
@@ -134,45 +134,55 @@ public class Game {
 		while (!isValidPiece(fromPos.getRow(), fromPos.getColumn(), pl.getNumber())) {
 			System.out.println("Please enter valid coordinates for the piece to be moved:");
 			fromPos = choosePiece();
-		}		
-		Position toPos = chooseDestination();		
+		}
+		Position toPos = chooseDestination();
 		while (!isWithinBounds(toPos.getRow(), toPos.getColumn())) {
 			System.out.println("Please enter valid coordinates for the destination:");
 			toPos = chooseDestination();
-		}		
+		}
+		/*
 		boolean castle = false;
 		if (gameBoard.castleAble(fromPos, toPos)) {
 			castle = true;
 		}
+		*/
 		// Check whether the supposed move is legal
 		while (!isValidPiece(fromPos.getRow(), fromPos.getColumn(), pl.getNumber())
-				|| !isWithinBounds(toPos.getRow(), toPos.getColumn())
-				|| !gameBoard.isLegalMove(fromPos, toPos) || (gameBoard.getTile(fromPos).getPiece().getName().equals("King") && !castle)) {
+				|| !isWithinBounds(toPos.getRow(), toPos.getColumn()) || !gameBoard.isLegalMove(fromPos, toPos,gameBoard.getBoard())
+				|| (gameBoard.getTile(fromPos).getPiece().getName().equals("KING && !castle"))) {
 			if (!isValidPiece(fromPos.getRow(), fromPos.getColumn(), pl.getNumber())) {
-				System.out.println("Invalid coordinates for the piece to be moved:");				
+				System.out.println("Invalid coordinates for the piece to be moved:");
 			}
-			if(!isWithinBounds(toPos.getRow(), toPos.getColumn())) {
+			if (!isWithinBounds(toPos.getRow(), toPos.getColumn())) {
 				System.out.println("Invalid coordinates for the destination:");
 			}
-			if (gameBoard.getTile(fromPos).getPiece().getName().equals("King") && !castle) {
+			if (!gameBoard.isLegalMove(fromPos, toPos,gameBoard.getBoard())) {
+				System.out.println("Move deemed illegal by isLegalMove");
+			}
+			/*
+			if (gameBoard.getTile(fromPos).getPiece().getName().equals("KING && !castle")) {
 				System.out.println("Illegal: cannot castle");
 			}
+			*/
 			System.out.println("Move to " + toPos + " is not legal. Please repeat the move process.");
 			fromPos = choosePiece();
 			toPos = chooseDestination();
-		}		
+		}
 		String feedback = gameBoard.getTile(fromPos).getPiece().toString(); // contains the location of the Piece prior
-		// to move		
+		// to move
+		/*
 		if (!castle) {
+			System.out.println("!castle evaluated to true");
 			movePieceOnBoard(fromPos, toPos);
 		}
+		*/
+		movePieceOnBoard(fromPos, toPos);
 		// postcondition: Piece has been moved from fromPos to toPos on the Board
 		// Provide feedback to user
 		System.out.println(feedback + " has moved to " + toPos + "\n");
 		// Account for promotion
 		Piece currentPiece = gameBoard.getTile(toPos).getPiece();
-		if (currentPiece != null && currentPiece.getName().equals("Pawn")
-				&& ((Pawn) (currentPiece)).isWaitingForPromotion()) {
+		if (currentPiece.getName().equals("Pawn") && ((Pawn) (currentPiece)).isWaitingForPromotion()) {
 			promotion(currentPiece);
 		}
 		update();
@@ -194,7 +204,7 @@ public class Game {
 		// If a capture is made, add points to the player's score
 		if (gameBoard.getTile(toPos).hasPiece()) {
 			Piece capturedPiece = gameBoard.getTile(toPos).getPiece();
-			System.out.println(capturedPiece + " has just been captured!");
+			System.out.println(capturedPiece + " will be captured!");
 			incrementScore(capturedPiece.getColor(), capturedPiece.getPointValue());
 		}
 		gameBoard.movePiece(fromPos, toPos);
@@ -258,7 +268,8 @@ public class Game {
 	/**
 	 * First checks whether the given row and column indexes are in bounds, then
 	 * checks whether there is a Piece of the correct color at the specified row and
-	 * column indexes
+	 * column indexes, then checks whether the player is selecting a piece of the
+	 * appropriate color
 	 * 
 	 * @param row
 	 *            - the row index
@@ -396,11 +407,11 @@ public class Game {
 		Position currentPos = promotedPawn.getPosition();
 		System.out.println(promotedPawn + " is awaiting promotion.");
 		System.out.println("Choose a piece to replace " + promotedPawn + ":");
-		int promotionChoice = sc.nextInt();
 		System.out.println("(1) Promote to Knight");
 		System.out.println("(2) Promote to Bishop");
 		System.out.println("(3) Promote to Rook");
 		System.out.println("(4) Promote to Queen");
+		int promotionChoice = sc.nextInt();
 		switch (promotionChoice) {
 		case 1:
 			gameBoard.getTile(currentPos.getRow(), currentPos.getColumn()).setPiece(null);
@@ -430,7 +441,7 @@ public class Game {
 	}
 
 	/**
-	 * Not currently used
+	 * Update the hotspots
 	 */
 	public void update() {
 		gameBoard.updateHotSpots();
