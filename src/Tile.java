@@ -108,4 +108,22 @@ public class Tile {
 		}
 
 	}
+
+	/**
+	 * Clones a 2D Array of Tiles and returns the fresh copy
+	 * @param other Initial 2D Array of Tiles
+	 * @return A copy of the initial 2D Array of Tiles
+	 */
+	public static Tile[][] cloneTile2DArray(Tile[][] other) {
+
+		Tile[][] copy = new Tile[other.length][other[0].length];
+
+		for (int row = 0; row < other.length; row++) {
+			for (int col = 0; col < other[0].length; col++) {
+				copy[row][col] = new Tile(other[row][col]);
+			}
+		}
+
+		return copy;
+	}
 }

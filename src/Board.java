@@ -21,13 +21,6 @@ public class Board {
 		setUpWhitePieces();
 		setUpBlackPieces();
 		setUpRestOfBoard();
-
-		/*
-		 * getTile(5,3).setPiece(new Pawn(1,new Position(5,3)));
-		 * getTile(6,3).setPiece(null); getTile(7,3).setPiece(new Pawn(1,new
-		 * Position(7,3)));
-		 */
-
 		// NullPointerException when updateHotSpots is called
 		// updateHotSpots();
 	}
@@ -154,11 +147,15 @@ public class Board {
 		return SIZE;
 	}
 
+
 	/**
 	 * Moves a Piece at fromPos to toPos on the board without checking for legality.
 	 *
-	 * @param fromPos - the Piece's current position
-	 * @param toPos   - the Position to which the Piece will be moved
+	 * @param fromPos
+	 *            - the Piece's current position
+	 * @param toPos
+	 *            - the Position to which the Piece will be moved
+	 *
 	 * @return true if there was a Piece at fromPos on the board; false otherwise.
 	 */
 	public boolean movePiece(Position fromPos, Position toPos) {
@@ -247,14 +244,10 @@ public class Board {
 
 				return true;
 			} else {
-				for (int col = king.getPosition().getColumn() + 1; col < 7; col++) {
-					if (board[king.getPosition().getRow()][col].hasPiece()) {
-					}
-				}
-				for (int col = king.getPosition().getColumn() + 1; col < 7; col++) {    //TODO: BRIAN FIX YOUR SYNTACTICAL ERRORS.
-					if (board[king.getPosition().getRow()][col] != null) {
+				for(int col = king.getPosition().getColumn() + 1; col < 7; col++) {
+					if(board[king.getPosition().getRow()][col] != null) {
 						return false;
-					}
+					} //overrided Brian's recent changes so that code compiles
 				}
 				board[kToRow][kToCol].setPiece(king);
 				board[kFromRow][kFromCol].setPiece(null);
@@ -276,11 +269,21 @@ public class Board {
 	 * Checks whether moving a Piece from its current Position to a given Position
 	 * is legal.
 	 *
-	 * @param fromPos - the Piece's current Position
-	 * @param toPos   - the Position of the Piece's proposed destination
+	 * @param fromPos
+	 *            - the Piece's current Position
+	 * @param toPos
+	 *            - the Position of the Piece's proposed destination
 	 * @return true if the move is legal, false otherwise
 	 */
 	public boolean isLegalMove(Position fromPos, Position toPos) {
+
+		//System.out.println("IsLegalMove() called once.");
+
+		if(!fromPos.isWithinBounds() || !toPos.isWithinBounds()) {
+			return false;
+		}
+
+
 		int fromRow = fromPos.getRow();
 		int fromCol = fromPos.getColumn();
 		Piece pieceToMove = Piece.createPiece(board[fromRow][fromCol].getPiece());
@@ -343,12 +346,14 @@ public class Board {
 			return false;
 		}
 		// Create a copy of the real board to determine whether the move creates a check
-		Tile[][] copy = new Tile[SIZE][SIZE];
-		for (int row = 0; row < SIZE; row++) {
-			for (int col = 0; col < SIZE; col++) {
-				copy[row][col] = new Tile(board[row][col]);
-			}
-		}
+//		Tile[][] copy = new Tile[SIZE][SIZE];
+//		for (int row = 0; row < SIZE; row++) {
+//			for (int col = 0; col < SIZE; col++) {
+//				copy[row][col] = new Tile(board[row][col]);
+//			}
+//		}
+		Tile[][] copy = Tile.cloneTile2DArray(board);
+
 		// Perform the move on the copy of the board
 		copy[toRow][toCol].setPiece(pieceToMove);
 		copy[fromRow][fromCol].setPiece(null);
@@ -364,8 +369,10 @@ public class Board {
 	 * Checks whether the given Piece's proposed destination is within the Piece's
 	 * hotspots
 	 *
-	 * @param piece - the given Piece
-	 * @param toPos - the given destination Position
+	 * @param piece
+	 *            - the given Piece
+	 * @param toPos
+	 *            - the given destination Position
 	 * @return true if toPos is within the Piece's hotspots, false otherwise
 	 */
 	private boolean isWithinHotspots(Piece piece, Position toPos) {
@@ -374,7 +381,6 @@ public class Board {
 		if (myHotspots == null) {
 			return false;
 		}
-
 		for (Position pos : myHotspots) {
 			if (toPos.equals(pos)) {
 				return true;
@@ -885,21 +891,32 @@ public class Board {
 	 * @return true if the King is checked, false otherwise
 	 */
 	public boolean isKingChecked(int color, Tile[][] aBoard) {
-		/*
-		 * Position kingPos = findKingPosition(color, aBoard); if (color == 0) {
-		 * ArrayList<Position> bHotspots = getBlackHotspots(aBoard); for (Position pos :
-		 * bHotspots) { if (kingPos.equals(pos)) { return true; } } } else {
-		 * ArrayList<Position> wHotspots = getWhiteHotspots(aBoard); for (Position pos :
-		 * wHotspots) { if (kingPos.equals(pos)) { return true; } } } return false;
-		 */
+		Position kingPos = findKingPosition(color, aBoard);
+		if (color==0) {
+			ArrayList<Position> wHotspots = getWhiteHotspots(aBoard);
+			for (Position pos : wHotspots) {
+				if (kingPos.equals(pos)) {
+					return true;
+				}
+			}
+		} else {
+			ArrayList<Position> bHotspots = getWhiteHotspots(aBoard);
+			for (Position pos : bHotspots) {
+				if (kingPos.equals(pos)) {
+					return true;
+				}
+			}
+		}
 		return false;
 	}
 
 	/**
 	 * Finds the Position of the King of a given color in the given board
-	 *
-	 * @param color  - 0 if white, 1 if black
-	 * @param aBoard - the given board
+
+	 * @param color
+	 *            - 0 if white, 1 if black
+	 * @param aBoard
+	 *            - the given board
 	 * @return the Position of the King
 	 */
 	public Position findKingPosition(int color, Tile[][] aBoard) {
@@ -995,5 +1012,6 @@ public class Board {
 		}
 		return -1;
 	}
+
 
 }

@@ -17,6 +17,7 @@ public class Game {
     private boolean draw;
     private boolean stalemate;
     private boolean isWhiteTurn; // true if it is white's turn, false otherwise
+	Scanner sc = new Scanner(System.in);
 
 	/**
 	 * Constructor to initialize the players, gameBoard, and game state
@@ -27,6 +28,7 @@ public class Game {
 	             - blackPlayer's name
 	 */
 	public Game(String name1, String name2) {
+
 		whitePlayer = new Player(name1, 0);
 		blackPlayer = new Player(name2, 1);
 		gameBoard = new Board();
@@ -50,6 +52,14 @@ public class Game {
 	 * stalemate. Calls helper methods to display prompts and play the game
 	 */
 	public void playGame() {
+		System.out.println("Would you like to play against the computer or another person?");
+		System.out.println("(1) Computer");
+		System.out.println("(2) Person");
+		int playerChoice = sc.nextInt();
+
+		if (playerChoice == 1) {
+			blackPlayer = new AI(blackPlayer.getName(), 1, gameBoard);
+		}
 		while (!gameIsOver()) {
 			// White's turn
 			while (isWhiteTurn) {
@@ -61,7 +71,11 @@ public class Game {
 			} else {
 				// Black's turn
 				while (!isWhiteTurn) {
-					startPlayerTurn(blackPlayer, whitePlayer);
+					if (playerChoice == 1) {
+						startAIPlayerTurn((AI) blackPlayer, whitePlayer);
+					} else {
+						startPlayerTurn(blackPlayer, whitePlayer);
+					}
 					isWhiteTurn = !isWhiteTurn;findCheckmate();
 				} // End Black's turn
 			}
@@ -79,34 +93,33 @@ public class Game {
 	             - the opposing player
 	 */
 	private void startPlayerTurn(Player pl, Player other) {
-		Scanner sc = new Scanner(System.in);
 		System.out.println("It is " + pl.getName() + "'s turn. Select one option:");
 		System.out.println("(1) Select a piece to move");
 		System.out.println("(2) Resign");
 		System.out.println("(3) Request draw");
 		System.out.println("(4) Pass turn: for testing only");int playerChoice = sc.nextInt();
 		switch (playerChoice) {
-		case 1:
-			System.out.println(gameBoard);
-			continueTurn(pl);
-			break;
-		case 2:
-			pl.setResign(true);
-			break;
-		case 3:
-			System.out.println("Does " + other.getName() + " accept " + pl.getName() + "'s draw offer?");
-			System.out.println("(1) Accept draw");
-			System.out.println("(2) Decline draw");
-			int drawChoice = sc.nextInt();
-			if (drawChoice == 1) {
-				setDraw(true);
-				System.out.println(other.getName() + " has accepted " + pl.getName() + "'s draw offer.");
-			} else {
-				setDraw(false);
-				System.out.println(other.getName() + " has declined " + pl.getName() + "'s draw offer.");
-				isWhiteTurn = !isWhiteTurn; // make sure the turn player's turn is not skipped
-			}
-			break;case 4:
+			case 1:
+				System.out.println(gameBoard);
+				continueTurn(pl);
+				break;
+			case 2:
+				pl.setResign(true);
+				break;
+			case 3:
+				System.out.println("Does " + other.getName() + " accept " + pl.getName() + "'s draw offer?");
+				System.out.println("(1) Accept draw");
+				System.out.println("(2) Decline draw");
+				int drawChoice = sc.nextInt();
+				if (drawChoice == 1) {
+					setDraw(true);
+					System.out.println(other.getName() + " has accepted " + pl.getName() + "'s draw offer.");
+				} else {
+					setDraw(false);
+					System.out.println(other.getName() + " has declined " + pl.getName() + "'s draw offer.");
+					isWhiteTurn = !isWhiteTurn; // make sure the turn player's turn is not skipped
+				}
+				break;case 4:
 			// do nothing
 			System.out.println(pl.getName() + " has passed");
 			break;
@@ -114,6 +127,19 @@ public class Game {
 			System.out.println("An invalid number was entered: please choose 1-4");
 			break;
 		}
+
+	}
+
+	/**
+	 * Starts a turn played by the AI. AI Never surrenders
+	 *
+	 * @param myAI  - the turn player
+	 * @param other - the opposing player
+	 */
+	private void startAIPlayerTurn(AI myAI, Player other) {
+		System.out.println(myAI.getName() + " is looking at the board.");
+		System.out.println(gameBoard);
+		continueAITurn(myAI);
 
 	}
 
@@ -128,7 +154,7 @@ public class Game {
 		// Choose a Piece to move and a destination
 		Position fromPos = choosePiece();
 
-		while (!isValidPiece(fromPos.getRow(), fromPos.getColumn(), pl.getNumber())) {
+		while (!isValidPiece(fromPos.getRow(), fromPos.getColumn(), pl.getNumber(), gameBoard)) {
 			System.out.println("Please enter valid coordinates for the piece to be moved:");
 			fromPos = choosePiece();
 		}
@@ -145,10 +171,10 @@ public class Game {
 			feedback = "King";
 		}
 		// Check whether the supposed move is legal
-		while (!castle && !isValidPiece(fromPos.getRow(), fromPos.getColumn(), pl.getNumber())
+		while (!castle && !isValidPiece(fromPos, pl.getNumber(), gameBoard)
 				|| !isWithinBounds(toPos.getRow(), toPos.getColumn())
 				|| !castle && !gameBoard.isLegalMove(fromPos, toPos)) {
-			if (!isValidPiece(fromPos.getRow(), fromPos.getColumn(), pl.getNumber())) {System.out.println("Invalid coordinates for the piece to be moved:");
+			if (!isValidPiece(fromPos, pl.getNumber(), gameBoard)) {System.out.println("Invalid coordinates for the piece to be moved:");
 			}
 			if (!isWithinBounds( toPos.getRow() ,  toPos.getColumn())) {
 					System.out.println("Invalid coordinates for the destination:");
@@ -179,15 +205,40 @@ public class Game {
 		System.out.println(gameBoard);}
 
 	/**
-	 * Moves a Piece from one Tile to another onthe board of Tiles without checking
+	 * Selects the piece and destination for the player
+	 *
+	 * @param myAI - the turn player
+	 */
+	private void continueAITurn(AI myAI) {
+		Vector bestMove = myAI.generateHighestPointValueMove();
+		if (bestMove == null || bestMove.getFromPos() == null && bestMove.getToPos() == null) {
+			blackPlayer.isResigned();
+			return;
+		}
+		String feedback = gameBoard.getTile(bestMove.getFromPos()).getPiece().toString(); // contains the location of the Piece prior
+		movePieceOnBoard(bestMove.getFromPos(), bestMove.getToPos());
+		System.out.println(feedback + " has moved to " + bestMove.getToPos() + "\n");
+		// Account for promotion
+		Piece currentPiece = gameBoard.getTile(bestMove.getToPos()).getPiece();
+		if (currentPiece != null && currentPiece.getName().equals("Pawn")
+				&& ((Pawn) (currentPiece)).isWaitingForPromotion()) {
+			promotion(currentPiece);
+		}
+		update();
+		System.out.println(gameBoard);
+	}
+
+
+	/**
+	 * Moves a Piece from one Tile to another on the board of Tiles without checking
 	 * for legality; if a capture is made, adds the point value of the captured
 	 * piece to the turn player's score.
 	 *
 	 * @param fromPos
-	 *            - the Piece's current position
+	             - the Piece's current position
 	 * @param toPos
-	 *            - the Position to which the Piece will be moved
-	 *
+	             - the Position to which the Piece will be moved
+
 	 */
 	public void movePieceOnBoard(Position fromPos, Position toPos) {
 		// If a capture is made, add points to the player's score
@@ -211,20 +262,20 @@ public class Game {
 		gameBoard.movePiece(fromPos, toPos);
 	}
 
-    /**
-     * Checks to see if at least 1 of the conditions that would end the game is
-     * present
-     *
-     * @return true if the game is over, false otherwise
-     */
-    private boolean gameIsOver() {
-        if (whitePlayer.isCheckMated() || blackPlayer.isCheckMated() || draw || whitePlayer.isResigned()
-                || blackPlayer.isResigned() || stalemate) {
-            return true;
-        } else {
-            return false;
-        }
-    }
+	/**
+	 * Checks to see if at least 1 of the conditions that would end the game is
+	 * present
+	 *
+	 * @return true if the game is over, false otherwise
+	 */
+	private boolean gameIsOver() {
+		if (whitePlayer.isCheckMated() || blackPlayer.isCheckMated() || draw || whitePlayer.isResigned()
+				|| blackPlayer.isResigned() || stalemate) {
+			return true;
+		} else {
+			return false;
+		}
+	}
 
     /**
      * Checks the endgame state and prints the appropriate message
@@ -279,12 +330,31 @@ public class Game {
 	 * @param color
 	             - 0 for white, 1 for black
 	 * @return true if there is a Piece of the correct color at the row and column
-	 *         indexes, false otherwise
+	 * indexes, false otherwise
 	 */
-	private boolean isValidPiece(int row, int col, int color) {
-		if (isWithinBounds(row, col) && gameBoard.getTile(row, col).hasPiece()) {
+	public static boolean isValidPiece(int row, int col, int color, Board board) {
+		if (new Position(row, col).isWithinBounds() && board.getTile(row, col).hasPiece()) {
 
-					return gameBoard.getTile(row, col).getPiece().getColor() == color;
+					return board.getTile(row, col).getPiece().getColor() == color;
+		} else {
+			return false;
+		}
+	}
+
+	/**
+	 * First checks whether the given row and column indexes are in bounds, then
+	 * checks whether there is a Piece of the correct color at the specified row and
+	 * column indexes
+	 *
+	 * @param pos   - Position of the board to check at
+	 * @param color - 0 for white, 1 for black
+	 * @param board to check at
+	 * @return true if there is a Piece of the correct color at the row and column
+	 * indexes, false otherwise
+	 */
+	public static boolean isValidPiece(Position pos, int color, Board board) {
+		if (pos.isWithinBounds() && board.getTile(pos).hasPiece()) {
+			return board.getTile(pos).getPiece().getColor() == color;
 		} else {
 			return false;
 		}
@@ -293,7 +363,7 @@ public class Game {
 	/**
 	 * Prompts the user for the row and column indexes of the Tile to which a Piece
 	 * will be moved
-	 * 
+	 *
 	 * @return a Position object with the destination's coordinates
 	 */
 	private Position chooseDestination() {
@@ -406,30 +476,30 @@ public class Game {
 		System.out.println("(3) Promote to Rook");
 		System.out.println("(4) Promote to Queen");int promotionChoice = sc.nextInt();
 		switch (promotionChoice) {
-		case 1:
-			gameBoard.getTile(currentPos.getRow(), currentPos.getColumn()).setPiece(null);
-			Piece knight = new Knight(myColor, currentPos);
-			gameBoard.getTile(currentPos.getRow(), currentPos.getColumn()).setPiece(knight);
-			System.out.println("Promotion to Knight at " + currentPos);
-			break;
-		case 2:
-			gameBoard.getTile(currentPos.getRow(), currentPos.getColumn()).setPiece(null);
-			Piece bishop = new Bishop(myColor, currentPos);
-			gameBoard.getTile(currentPos.getRow(), currentPos.getColumn()).setPiece(bishop);
-			System.out.println("Promotion to Bishop at " + currentPos);
-			break;
-		case 3:
-			gameBoard.getTile(currentPos.getRow(), currentPos.getColumn()).setPiece(null);
-			Piece rook = new Rook(myColor, currentPos);
-			gameBoard.getTile(currentPos.getRow(), currentPos.getColumn()).setPiece(rook);
-			System.out.println("Promotion to Rook at " + currentPos);
-			break;
-		case 4:
-			gameBoard.getTile(currentPos.getRow(), currentPos.getColumn()).setPiece(null);
-			Piece queen = new Queen(myColor, currentPos);
-			gameBoard.getTile(currentPos.getRow(), currentPos.getColumn()).setPiece(queen);
-			System.out.println("Promotion to Queen at " + currentPos);
-			break;
+			case 1:
+				gameBoard.getTile(currentPos.getRow(), currentPos.getColumn()).setPiece(null);
+				Piece knight = new Knight(myColor, currentPos);
+				gameBoard.getTile(currentPos.getRow(), currentPos.getColumn()).setPiece(knight);
+				System.out.println("Promotion to Knight at " + currentPos);
+				break;
+			case 2:
+				gameBoard.getTile(currentPos.getRow(), currentPos.getColumn()).setPiece(null);
+				Piece bishop = new Bishop(myColor, currentPos);
+				gameBoard.getTile(currentPos.getRow(), currentPos.getColumn()).setPiece(bishop);
+				System.out.println("Promotion to Bishop at " + currentPos);
+				break;
+			case 3:
+				gameBoard.getTile(currentPos.getRow(), currentPos.getColumn()).setPiece(null);
+				Piece rook = new Rook(myColor, currentPos);
+				gameBoard.getTile(currentPos.getRow(), currentPos.getColumn()).setPiece(rook);
+				System.out.println("Promotion to Rook at " + currentPos);
+				break;
+			case 4:
+				gameBoard.getTile(currentPos.getRow(), currentPos.getColumn()).setPiece(null);
+				Piece queen = new Queen(myColor, currentPos);
+				gameBoard.getTile(currentPos.getRow(), currentPos.getColumn()).setPiece(queen);
+				System.out.println("Promotion to Queen at " + currentPos);
+				break;
 		}
 	}
 
@@ -441,8 +511,8 @@ public class Game {
     }
 
 	/**
-	 * Determines whether a checkmate has occurred. Method is incomplete; must find
-	 * a way to use findKingPosition() on the copy of the board
+	 * Determines whether a checkmate has occurred.
+	 * Method is incomplete; must find* a way to use findKingPosition() on the copy of the board
 	 */
 	public void findCheckmate() {
 		int color = gameBoard.getWhoIsCheckmated();

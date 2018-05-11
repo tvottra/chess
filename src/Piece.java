@@ -20,14 +20,10 @@ public abstract class Piece {
 	 * Constructor that initializes the Piece's name, color, Position, and point
 	 * value
 	 *
-	 * @param name
-	 *            - the name of the piece
-	 * @param color
-	 *            - the color of the piece
-	 * @param pos
-	 *            - the initial position of the piece
-	 * @param pointVal
-	 *            - the point value of the piece
+	 * @param name     - the name of the piece
+	 * @param color    - the color of the piece
+	 * @param pos      - the initial position of the piece
+	 * @param pointVal - the point value of the piece
 	 */
 	public Piece(String name, int color, Position pos, int pointVal) {
 		this.name = name;
@@ -80,8 +76,7 @@ public abstract class Piece {
 	/**
 	 * Mutator method to change the Piece's Position to the given Position
 	 *
-	 * @param pos
-	 *            - the given Position
+	 * @param pos - the given Position
 	 */
 	public void setPosition(Position pos) {
 		this.pos = pos;
@@ -107,7 +102,7 @@ public abstract class Piece {
 
 	/**
 	 * Accessor method to get this Piece's move state
-	 * 
+	 *
 	 * @return true if this Piece has already moved, false otherwise
 	 */
 	public boolean hasMoved() {
@@ -116,9 +111,8 @@ public abstract class Piece {
 
 	/**
 	 * Mutator method that updates this Piece's move status
-	 * 
-	 * @param moveState
-	 *            - true if the Piece has already moved, false otherwise
+	 *
+	 * @param moveState - true if the Piece has already moved, false otherwise
 	 */
 	public void setHasMoved(boolean moveState) {
 		hasMoved = moveState;
@@ -126,9 +120,8 @@ public abstract class Piece {
 
 	/**
 	 * Compares this Piece's color with the given Piece's color
-	 * 
-	 * @param other
-	 *            - the given Piece
+	 *
+	 * @param other - the given Piece
 	 * @return true if the Pieces are the same color, false otherwise
 	 */
 	public boolean isSameColorAs(Piece other) {
@@ -148,8 +141,7 @@ public abstract class Piece {
 	 * Returns an array of the Positions that would be crossed if this Piece were to
 	 * move to the given Position
 	 *
-	 * @param toPos
-	 *            - the given Position
+	 * @param toPos - the given Position
 	 * @return an ArrayList of the Positions that would be crossed
 	 */
 	public abstract ArrayList<Position> getCrossedPositions(Position toPos);
@@ -168,15 +160,15 @@ public abstract class Piece {
 	/**
 	 * Checks whether the given Position is within this Piece's range of movement
 	 *
-	 * @param toPos
-	 *            - the destination Position
+	 * @param toPos - the destination Position
 	 * @return true if toPos is within this Piece's range of movement, false
-	 *         otherwise
+	 * otherwise
 	 */
 	public abstract boolean isWithinRangeOfMovement(Position toPos);
 
 	/**
 	 * Makes and returns a copy of the Piece, based on the Piece's name
+	 *
 	 * @param other
 	 * @return a fresh copy of the Piece or null if the parameter is not a valid Piece in the first place
 	 */
@@ -185,7 +177,7 @@ public abstract class Piece {
 			return null;
 		}
 		Piece piece;
-		switch(other.getName()) {
+		switch (other.getName()) {
 			case "Bishop":
 				piece = new Bishop(other.getColor(), other.getPosition());
 				break;
