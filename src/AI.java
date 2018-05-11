@@ -9,12 +9,23 @@ public class AI extends Player {
 	String name;
 	Board boardIAnalyze;
 
+	/**
+	 * Constructor to initialize the "AI"
+	 * @param name - name of the AI
+	 * @param number - player number (usually 1 for Black)
+	 * @param bd - Board the AI is playing on
+	 */
 	public AI(String name, int number, Board bd) {
 		super(name, number);
 		boardIAnalyze = bd;
 	}
 
 
+	/**
+	 * The AI reads in the Board it has access to and generates a vector of movement based on capturing the Piece with the highest point value. If highest point value
+	 * is 0, then AI just chooses the first legal move.
+	 * @return a vector of movement that yields the capture with the highest point value
+	 */
 	public Vector generateHighestPointValueMove() {
 		Tile[][] chessBoard = boardIAnalyze.getBoard(); //don't modify original board yet!
 		//ArrayList<Vector> potentialMoves = new ArrayList<Vector>(); //use later maybe
@@ -25,7 +36,7 @@ public class AI extends Player {
 			for (int c = 0; c < chessBoard[0].length; c++) {
 				fromPos = new Position(r, c);
 				if (Game.isValidPiece(fromPos, super.getNumber(), boardIAnalyze)) {
-					//System.out.println("Found valid piece");
+
 					Piece myPiece = Piece.createPiece(chessBoard[r][c].getPiece());
 					ArrayList<Position> hotSpots = boardIAnalyze.getHotSpots(myPiece);                        //this points to the same Board as the main Board if the main Board is passed to AI's constructor
 
@@ -41,14 +52,14 @@ public class AI extends Player {
 									optimalToPos = hSpot;
 									firstLegalToPos = false;
 								}
-								System.out.println("Legal move detected: " + new Vector(fromPos, hSpot));
+
 								if (boardIAnalyze.getTile(hSpot).hasPiece() && boardIAnalyze.getTile(hSpot).getPiece().getPointValue() > optimalToPosValue) {
 									optimalToPos = hSpot;
 									optimalToPosValue = boardIAnalyze.getTile(hSpot).getPiece().getPointValue();
 								}
 							}
 						}
-						if(optimalToPos != null) {
+						if (optimalToPos != null) {
 							optimalPlayPerFromPos.add(new Vector(fromPos, optimalToPos));
 						}
 

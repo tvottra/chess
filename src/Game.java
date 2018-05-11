@@ -199,8 +199,8 @@ public class Game {
 			blackPlayer.isResigned();
 			return;
 		}
-		movePieceOnBoard(bestMove.getFromPos(), bestMove.getToPos());
 		String feedback = gameBoard.getTile(bestMove.getFromPos()).getPiece().toString(); // contains the location of the Piece prior
+		movePieceOnBoard(bestMove.getFromPos(), bestMove.getToPos());
 		System.out.println(feedback + " has moved to " + bestMove.getToPos() + "\n");
 		// Account for promotion
 		Piece currentPiece = gameBoard.getTile(bestMove.getToPos()).getPiece();
