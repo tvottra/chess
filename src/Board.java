@@ -151,11 +151,8 @@ public class Board {
 	/**
 	 * Moves a Piece at fromPos to toPos on the board without checking for legality.
 	 *
-	 * @param fromPos
-	 *            - the Piece's current position
-	 * @param toPos
-	 *            - the Position to which the Piece will be moved
-	 *
+	 * @param fromPos - the Piece's current position
+	 * @param toPos   - the Position to which the Piece will be moved
 	 * @return true if there was a Piece at fromPos on the board; false otherwise.
 	 */
 	public boolean movePiece(Position fromPos, Position toPos) {
@@ -177,18 +174,11 @@ public class Board {
 		return true;
 	}
 
-	/**
-	 * Determines whether the King at the given Position may castle
-	 *
-	 * @param fromPos - the King's current Position
-	 * @param toPos   - the King's Position upon castling
-	 * @return true if castling is possible, false otherwise
-	 */
 	public boolean castleAble(Position fromPos, Position toPos) {
 		Piece king = board[fromPos.getRow()][fromPos.getColumn()].getPiece();
 		Position toPosCheck;
 		Position rookToPos;
-		int direction = toPos.getColumn() - fromPos.getColumn(); // right if positive, left if negative
+		int direction = toPos.getColumn() - fromPos.getColumn();
 		Piece rook;
 
 		if (king.getColor() == 0) {
@@ -244,10 +234,10 @@ public class Board {
 
 				return true;
 			} else {
-				for(int col = king.getPosition().getColumn() + 1; col < 7; col++) {
-					if(board[king.getPosition().getRow()][col] != null) {
+				for (int col = king.getPosition().getColumn() + 1; col < 7; col++) {
+					if (board[king.getPosition().getRow()][col].hasPiece()) {
 						return false;
-					} //overrided Brian's recent changes so that code compiles
+					}
 				}
 				board[kToRow][kToCol].setPiece(king);
 				board[kFromRow][kFromCol].setPiece(null);
@@ -269,17 +259,15 @@ public class Board {
 	 * Checks whether moving a Piece from its current Position to a given Position
 	 * is legal.
 	 *
-	 * @param fromPos
-	 *            - the Piece's current Position
-	 * @param toPos
-	 *            - the Position of the Piece's proposed destination
+	 * @param fromPos - the Piece's current Position
+	 * @param toPos   - the Position of the Piece's proposed destination
 	 * @return true if the move is legal, false otherwise
 	 */
 	public boolean isLegalMove(Position fromPos, Position toPos) {
 
 		//System.out.println("IsLegalMove() called once.");
 
-		if(!fromPos.isWithinBounds() || !toPos.isWithinBounds()) {
+		if (!fromPos.isWithinBounds() || !toPos.isWithinBounds()) {
 			return false;
 		}
 
@@ -369,10 +357,8 @@ public class Board {
 	 * Checks whether the given Piece's proposed destination is within the Piece's
 	 * hotspots
 	 *
-	 * @param piece
-	 *            - the given Piece
-	 * @param toPos
-	 *            - the given destination Position
+	 * @param piece - the given Piece
+	 * @param toPos - the given destination Position
 	 * @return true if toPos is within the Piece's hotspots, false otherwise
 	 */
 	private boolean isWithinHotspots(Piece piece, Position toPos) {
@@ -890,9 +876,9 @@ public class Board {
 	 * @param aBoard - the given board
 	 * @return true if the King is checked, false otherwise
 	 */
-	public boolean isKingChecked(int color, Tile[][] aBoard) {
+	private boolean isKingChecked(int color, Tile[][] aBoard) {
 		Position kingPos = findKingPosition(color, aBoard);
-		if (color==0) {
+		if (color == 0) {
 			ArrayList<Position> wHotspots = getWhiteHotspots(aBoard);
 			for (Position pos : wHotspots) {
 				if (kingPos.equals(pos)) {
@@ -912,14 +898,12 @@ public class Board {
 
 	/**
 	 * Finds the Position of the King of a given color in the given board
-
-	 * @param color
-	 *            - 0 if white, 1 if black
-	 * @param aBoard
-	 *            - the given board
+	 *
+	 * @param color  - 0 if white, 1 if black
+	 * @param aBoard - the given board
 	 * @return the Position of the King
 	 */
-	public Position findKingPosition(int color, Tile[][] aBoard) {
+	private Position findKingPosition(int color, Tile[][] aBoard) {
 		for (int row = 0; row < SIZE; row++) {
 			for (int col = 0; col < SIZE; col++) {
 				if (aBoard[row][col].hasPiece() && aBoard[row][col].getPiece().getName().equals("King")
