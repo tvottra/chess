@@ -23,7 +23,7 @@ public class Title extends Actor
     {
         buttonText=text;
         GreenfootImage textImg=new GreenfootImage(" "+text+" ", size, Color.BLACK, new Color(0, 0, 0, 0));
-        GreenfootImage image=new GreenfootImage(textImg.getWidth()+8, textImg.getHeight()+8);
+        image=new GreenfootImage(textImg.getWidth()+8, textImg.getHeight()+8);
         image.setColor(Color.BLACK);
         image.drawImage(textImg, (image.getWidth()-textImg.getWidth())/2, (image.getHeight()-textImg.getHeight())/2);
         if(invisible){
@@ -47,20 +47,25 @@ public class Title extends Actor
         }
         else if(image.getTransparency() > 0 && invisible){
             image.setTransparency(image.getTransparency() - 1);
-            setimage(image);
+            setImage(image);
         }
         else if(image.getTransparency() == 0){
             invisible  = false;
             image.setTransparency(image.getTransparency() + 1);
-            setimage(image);
+            setImage(image);
         }
         else if(image.getTransparency() < 100 && !invisible){
             image.setTransparency(image.getTransparency() + 1);
-            setimage(image);
+            setImage(image);
         }
     }
     
     public GreenfootImage getImage(){
         return image;
+    }
+    
+    public void setTransparency(int i){
+        image.setTransparency(i);
+        setImage(image);
     }
 }

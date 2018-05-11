@@ -16,10 +16,12 @@ public class Game extends World{
     private Player blackPlayer; // black
     private Board gameBoard;
     private Position chosenFromPos;
+    
     private boolean firstTurnRun = true;
     private boolean firstPrint = true;
     private boolean fromPosChosen;
     private boolean toPosChosen;
+    private boolean promoted = true;
     private boolean draw;
     private boolean stalemate;
     private boolean isWhiteTurn; // true if it is white's turn, false otherwise
@@ -106,7 +108,13 @@ public class Game extends World{
      */
     private void PlayerTurn(Player pl, Player other) {
         if(firstTurnRun){
-            
+            Title turn = new Title("It is " + pl.getName() + "'s turn.", 100, false);
+            addObject(turn, getWidth() / 2, getWidth() / 2);
+            Greenfoot.setSpeed(15);
+            Greenfoot.delay(1);
+            Greenfoot.setSpeed(50);
+            removeObjects(getObjects(Title.class));
+            firstTurnRun = false;
         }
         String key = Greenfoot.getKey();
         if(key != null){
@@ -125,12 +133,11 @@ public class Game extends World{
                     setDraw(false);
                     removeObjects(getObjects(Title.class));
                     System.out.println(pl.getName() + " has declined " + other.getName() + "'s draw offer.");
-                    isWhiteTurn = !isWhiteTurn; // make sure the turn player's turn is not skipped
                 }
             }
         }
         }
-        if(gameBoard.getBoard()[0][0].clicked() != null){
+        else if(gameBoard.getBoard()[0][0].clicked() != null){
             if(!fromPosChosen){
                 chosenFromPos = choosePosition();
                 if(chosenFromPos != null){
@@ -145,15 +152,20 @@ public class Game extends World{
                     boolean castle = gameBoard.castleAble(chosenFromPos, toPos);
                     if(gameBoard.isLegalMove(chosenFromPos, toPos) || castle){
                         movePieceOnBoard(chosenFromPos, toPos);
-                        isWhiteTurn = !isWhiteTurn;
-                        fromPosChosen = false;
                         Piece currentPiece = gameBoard.getTile(toPos).getPiece();
                         if (currentPiece != null && currentPiece.getName().equals("Pawn")
                         && ((Pawn) (currentPiece)).isWaitingForPromotion()) {
+                            promoted = false;
                             promotion(currentPiece);
                         }
-                        gameBoard.getBoard()[0][0].setClicked(null);
-                        update();
+                        if(promoted){
+                            gameBoard.getBoard()[0][0].setClicked(null);
+                            isWhiteTurn = !isWhiteTurn;
+                            fromPosChosen = false;
+                            firstTurnRun = true;
+                            update();
+                        }
+                        
                     }
                 }
             }
@@ -382,6 +394,7 @@ public class Game extends World{
             System.out.println("Promotion to Queen at " + currentPos);
             break;
         }
+        promoted = true;
     }
 
     /**
