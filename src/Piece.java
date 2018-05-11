@@ -28,7 +28,7 @@ public abstract class Piece {
 	public Piece(String name, int color, Position pos, int pointVal) {
 		this.name = name;
 		this.color = color;
-		this.pos = pos;
+		this.pos = new Position (pos);
 		POINT_VALUE = pointVal;
 		hasMoved = false;
 	}
@@ -41,7 +41,7 @@ public abstract class Piece {
 	public Piece(Piece other) {
 		this.name = other.getName();
 		this.color = other.getColor();
-		this.pos = other.getPosition();
+		this.pos = new Position (other.getPosition());
 		POINT_VALUE = getPointValue();
 		hasMoved = other.hasMoved();
 	}
@@ -169,10 +169,11 @@ public abstract class Piece {
 	/**
 	 * Makes and returns a copy of the Piece, based on the Piece's name
 	 *
-	 * @param other
+	 * @param other - the model Piece
+	 * @param moveState - true if this Piece has already moved, false otherwise
 	 * @return a fresh copy of the Piece or null if the parameter is not a valid Piece in the first place
 	 */
-	public static Piece createPiece(Piece other) {
+	public static Piece createPiece(Piece other, boolean moveState) {
 		if (other == null) {
 			return null;
 		}
@@ -180,24 +181,30 @@ public abstract class Piece {
 		switch (other.getName()) {
 			case "Bishop":
 				piece = new Bishop(other.getColor(), other.getPosition());
+				piece.setHasMoved(moveState);
 				break;
 			case "King":
 				piece = new King(other.getColor(), other.getPosition());
+				piece.setHasMoved(moveState);
 				break;
 			case "Knight":
 				piece = new Knight(other.getColor(), other.getPosition());
+				piece.setHasMoved(moveState);
 				break;
 
 			case "Pawn":
 				piece = new Pawn(other.getColor(), other.getPosition());
+				piece.setHasMoved(moveState);
 				break;
 
 			case "Queen":
 				piece = new Queen(other.getColor(), other.getPosition());
+				piece.setHasMoved(moveState);
 				break;
 
 			case "Rook":
 				piece = new Rook(other.getColor(), other.getPosition());
+				piece.setHasMoved(moveState);
 				break;
 			default:
 				System.out.println("Error in creating a copy of the Piece.");

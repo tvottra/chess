@@ -1,15 +1,14 @@
 /**
- * 
+ *
  * @author Andrew Le Class to be used solely for the purpose of testing and
  *         debugging the chess game
  */
 public class GameTester {
 
 	/**
-	 * 
+	 *
 	 * @param args
 	 *            - not used
-	 *            
 	 */
 	public static void main(String[] args) {
 		String name1 = "WHITE";
@@ -19,7 +18,7 @@ public class GameTester {
 		clearBoard(myBoard);
 		generatePawns(1, myBoard);
 		setupPawns(myBoard);
-		for (int i = 2; i < 5; i++) {
+		for (int i = 2; i < 6; i++) {
 			clearRow(i, myBoard);
 		}
 		System.out.println(myBoard);
@@ -36,7 +35,7 @@ public class GameTester {
 
 	/**
 	 * Determines the Position and color for the 16 pawns in the given board
-	 * 
+	 *
 	 * @param aBoard
 	 *            - the given board
 	 */
@@ -52,9 +51,9 @@ public class GameTester {
 	}
 
 	/**
-	 * 
+	 *
 	 * Creates a Pawn Piece on the given board with the given color and Position
-	 * 
+	 *
 	 * @param pos
 	 *            - the pawn's Position [row][col]
 	 * @param color
@@ -69,7 +68,7 @@ public class GameTester {
 
 	/**
 	 * Determines the Position and color for the 4 Rooks on the given board
-	 * 
+	 *
 	 * @param aBoard
 	 *            - the given board
 	 */
@@ -85,9 +84,9 @@ public class GameTester {
 	}
 
 	/**
-	 * 
+	 *
 	 * Creates a Rook Piece on the given board with the given color and Position
-	 * 
+	 *
 	 * @param pos
 	 *            - the rook's Position [row][col]
 	 * @param color
@@ -102,7 +101,7 @@ public class GameTester {
 
 	/**
 	 * Determines the Position and color for the 4 Knights on the given board
-	 * 
+	 *
 	 * @param aBoard
 	 *            - the given board
 	 */
@@ -118,9 +117,9 @@ public class GameTester {
 	}
 
 	/**
-	 * 
+	 *
 	 * Creates a Knight Piece on the given board with the given color and Position
-	 * 
+	 *
 	 * @param pos
 	 *            - the knight's Position [row][col]
 	 * @param color
@@ -135,7 +134,7 @@ public class GameTester {
 
 	/**
 	 * Determines the Position and color for the 4 Bishops on the given board
-	 * 
+	 *
 	 * @param aBoard
 	 *            - the given board
 	 */
@@ -151,9 +150,9 @@ public class GameTester {
 	}
 
 	/**
-	 * 
+	 *
 	 * Creates a Bishop Piece on the given board with the given color and Position
-	 * 
+	 *
 	 * @param pos
 	 *            - the bishop's Position [row][col]
 	 * @param color
@@ -168,7 +167,7 @@ public class GameTester {
 
 	/**
 	 * Determines the Position and color for the 2 Queens on the given board
-	 * 
+	 *
 	 * @param aBoard
 	 *            - the given board
 	 */
@@ -180,9 +179,9 @@ public class GameTester {
 	}
 
 	/**
-	 * 
+	 *
 	 * Creates a Queen Piece on the given board with the given color and Position
-	 * 
+	 *
 	 * @param pos
 	 *            - the queen's Position [row][col]
 	 * @param color
@@ -197,7 +196,7 @@ public class GameTester {
 
 	/**
 	 * Determines the Position and color for the 2 Kings on the given board
-	 * 
+	 *
 	 * @param aBoard
 	 *            - the given board
 	 */
@@ -209,9 +208,9 @@ public class GameTester {
 	}
 
 	/**
-	 * 
+	 *
 	 * Creates a King Piece on the given board with the given color and Position
-	 * 
+	 *
 	 * @param pos
 	 *            - the king's Position [row][col]
 	 * @param color
@@ -226,7 +225,7 @@ public class GameTester {
 
 	/**
 	 * Clears the given Board by setting each of the Pieces on its Tiles to null
-	 * 
+	 *
 	 * @param aBoard
 	 *            - the given Board
 	 */
@@ -240,7 +239,7 @@ public class GameTester {
 
 	/**
 	 * Clears the given row on the given board
-	 * 
+	 *
 	 * @param row
 	 *            - the given row index
 	 * @param aBoard
@@ -254,7 +253,7 @@ public class GameTester {
 
 	/**
 	 * Clears the given column on the given board
-	 * 
+	 *
 	 * @param col
 	 *            - the given column index
 	 * @param aBoard
@@ -268,7 +267,7 @@ public class GameTester {
 
 	/**
 	 * Tests castling by setting up a King and two rooks
-	 * 
+	 *
 	 * @param aBoard
 	 */
 	public static void testCastle(Board aBoard) {
