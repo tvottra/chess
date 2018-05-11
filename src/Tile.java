@@ -12,11 +12,14 @@ public class Tile {
 	/**
 	 * Parameter constructor to initialize a Tile on the board
 	 *
-	 * @param piece          - the piece that occupies the Slot
-	 * @param isWhiteHotSpot - whether the Tile is within the range of movement of a white
-	 *                       Piece
-	 * @param isBlackHotSpot - whether the Tile is within the range of movement of a black
-	 *                       Piece
+	 * @param piece
+	 *            - the piece that occupies the Slot
+	 * @param isWhiteHotSpot
+	 *            - whether the Tile is within the range of movement of a white
+	 *            Piece
+	 * @param isBlackHotSpot
+	 *            - whether the Tile is within the range of movement of a black
+	 *            Piece
 	 */
 	public Tile(Piece piece, boolean isWhiteHotSpot, boolean isBlackHotSpot) {
 		this.myPiece = piece;
@@ -25,10 +28,16 @@ public class Tile {
 	}
 
 	public Tile(Tile other) {
-		this.myPiece = Piece.createPiece(other.getPiece());
+		if (other.hasPiece()) {
+			this.myPiece = Piece.createPiece(other.getPiece(), other.getPiece().hasMoved());
+		} else {
+			this.myPiece = Piece.createPiece(other.getPiece(), false);
+		}
+
 		this.isWhiteHotSpot = other.isWhiteHotSpot();
 		this.isBlackHotSpot = other.isBlackHotSpot();
 	}
+
 	/**
 	 * Accessor method to get the Piece on this Tile
 	 *
@@ -41,7 +50,8 @@ public class Tile {
 	/**
 	 * Mutator method to set the Piece on this Tile to the given Piece
 	 *
-	 * @param myPiece - the given Piece
+	 * @param myPiece
+	 *            - the given Piece
 	 */
 	public void setPiece(Piece myPiece) {
 		this.myPiece = myPiece;
@@ -59,7 +69,8 @@ public class Tile {
 	/**
 	 * Mutator method to set white control of this Tile
 	 *
-	 * @param whiteHotSpot - true if white has control of this Tile, false otherwise
+	 * @param whiteHotSpot
+	 *            - true if white has control of this Tile, false otherwise
 	 */
 	public void setIsWhiteHotSpot(boolean whiteHotSpot) {
 		this.isWhiteHotSpot = whiteHotSpot;
@@ -77,7 +88,8 @@ public class Tile {
 	/**
 	 * Mutator method to set black control of this Tile
 	 *
-	 * @param blackHotSpot - true if black has control of this Tile, false otherwise
+	 * @param blackHotSpot
+	 *            - true if black has control of this Tile, false otherwise
 	 */
 	public void setIsBlackHotSpot(boolean blackHotSpot) {
 		this.isBlackHotSpot = blackHotSpot;
@@ -96,7 +108,7 @@ public class Tile {
 	 * toString method for this tile
 	 *
 	 * @return this tile in the following format: [Piece] white control =
-	 * [true/false] black control [true/false]
+	 *         [true/false] black control [true/false]
 	 */
 	public String toString() {
 		if (!hasPiece()) {
