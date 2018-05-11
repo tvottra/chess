@@ -179,7 +179,7 @@ public class Game {
 			if (!isWithinBounds( toPos.getRow() ,  toPos.getColumn())) {
 					System.out.println("Invalid coordinates for the destination:");
 			}
-			if (gameBoard.getTile(fromPos).getPiece().getName().equals("King") && !castle) {
+			if (gameBoard.getTile(fromPos).hasPiece() && gameBoard.getTile(fromPos).getPiece().getName().equals("King") && !castle) {
 				System.out.println("Illegal: cannot castle");
 			}
 			System.out.println("Move to " + toPos+ " is not legal. Please repeat the move process.");
