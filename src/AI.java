@@ -37,8 +37,8 @@ public class AI extends Player {
 				fromPos = new Position(r, c);
 				if (Game.isValidPiece(fromPos, super.getNumber(), boardIAnalyze)) {
 
-					Piece myPiece = Piece.createPiece(chessBoard[r][c].getPiece());
-					ArrayList<Position> hotSpots = boardIAnalyze.getHotSpots(myPiece);                        //this points to the same Board as the main Board if the main Board is passed to AI's constructor
+					Piece myPiece = Piece.createPiece(chessBoard[r][c].getPiece(), chessBoard[r][c].getPiece().hasMoved());
+					ArrayList<Position> hotSpots = boardIAnalyze.getHotSpots(myPiece, chessBoard);                        //this points to the same Board as the main Board if the main Board is passed to AI's constructor
 
 					if (hotSpots != null) {
 						//System.out.println("AI hotSpots is not null");
@@ -47,7 +47,7 @@ public class AI extends Player {
 
 						int optimalToPosValue = 0;
 						for (Position hSpot : hotSpots) {
-							if (boardIAnalyze.isLegalMove(fromPos, hSpot)) {
+							if (boardIAnalyze.isLegalMove(fromPos, hSpot, chessBoard)) {
 								if (firstLegalToPos) {
 									optimalToPos = hSpot;
 									firstLegalToPos = false;

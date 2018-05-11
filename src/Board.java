@@ -307,7 +307,7 @@ public class Board {
 		int fromRow = fromPos.getRow();
 		int fromCol = fromPos.getColumn();
 
-		if (!fromPos.isWithinBounds() || !toPos.isWithinBounds()) {
+		if (!fromPos.isWithinBounds() || !toPos.isWithinBounds()|| !aBoard[fromRow][fromCol].hasPiece()) {
 			return false;
 		}
 
@@ -369,7 +369,7 @@ public class Board {
 	 * @return true if toPos is within the Piece's hotspots, false otherwise
 	 */
 	private boolean isWithinHotspots(Piece piece, Position toPos, Tile[][] aBoard) {
-		ArrayList<Position> myHotspots = getHotspots(piece, aBoard);
+		ArrayList<Position> myHotspots = getHotSpots(piece, aBoard);
 
 
 		if (myHotspots == null) {
@@ -393,7 +393,7 @@ public class Board {
 	 * @param aBoard - the given 2D array of Tiles
 	 * @return all the Positions currently checked by this Piece
 	 */
-	private ArrayList<Position> getHotspots(Piece piece, Tile[][] aBoard) {
+	public ArrayList<Position> getHotSpots(Piece piece, Tile[][] aBoard) {
 		if (piece.getName().equals("Pawn")) {
 			return getPawnHotspots(piece, aBoard);
 		}
@@ -429,7 +429,7 @@ public class Board {
 
 				if (aBoard[row][col].hasPiece() && aBoard[row][col].getPiece().getColor() == 0) {
 
-					ArrayList<Position> myHotspots = getHotspots(aBoard[row][col].getPiece(), aBoard);
+					ArrayList<Position> myHotspots = getHotSpots(aBoard[row][col].getPiece(), aBoard);
 					for (Position pos : myHotspots) {
 						wHotspots.add(pos);
 					}
@@ -450,7 +450,7 @@ public class Board {
 		for (int row = 0; row < SIZE; row++) {
 			for (int col = 0; col < SIZE; col++) {
 				if (aBoard[row][col].hasPiece() && aBoard[row][col].getPiece().getColor() == 1) {
-					ArrayList<Position> myHotspots = getHotspots(aBoard[row][col].getPiece(), aBoard);
+					ArrayList<Position> myHotspots = getHotSpots(aBoard[row][col].getPiece(), aBoard);
 					for (Position pos : myHotspots) {
 						bHotspots.add(pos);
 					}
@@ -945,109 +945,105 @@ public class Board {
 			}
 		}
 		return -1;
+	}
 
-		/**
-		 * Determines whether a player of the given color has any legal moves left
-		 *
-		 * @param color
-		 *            - 0 if white, 1 if black
-		 * @param aBoard
-		 *            - the given 2D array of Tiles
-		 * @return true if the player has at least 1 legal move left, false otherwise
-		 */
-		private boolean hasLegalMoveLeft ( int color, Tile[][] aBoard){
-			if (color == 0) {
-				for (Tile[] arr : board) {
-					for (Tile obj : arr) {
-						Piece piece = obj.getPiece();
-						if (obj.hasPiece() && piece.getColor() == 0) {
-							if (performMoves(piece, board)) {
-								return true;
-							}
+	/**
+	 * Determines whether a player of the given color has any legal moves left
+	 *
+	 * @param color  - 0 if white, 1 if black
+	 * @param aBoard - the given 2D array of Tiles
+	 * @return true if the player has at least 1 legal move left, false otherwise
+	 */
+	private boolean hasLegalMoveLeft(int color, Tile[][] aBoard) {
+		if (color == 0) {
+			for (Tile[] arr : board) {
+				for (Tile obj : arr) {
+					Piece piece = obj.getPiece();
+					if (obj.hasPiece() && piece.getColor() == 0) {
+						if (performMoves(piece, board)) {
+							return true;
 						}
-					} // inner for loop end
-				} // outer for loop end
-			} else {
-				for (Tile[] arr : board) {
-					for (Tile obj : arr) {
-						Piece piece = obj.getPiece();
-						if (obj.hasPiece() && piece.getColor() == 1) {
-							if (performMoves(piece, board)) {
-								return true;
-							}
+					}
+				} // inner for loop end
+			} // outer for loop end
+		} else {
+			for (Tile[] arr : board) {
+				for (Tile obj : arr) {
+					Piece piece = obj.getPiece();
+					if (obj.hasPiece() && piece.getColor() == 1) {
+						if (performMoves(piece, board)) {
+							return true;
 						}
-					} // inner for loop end
-				} // outer for loop end
-			}
-			return false;
+					}
+				} // inner for loop end
+			} // outer for loop end
 		}
+		return false;
+	}
 
-		/**
-		 * Determines whether at least one of the given piece's moves can be performed
-		 * to avoid a check; calls isLegalMove
-		 *
-		 * @param piece
-		 *            - the given piece
-		 * @param aBoard
-		 *            - the given 2D array of Tiles
-		 * @return true if at least one of the piece's moves can be performed, false
-		 *         otherwise
-		 */
-		private boolean performMoves (Piece piece, Tile[][]aBoard){
-			Position currentPosition = piece.getPosition();
-			if (piece.getName().equals("Pawn")) {
-				ArrayList<Position> moves = getPawnRangeOfMovement(piece, aBoard);
-				for (Position toPos : moves) {
-					if (isLegalMove(currentPosition, toPos, aBoard)) {
-						return true;
-					}
-				}
-			} else {
-				ArrayList<Position> moves = getHotspots(piece, aBoard);
-				for (Position toPos : moves) {
-					if (isLegalMove(currentPosition, toPos, aBoard)) {
-						return true;
-					}
+	/**
+	 * Determines whether at least one of the given piece's moves can be performed
+	 * to avoid a check; calls isLegalMove
+	 *
+	 * @param piece  - the given piece
+	 * @param aBoard - the given 2D array of Tiles
+	 * @return true if at least one of the piece's moves can be performed, false
+	 * otherwise
+	 */
+	private boolean performMoves(Piece piece, Tile[][] aBoard) {
+		Position currentPosition = piece.getPosition();
+		if (piece.getName().equals("Pawn")) {
+			ArrayList<Position> moves = getPawnRangeOfMovement(piece, aBoard);
+			for (Position toPos : moves) {
+				if (isLegalMove(currentPosition, toPos, aBoard)) {
+					return true;
 				}
 			}
-			return false;
+		} else {
+			ArrayList<Position> moves = getHotSpots(piece, aBoard);
+			for (Position toPos : moves) {
+				if (isLegalMove(currentPosition, toPos, aBoard)) {
+					return true;
+				}
+			}
 		}
+		return false;
+	}
 
-		/**
-		 * Should be called each time after a Piece is moved, looping through all of the
-		 * Tiles and updating the isWhiteHotSpot and isBlackHotSpot for each Tile
-		 */
-		public void updateHotSpots () {
-			ArrayList<Position> checkedPos;
+	/**
+	 * Should be called each time after a Piece is moved, looping through all of the
+	 * Tiles and updating the isWhiteHotSpot and isBlackHotSpot for each Tile
+	 */
+	public void updateHotSpots() {
+		ArrayList<Position> checkedPos;
 
-			// Look through each Piece's field of hotSpots
-			for (Tile[] t1 : board) {
-				for (Tile t2 : t1) {
+		// Look through each Piece's field of hotSpots
+		for (Tile[] t1 : board) {
+			for (Tile t2 : t1) {
 
-					// If there is a Piece
-					if (t2.getPiece() != null) {
-						Piece myPiece = t2.getPiece();
-						checkedPos = getHotspots(myPiece, board);
-						boolean isWhite = myPiece.getColor() == 0;
-						// For each Position checked, update each corresponding Tile's isWhiteHotSpot
-						// and isBlackHotSpot accordingly
-						if (checkedPos != null) {
+				// If there is a Piece
+				if (t2.getPiece() != null) {
+					Piece myPiece = t2.getPiece();
+					checkedPos = getHotSpots(myPiece, board);
+					boolean isWhite = myPiece.getColor() == 0;
+					// For each Position checked, update each corresponding Tile's isWhiteHotSpot
+					// and isBlackHotSpot accordingly
+					if (checkedPos != null) {
 
-							for (Position pos : checkedPos) {
-								if (pos.isWithinBounds()) {
-									if (isWhite) {
-										board[pos.getRow()][pos.getColumn()].setIsWhiteHotSpot(true);
-									} else {
-										board[pos.getRow()][pos.getColumn()].setIsBlackHotSpot(true);
-									}
+						for (Position pos : checkedPos) {
+							if (pos.isWithinBounds()) {
+								if (isWhite) {
+									board[pos.getRow()][pos.getColumn()].setIsWhiteHotSpot(true);
+								} else {
+									board[pos.getRow()][pos.getColumn()].setIsBlackHotSpot(true);
 								}
-
 							}
+
 						}
 					}
 				}
-
 			}
+
 		}
 	}
 }

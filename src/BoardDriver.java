@@ -22,7 +22,7 @@ public class BoardDriver {
 		}
 		// Hotspots test
 
-		ArrayList<Position> hotSpots = myBoard.getHotSpots(testPiece);
+		ArrayList<Position> hotSpots = myBoard.getHotSpots(testPiece, myBoard.getBoard());
 		System.out.println("Here are the hotSpots:");
 		if(hotSpots == null) {
 			System.out.println("hotSpots is null");
