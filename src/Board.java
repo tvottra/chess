@@ -18,9 +18,19 @@ public class Board {
 	 */
 	public Board() {
 		board = new Tile[8][8];
+
 		setUpWhitePieces();
 		setUpBlackPieces();
 		setUpRestOfBoard();
+		/*
+		 * for (int row = 0; row < SIZE; row ++) { for (int col = 0; col < SIZE; col++)
+		 * { board[row][col] = new Tile(null, false, false); } }
+		 * 
+		 * getTile(7, 0).setPiece(new Rook(1, new Position(7, 0)));
+		 * getTile(7,4).setPiece(new King(0, new Position(7,4))); getTile(6,
+		 * 3).setPiece(new Rook(0, new Position(6, 3)));
+		 */
+
 		// NullPointerException when updateHotSpots is called
 		// updateHotSpots();
 	}
@@ -151,6 +161,40 @@ public class Board {
 	}
 
 	/**
+	 * Accessor method to get this board
+	 * 
+	 * @return the board
+	 */
+	public Tile[][] getBoard() {
+		return board;
+	}
+
+	/**
+	 * toString method to print the Board
+	 *
+	 * @return the contents of each Tile as they would appear on a 2D board
+	 */
+	public String toString() {
+		String output = "";
+		boolean first = true;
+		int count = 0;
+		output += "   00 01 02 03 04 05 06 07\n";
+		for (Tile[] arr : board) {
+			for (Tile tile : arr) {
+				if (first) {
+					output += "0" + count + " ";
+					++count;
+					first = false;
+				}
+				output += tile.toString() + " ";
+			}
+			output += "\n";
+			first = true;
+		}
+		return output;
+	}
+
+	/**
 	 * Moves a Piece at fromPos to toPos on the board without checking for legality.
 	 *
 	 * @param fromPos
@@ -164,9 +208,8 @@ public class Board {
 
 		int fromRow = fromPos.getRow();
 		int fromCol = fromPos.getColumn();
-
-		Piece pieceToMove = board[fromRow][fromCol].getPiece();
-
+		Piece pieceToMove = Piece.createPiece(board[fromRow][fromCol].getPiece(),
+				board[fromRow][fromCol].getPiece().hasMoved());
 		if (pieceToMove == null) {
 			return false;
 		}
@@ -175,14 +218,24 @@ public class Board {
 		board[toRow][toCol].setPiece(pieceToMove);
 		board[fromRow][fromCol].setPiece(null);
 		board[toRow][toCol].getPiece().setPosition(new Position(toPos));
+		board[toRow][toCol].getPiece().setHasMoved(true);
 		return true;
 	}
 
+	/**
+	 * Determines whether the King at the given Position may castle
+	 * 
+	 * @param fromPos
+	 *            - the King's current Position
+	 * @param toPos
+	 *            - the King's Position upon castling
+	 * @return true if castling is possible, false otherwise
+	 */
 	public boolean castleAble(Position fromPos, Position toPos) {
 		Piece king = board[fromPos.getRow()][fromPos.getColumn()].getPiece();
 		Position toPosCheck;
 		Position rookToPos;
-		int direction = toPos.getColumn() - fromPos.getColumn();
+		int direction = toPos.getColumn() - fromPos.getColumn(); // right if positive, left if negative
 		Piece rook;
 
 		if (king.getColor() == 0) {
@@ -266,65 +319,57 @@ public class Board {
 	 *            - the Piece's current Position
 	 * @param toPos
 	 *            - the Position of the Piece's proposed destination
+	 * @param aBoard
+	 *            - the given 2D array of Tiles
 	 * @return true if the move is legal, false otherwise
 	 */
-	public boolean isLegalMove(Position fromPos, Position toPos) {
-
-		// System.out.println("IsLegalMove() called once.");
-
+	public boolean isLegalMove(Position fromPos, Position toPos, Tile[][] aBoard) {
 		int fromRow = fromPos.getRow();
 		int fromCol = fromPos.getColumn();
-		Piece pieceToMove = Piece.createPiece(board[fromRow][fromCol].getPiece());
+		Piece pieceToMove = Piece.createPiece(board[fromRow][fromCol].getPiece(),
+				board[fromRow][fromCol].getPiece().hasMoved());
 
 		if (pieceToMove == null) {
 			System.out.println("Something went wrong. No Piece at fromPos."); // Debugging
 
 			return false;
 		}
-
 		int toRow = toPos.getRow();
 		int toCol = toPos.getColumn();
 		if (pieceToMove.getName().equals("Pawn")) {
-			if (!pieceToMove.isWithinRangeOfMovement(toPos)) {
-				if (isWithinHotspots(pieceToMove, toPos)) { // If the move is not forward but instead diagonal
-					if (board[toRow][toCol].hasPiece()
-							&& board[toRow][toCol].getPiece().getColor() != pieceToMove.getColor()) { // Check if the
-						// Tile is
-						// occupied by
-						// an enemy; if
-						// so, then
-						// valid move to
-						// "take" that
-						// Tile
-						// No code here. Proceed with the rest of the code to verify legality.
-					} else {
-						return false; // if the diagonal has a Piece of the same color
-					}
-				} else {
-					return false; // if the Tile is NOT in the Pawn's range of movement
-				}
+			if (!isWithinPawnRangeOfMovement(pieceToMove, toPos, aBoard)) {
+				System.out.println("Illegal: Not within Pawn ROM");
+				return false;
 			}
-			return true;
-		}
-
-		if (!isWithinHotspots(pieceToMove, toPos) || (board[toRow][toCol].hasPiece()
-				&& board[toRow][toCol].getPiece().isSameColorAs(board[fromRow][fromCol].getPiece()))) {
-
-			// For debugging purposes
-			if (!isWithinHotspots(pieceToMove, toPos)) {
-				System.out.println("Illegal: proposed move not within actual range of movement");
-			}
-			if ((board[toRow][toCol].hasPiece()
+		} else {
+			if (!isWithinHotspots(pieceToMove, toPos, board) || (board[toRow][toCol].hasPiece()
 					&& board[toRow][toCol].getPiece().isSameColorAs(board[fromRow][fromCol].getPiece()))) {
-				System.out.println("Illegal: can't capture your own piece");
+
+				// For debugging purposes
+				if (!isWithinHotspots(pieceToMove, toPos, board)) {
+					System.out.println("Illegal: proposed move not within actual range of movement!");
+				}
+				if ((board[toRow][toCol].hasPiece()
+						&& board[toRow][toCol].getPiece().isSameColorAs(board[fromRow][fromCol].getPiece()))) {
+					// System.out.println("Illegal: you can't capture your own piece!");
+				}
+				return false;
 			}
-			return false;
 		}
+
 		// Create a copy of the real board to determine whether the move creates a check
 		Tile[][] copy = new Tile[SIZE][SIZE];
 		for (int row = 0; row < SIZE; row++) {
 			for (int col = 0; col < SIZE; col++) {
 				copy[row][col] = new Tile(board[row][col]);
+				if (board[row][col].hasPiece()) {
+					Piece piece = Piece.createPiece(board[row][col].getPiece(), board[row][col].getPiece().hasMoved());
+					copy[row][col].setPiece(piece);
+				} else {
+					Piece piece = Piece.createPiece(board[row][col].getPiece(), false);
+					copy[row][col].setPiece(piece);
+				}
+
 			}
 		}
 		// Perform the move on the copy of the board
@@ -333,9 +378,12 @@ public class Board {
 		// Find the hotspots and see whether the move would result in a check
 		int myColor = pieceToMove.getColor();
 		if (isKingChecked(myColor, copy)) {
+			// System.out.println("Shouldn't be able to move");
 			return false;
+		} else {
+			return true;
 		}
-		return true;
+
 	}
 
 	/**
@@ -346,11 +394,12 @@ public class Board {
 	 *            - the given Piece
 	 * @param toPos
 	 *            - the given destination Position
+	 * @param aBoard
+	 *            - the given 2D array of Tiles
 	 * @return true if toPos is within the Piece's hotspots, false otherwise
 	 */
-	private boolean isWithinHotspots(Piece piece, Position toPos) {
-		ArrayList<Position> myHotspots = getHotspots(piece);
-
+	private boolean isWithinHotspots(Piece piece, Position toPos, Tile[][] aBoard) {
+		ArrayList<Position> myHotspots = getHotspots(piece, aBoard);
 		if (myHotspots == null) {
 			return false;
 		}
@@ -365,57 +414,34 @@ public class Board {
 	}
 
 	/**
-	 * toString method to print the Board
-	 *
-	 * @return the contents of each Tile as they would appear on a 2D board
-	 */
-	public String toString() {
-		String output = "";
-		boolean first = true;
-		int count = 0;
-		output += "   00 01 02 03 04 05 06 07\n";
-		for (Tile[] arr : board) {
-			for (Tile tile : arr) {
-				if (first) {
-					output += "0" + count + " ";
-					++count;
-					first = false;
-				}
-				output += tile.toString() + " ";
-			}
-			output += "\n";
-			first = true;
-		}
-		return output;
-	}
-
-	/**
 	 * Gets all the hotspots controlled by this Piece; a hotspot is defined as any
 	 * Position at which a Piece could perform a capture; calls the appropriate
 	 * helper method to get the hotspots, depending on the identity of the piece
 	 *
 	 * @param piece
 	 *            - the given Piece
+	 * @param aBoard
+	 *            - the given 2D array of Tiles
 	 * @return all the Positions currently checked by this Piece
 	 */
-	public ArrayList<Position> getHotspots(Piece piece) {
+	private ArrayList<Position> getHotspots(Piece piece, Tile[][] aBoard) {
 		if (piece.getName().equals("Pawn")) {
-			return getPawnHotspots(piece);
+			return getPawnHotspots(piece, aBoard);
 		}
 		if (piece.getName().equals("Knight")) {
-			return getKnightHotspots(piece);
+			return getKnightHotspots(piece, aBoard);
 		}
 		if (piece.getName().equals("Bishop")) {
-			return getBishopHotspots(piece);
+			return getBishopHotspots(piece, aBoard);
 		}
 		if (piece.getName().equals("Rook")) {
-			return getRookHotspots(piece);
+			return getRookHotspots(piece, aBoard);
 		}
 		if (piece.getName().equals("Queen")) {
-			return getQueenHotspots(piece);
+			return getQueenHotspots(piece, aBoard);
 		}
 		if (piece.getName().equals("King")) {
-			return getKingHotspots(piece);
+			return getKingHotspots(piece, aBoard);
 		}
 		return null;
 
@@ -428,14 +454,14 @@ public class Board {
 	 *            - the given board
 	 * @return all of the hotspots checked by white pieces
 	 */
-	public ArrayList<Position> getWhiteHotspots(Tile[][] aBoard) {
+	private ArrayList<Position> getWhiteHotspots(Tile[][] aBoard) {
 		ArrayList<Position> wHotspots = new ArrayList<Position>();
 		for (int row = 0; row < SIZE; row++) {
 			for (int col = 0; col < SIZE; col++) {
 
 				if (aBoard[row][col].hasPiece() && aBoard[row][col].getPiece().getColor() == 0) {
 
-					ArrayList<Position> myHotspots = getHotspots(aBoard[row][col].getPiece());
+					ArrayList<Position> myHotspots = getHotspots(aBoard[row][col].getPiece(), aBoard);
 					for (Position pos : myHotspots) {
 						wHotspots.add(pos);
 					}
@@ -452,20 +478,19 @@ public class Board {
 	 *            - the given board
 	 * @return all of the hotspots checked by black pieces
 	 */
-	public ArrayList<Position> getBlackHotspots(Tile[][] aBoard) {
+	private ArrayList<Position> getBlackHotspots(Tile[][] aBoard) {
 		ArrayList<Position> bHotspots = new ArrayList<Position>();
 		for (int row = 0; row < SIZE; row++) {
 			for (int col = 0; col < SIZE; col++) {
-
 				if (aBoard[row][col].hasPiece() && aBoard[row][col].getPiece().getColor() == 1) {
-
-					ArrayList<Position> myHotspots = getHotspots(aBoard[row][col].getPiece());
+					ArrayList<Position> myHotspots = getHotspots(aBoard[row][col].getPiece(), aBoard);
 					for (Position pos : myHotspots) {
 						bHotspots.add(pos);
 					}
 				}
 			}
 		}
+
 		return bHotspots;
 	}
 
@@ -474,9 +499,11 @@ public class Board {
 	 *
 	 * @param pawn
 	 *            - the given Pawn
+	 * @param aBoard
+	 *            - the given 2D array of Tiles
 	 * @return the hotspots for the given "Pawn"
 	 */
-	private ArrayList<Position> getPawnHotspots(Piece pawn) {
+	private ArrayList<Position> getPawnHotspots(Piece pawn, Tile[][] aBoard) {
 		ArrayList<Position> hotSpots = new ArrayList<Position>();
 		Position currentPos = pawn.getPosition();
 		int r;
@@ -502,13 +529,77 @@ public class Board {
 	}
 
 	/**
+	 * Returns the given Pawn's range of movement, taking into consideration
+	 * obstruction on the Board. The Pawn's range of movement may include forward
+	 * tiles, diagonal tiles, both, or none, depending on the current board
+	 * 
+	 * @param pawn
+	 *            - the given Pawn
+	 * @param aBoard
+	 *            - the given 2D array of Tiles
+	 * @return the Pawn's real range of movement
+	 */
+	public ArrayList<Position> getPawnRangeOfMovement(Piece pawn, Tile[][] aBoard) {
+		ArrayList<Position> rom = new ArrayList<Position>();
+		// get forward tiles (if any)
+		ArrayList<Position> list = pawn.getRangeOfMovement();
+		for (int i = 0; i < list.size(); i++) {
+			Tile currentTile = getTile(list.get(i));
+			if (currentTile.hasPiece()) {
+				break;
+			} else {
+				if (pawn.hasMoved() && Math.abs(list.get(i).getRow() - pawn.getPosition().getRow()) == 2) {
+					break;
+				} else {
+					rom.add(list.get(i));
+				}
+			}
+		}
+		// get diagonal tiles (if any)
+		ArrayList<Position> hotspots = getPawnHotspots(pawn, aBoard);
+		for (int i = 0; i < hotspots.size(); i++) {
+			Tile currentTile = getTile(hotspots.get(i));
+			if (currentTile.hasPiece() && !currentTile.getPiece().isSameColorAs(pawn)) {
+				rom.add(hotspots.get(i));
+			}
+		}
+		return rom;
+	}
+
+	/**
+	 * Checks whether the given Pawn's proposed destination is within the given
+	 * Pawn's true range of movement
+	 * 
+	 * @param Piece
+	 *            pawn
+	 * @param toPos
+	 *            - the given Position
+	 * @param aBoard
+	 *            - the given 2D array of Tiles
+	 * @return true if toPos is within the Pawn's range of mvoement, false otherwise
+	 */
+	public boolean isWithinPawnRangeOfMovement(Piece pawn, Position toPos, Tile[][] aBoard) {
+		ArrayList<Position> myRom = getPawnRangeOfMovement(pawn, aBoard);
+		System.out.println(pawn.hasMoved());
+		for (Position pos : myRom) {
+			System.out.println(pos);
+			if (toPos.equals(pos)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
 	 * Returns the hotspots for the given Knight
 	 *
 	 * @param knight
 	 *            - the given Knight
+	 * @param aBoard
+	 *            - the given 2D array of Tiles
 	 * @return the hotspots for the given "Knight"
 	 */
-	private ArrayList<Position> getKnightHotspots(Piece knight) {
+	private ArrayList<Position> getKnightHotspots(Piece knight, Tile[][] aBoard) {
 		ArrayList<Position> rom = knight.getRangeOfMovement();
 		ArrayList<Position> hotspots = new ArrayList<Position>();
 		for (int i = 0; i < rom.size(); i++) {
@@ -522,9 +613,11 @@ public class Board {
 	 *
 	 * @param bishop
 	 *            - the given Bishop
+	 * @param aBoard
+	 *            - the given 2D array of Tiles
 	 * @return the hotspots for the given "Bishop"
 	 */
-	private ArrayList<Position> getBishopHotspots(Piece bishop) {
+	private ArrayList<Position> getBishopHotspots(Piece bishop, Tile[][] aBoard) {
 		ArrayList<Position> rom = bishop.getRangeOfMovement();
 		ArrayList<Position> hotspots = new ArrayList<Position>();
 		// A branch is one of the 4 diagonals for the Bishop
@@ -589,16 +682,18 @@ public class Board {
 	}
 
 	/**
-	 * Returns the hotspots for the given Rook
+	 * Returns the hotspots for the given Rook on the given board
 	 *
 	 * @param rook
 	 *            - the given Rook
+	 * @param aBoard
+	 *            - the given 2D array of Tiles
 	 * @return the hotspots for the given "Rook"
 	 */
-	private ArrayList<Position> getRookHotspots(Piece rook) {
+	private ArrayList<Position> getRookHotspots(Piece rook, Tile[][] aBoard) {
 		ArrayList<Position> rom = rook.getRangeOfMovement();
 
-		ArrayList<Position> hotSpots = new ArrayList<Position>();
+		ArrayList<Position> hotspots = new ArrayList<Position>();
 		rom.add(0, new Position(-1, -1)); // add a "buffer" to prevent row 0 error
 		int hbranch1end = 0; // tiles above rook on board
 		int hbranch2end = 0; // tiles below rook on board
@@ -626,45 +721,47 @@ public class Board {
 		 */
 		// Look at vector above rook
 		for (int i = 1; i < hbranch1end; i++) {
-			Tile currentTile = board[rom.get(i).getRow()][rom.get(i).getColumn()];
+			Tile currentTile = aBoard[rom.get(i).getRow()][rom.get(i).getColumn()];
 			if (currentTile.hasPiece()) {
-				hotSpots.add(rom.get(i));
+				hotspots.add(rom.get(i));
 				break;
 			} else {
-				hotSpots.add(rom.get(i));
+				// System.out.println(rom.get(i));
+				hotspots.add(rom.get(i));
 			}
 		}
-		// Look at vector above rook
+		// Look at vector below rook
 		for (int i = hbranch1end + 1; i < hbranch2end; i++) {
-			Tile currentTile = board[rom.get(i).getRow()][rom.get(i).getColumn()];
+			Tile currentTile = aBoard[rom.get(i).getRow()][rom.get(i).getColumn()];
 			if (currentTile.hasPiece()) {
-				hotSpots.add(rom.get(i));
+				hotspots.add(rom.get(i));
 				break;
 			} else {
-				hotSpots.add(rom.get(i));
+				hotspots.add(rom.get(i));
 			}
 		}
 		// Look at vector left of rook
 		for (int i = hbranch2end + 1; i < hbranch3end; i++) {
-			Tile currentTile = board[rom.get(i).getRow()][rom.get(i).getColumn()];
+			Tile currentTile = aBoard[rom.get(i).getRow()][rom.get(i).getColumn()];
 			if (currentTile.hasPiece()) {
-				hotSpots.add(rom.get(i));
+				hotspots.add(rom.get(i));
 				break;
 			} else {
-				hotSpots.add(rom.get(i));
+				hotspots.add(rom.get(i));
 			}
 		}
 		// Look at vector right of rook
 		for (int i = hbranch3end + 1; i < hbranch4end; i++) {
-			Tile currentTile = board[rom.get(i).getRow()][rom.get(i).getColumn()];
+			Tile currentTile = aBoard[rom.get(i).getRow()][rom.get(i).getColumn()];
 			if (currentTile.hasPiece()) {
-				hotSpots.add(rom.get(i));
+				hotspots.add(rom.get(i));
 				break;
 			} else {
-				hotSpots.add(rom.get(i));
+				hotspots.add(rom.get(i));
 			}
 		}
-		return hotSpots;
+
+		return hotspots;
 
 	}
 
@@ -673,12 +770,14 @@ public class Board {
 	 *
 	 * @param queen
 	 *            - the given Queen
+	 * @param aBoard
+	 *            - the given 2D array of Tiles
 	 * @return the hotspots for the given "Queen"
 	 */
-	private ArrayList<Position> getQueenHotspots(Piece queen) {
+	private ArrayList<Position> getQueenHotspots(Piece queen, Tile[][] aBoard) {
 		ArrayList<Position> rom = queen.getRangeOfMovement();
 
-		ArrayList<Position> hotSpots = new ArrayList<Position>();
+		ArrayList<Position> hotspots = new ArrayList<Position>();
 
 		rom.add(0, new Position(-1, -1)); // add a buffer to prevent row 0 error
 		int hbranch1end = 0; // the tiles above queen
@@ -721,10 +820,10 @@ public class Board {
 			Tile currentTile = board[rom.get(i).getRow()][rom.get(i).getColumn()];
 
 			if (currentTile.hasPiece()) {
-				hotSpots.add(rom.get(i));
+				hotspots.add(rom.get(i));
 				break;
 			} else {
-				hotSpots.add(rom.get(i));
+				hotspots.add(rom.get(i));
 
 			}
 		}
@@ -732,10 +831,10 @@ public class Board {
 			Tile currentTile = board[rom.get(i).getRow()][rom.get(i).getColumn()];
 
 			if (currentTile.hasPiece()) {
-				hotSpots.add(rom.get(i));
+				hotspots.add(rom.get(i));
 				break;
 			} else {
-				hotSpots.add(rom.get(i));
+				hotspots.add(rom.get(i));
 
 			}
 		}
@@ -743,10 +842,10 @@ public class Board {
 			Tile currentTile = board[rom.get(i).getRow()][rom.get(i).getColumn()];
 
 			if (currentTile.hasPiece()) {
-				hotSpots.add(rom.get(i));
+				hotspots.add(rom.get(i));
 				break;
 			} else {
-				hotSpots.add(rom.get(i));
+				hotspots.add(rom.get(i));
 
 			}
 		}
@@ -754,10 +853,10 @@ public class Board {
 			Tile currentTile = board[rom.get(i).getRow()][rom.get(i).getColumn()];
 
 			if (currentTile.hasPiece()) {
-				hotSpots.add(rom.get(i));
+				hotspots.add(rom.get(i));
 				break;
 			} else {
-				hotSpots.add(rom.get(i));
+				hotspots.add(rom.get(i));
 
 			}
 		}
@@ -765,10 +864,10 @@ public class Board {
 			Tile currentTile = board[rom.get(i).getRow()][rom.get(i).getColumn()];
 
 			if (currentTile.hasPiece()) {
-				hotSpots.add(rom.get(i));
+				hotspots.add(rom.get(i));
 				break;
 			} else {
-				hotSpots.add(rom.get(i));
+				hotspots.add(rom.get(i));
 
 			}
 		}
@@ -776,10 +875,10 @@ public class Board {
 			Tile currentTile = board[rom.get(i).getRow()][rom.get(i).getColumn()];
 
 			if (currentTile.hasPiece()) {
-				hotSpots.add(rom.get(i));
+				hotspots.add(rom.get(i));
 				break;
 			} else {
-				hotSpots.add(rom.get(i));
+				hotspots.add(rom.get(i));
 
 			}
 		}
@@ -787,10 +886,10 @@ public class Board {
 			Tile currentTile = board[rom.get(i).getRow()][rom.get(i).getColumn()];
 
 			if (currentTile.hasPiece()) {
-				hotSpots.add(rom.get(i));
+				hotspots.add(rom.get(i));
 				break;
 			} else {
-				hotSpots.add(rom.get(i));
+				hotspots.add(rom.get(i));
 
 			}
 		}
@@ -798,13 +897,14 @@ public class Board {
 			Tile currentTile = board[rom.get(i).getRow()][rom.get(i).getColumn()];
 
 			if (currentTile.hasPiece()) {
-				hotSpots.add(rom.get(i));
+				hotspots.add(rom.get(i));
 				break;
 			} else {
-				hotSpots.add(rom.get(i));
+				hotspots.add(rom.get(i));
 			}
 		}
-		return hotSpots;
+
+		return hotspots;
 
 	}
 
@@ -813,9 +913,11 @@ public class Board {
 	 *
 	 * @param king
 	 *            - the given King
+	 * @param aBoard
+	 *            - the given 2D array of Tiles
 	 * @return the hotspots for the given "King"
 	 */
-	private ArrayList<Position> getKingHotspots(Piece king) {
+	private ArrayList<Position> getKingHotspots(Piece king, Tile[][] aBoard) {
 		ArrayList<Position> rom = king.getRangeOfMovement();
 
 		ArrayList<Position> hotSpots = new ArrayList<Position>();
@@ -833,11 +935,10 @@ public class Board {
 	 * @param color
 	 *            - 0 if white, 1 if black
 	 * @param aBoard
-	 *            - the given board
+	 *            - @param aBoard - the given 2D array of Tiles
 	 * @return true if the King is checked, false otherwise
 	 */
-	public boolean isKingChecked(int color, Tile[][] aBoard) {
-		/*
+	private boolean isKingChecked(int color, Tile[][] aBoard) {
 		Position kingPos = findKingPosition(color, aBoard);
 		if (color == 0) {
 			ArrayList<Position> bHotspots = getBlackHotspots(aBoard);
@@ -855,8 +956,6 @@ public class Board {
 			}
 		}
 		return false;
-		*/
-		return false;
 	}
 
 	/**
@@ -865,10 +964,10 @@ public class Board {
 	 * @param color
 	 *            - 0 if white, 1 if black
 	 * @param aBoard
-	 *            - the given board
+	 *            - the given 2D array of Tiles
 	 * @return the Position of the King
 	 */
-	public Position findKingPosition(int color, Tile[][] aBoard) {
+	private Position findKingPosition(int color, Tile[][] aBoard) {
 		for (int row = 0; row < SIZE; row++) {
 			for (int col = 0; col < SIZE; col++) {
 				if (aBoard[row][col].hasPiece() && aBoard[row][col].getPiece().getName().equals("King")
@@ -878,6 +977,96 @@ public class Board {
 			}
 		}
 		return null;
+	}
+
+	/**
+	 * Determines whether a king is checkmated; prints out message if king is
+	 * checked
+	 * 
+	 * @return 0 if the white king is checkmated, 1 if the black king is checkmated,
+	 *         -1 otherwise
+	 */
+	public int getWhoIsCheckmated() {
+		if (isKingChecked(0, board)) {
+			System.out.println("White king is in check!");
+			if (!hasLegalMoveLeft(0, board)) {
+				return 0;
+			}
+		}
+		if (isKingChecked(1, board)) {
+			System.out.println("Black king is in check!");
+			if (!hasLegalMoveLeft(1, board)) {
+				return 0;
+			}
+		}
+		return -1;
+	}
+
+	/**
+	 * Determines whether a player of the given color has any legal moves left
+	 * 
+	 * @param color
+	 *            - 0 if white, 1 if black
+	 * @param aBoard
+	 *            - the given 2D array of Tiles
+	 * @return true if the player has at least 1 legal move left, false otherwise
+	 */
+	private boolean hasLegalMoveLeft(int color, Tile[][] aBoard) {
+		if (color == 0) {
+			for (Tile[] arr : board) {
+				for (Tile obj : arr) {
+					Piece piece = obj.getPiece();
+					if (obj.hasPiece() && piece.getColor() == 0) {
+						if (performMoves(piece, board)) {
+							return true;
+						}
+					}
+				} // inner for loop end
+			} // outer for loop end
+		} else {
+			for (Tile[] arr : board) {
+				for (Tile obj : arr) {
+					Piece piece = obj.getPiece();
+					if (obj.hasPiece() && piece.getColor() == 1) {
+						if (performMoves(piece, board)) {
+							return true;
+						}
+					}
+				} // inner for loop end
+			} // outer for loop end
+		}
+		return false;
+	}
+
+	/**
+	 * Determines whether at least one of the given piece's moves can be performed
+	 * to avoid a check; calls isLegalMove
+	 * 
+	 * @param piece
+	 *            - the given piece
+	 * @param aBoard
+	 *            - the given 2D array of Tiles
+	 * @return true if at least one of the piece's moves can be performed, false
+	 *         otherwise
+	 */
+	private boolean performMoves(Piece piece, Tile[][] aBoard) {
+		Position currentPosition = piece.getPosition();
+		if (piece.getName().equals("Pawn")) {
+			ArrayList<Position> moves = getPawnRangeOfMovement(piece, aBoard);
+			for (Position toPos : moves) {
+				if (isLegalMove(currentPosition, toPos, aBoard)) {
+					return true;
+				}
+			}
+		} else {
+			ArrayList<Position> moves = getHotspots(piece, aBoard);
+			for (Position toPos : moves) {
+				if (isLegalMove(currentPosition, toPos, aBoard)) {
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 
 	/**
@@ -894,7 +1083,7 @@ public class Board {
 				// If there is a Piece
 				if (t2.getPiece() != null) {
 					Piece myPiece = t2.getPiece();
-					checkedPos = getHotspots(myPiece);
+					checkedPos = getHotspots(myPiece, board);
 					boolean isWhite = myPiece.getColor() == 0;
 					// For each Position checked, update each corresponding Tile's isWhiteHotSpot
 					// and isBlackHotSpot accordingly
@@ -915,45 +1104,6 @@ public class Board {
 			}
 
 		}
-	}
-
-	/**
-	 * Accessor method to get this board
-	 * 
-	 * @return the board
-	 */
-	public Tile[][] getBoard() {
-		return board;
-	}
-
-	/**
-	 * Determines whether a king is checkmated
-	 * 
-	 * @return 0 if the white king is checkmated, 1 if the black king is checkmated,
-	 *         -1 otherwise
-	 */
-	public int getWhoIsCheckmated() {
-		for (int color = 0; color < 2; color++) {
-			if (isKingChecked(color, board)) {
-				System.out.println("King of color " + color + " is in check!");
-				Position kingPos = findKingPosition(color, board);
-				Piece king = getTile(kingPos).getPiece();
-				ArrayList<Position> kingROM = king.getRangeOfMovement();
-				ArrayList<Boolean> canMove = new ArrayList<Boolean>(kingROM.size());
-				for (int i = 0; i < kingROM.size(); i++) {
-					if (isLegalMove(kingPos, kingROM.get(i))) {
-						canMove.set(i, true);
-					} else {
-						canMove.set(i, false);
-					}
-				}
-				if (!canMove.contains(new Boolean(true))) {
-					return color;
-				}
-			}
-
-		}
-		return -1;
 	}
 
 }
