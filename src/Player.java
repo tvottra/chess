@@ -17,8 +17,8 @@ public class Player {
 	 * Constructor to initialize this player's name and number to the given values
 	 * and score to 0
 	 *
-	 * @param name   - the given name
-	 * @param number - the given number
+	 * @param name    the given name
+	 * @param number  the given number
 	 */
 	public Player(String name, int number) {
 		myName = name;
@@ -40,7 +40,7 @@ public class Player {
 	/**
 	 * Mutator method to change the player's name
 	 *
-	 * @param name - the new name
+	 * @param name  the new name
 	 */
 	public void setName(String name) {
 		myName = name;
@@ -67,7 +67,7 @@ public class Player {
 	/**
 	 * Mutator method to increment the player's score by the given value
 	 *
-	 * @param val - the given value
+	 * @param val  the given value
 	 */
 	public void incrementScore(int val) {
 		myScore += val;
@@ -85,7 +85,7 @@ public class Player {
 	/**
 	 * Mutator method to set the checkmate status
 	 *
-	 * @param checkmate - true if the player has been checkmated, false otherwise
+	 * @param checkmate  true if the player has been checkmated, false otherwise
 	 */
 	public void setCheckMate(boolean checkmate) {
 		checkmated = checkmate;
@@ -94,7 +94,7 @@ public class Player {
 	/**
 	 * Mutator method to set the resign status
 	 *
-	 * @param resign - true if the player has resigned, false otherwise
+	 * @param resign  true if the player has resigned, false otherwise
 	 */
 	public void setResign(boolean resign) {
 		resigned = resign;
@@ -112,7 +112,7 @@ public class Player {
 	/**
 	 * Determines hether this player and the given player are the same player
 	 *
-	 * @param other - the given player
+	 * @param other  the given player
 	 * @return true if both players are the same player, false otherwise
 	 */
 	public boolean equals(Player other) {
@@ -123,26 +123,6 @@ public class Player {
 		}
 	}
 
-	/**
-	 * Requests a draw from the opposing player; calls acceptDraw
-	 *
-	 * @return true if this player offers a draw; false otherwise
-	 */
-	public boolean requestDraw(Player other) {
-		// TO BE IMPLEMENTED
-		return true;
-	}
-
-	/**
-	 * Responds to a draw offer from the opposing player
-	 *
-	 * @param other - the opposing player
-	 * @return true if this player accepts the draw offer, false otherwise
-	 */
-	public boolean acceptDraw(Player other) {
-		// TO BE IMPLEMENTED
-		return true;
-	}
 
 	/**
 	 * toString method to print this player's information
