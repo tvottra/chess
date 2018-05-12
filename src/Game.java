@@ -2,7 +2,7 @@ import java.util.Scanner;
 
 /**
  * Class that represents a chess game containing Players and a Board
- * 
+ *
  * @author Andrew Le
  * @author Tommy V. Tran
  * @author Brian Qiu
@@ -20,10 +20,8 @@ public class Game {
 	/**
 	 * Constructor to initialize the players, gameBoard, and game state
 	 *
-	 * @param name1
-	 *            - whitePlayer's name
-	 * @param name2
-	 *            - blackPlayer's name
+	 * @param name1 - whitePlayer's name
+	 * @param name2 - blackPlayer's name
 	 */
 	public Game(String name1, String name2) {
 		whitePlayer = new Player(name1, 0);
@@ -38,8 +36,7 @@ public class Game {
 	/**
 	 * Accessor method to get the player with the given color
 	 *
-	 * @param color
-	 *            - 0 for white, 1 for black
+	 * @param color - 0 for white, 1 for black
 	 * @return white player if color = 0, black player if color = 1
 	 */
 	public Player getPlayer(int color) {
@@ -107,58 +104,67 @@ public class Game {
 	 * Begins a player's turn; a player has 3 possible moves each turn: 1) move a
 	 * piece, 2) resign, or 3) request a draw
 	 *
-	 * @param pl
-	 *            - the turn player
-	 * @param other
-	 *            - the opposing player
+	 * @param pl    - the turn player
+	 * @param other - the opposing player
 	 */
 	private void startPlayerTurn(Player pl, Player other) {
-		System.out.println("It is " + pl.getName() + "'s turn. Select one option:");
-		System.out.println("(1) Select a piece to move");
-		System.out.println("(2) Resign");
-		System.out.println("(3) Request draw");
-		System.out.println("(4) Pass turn: for testing only");
-		int playerChoice = sc.nextInt();
-		switch (playerChoice) {
-		case 1:
-			System.out.println(gameBoard);
-			continueTurn(pl);
-			break;
-		case 2:
-			pl.setResign(true);
-			break;
-		case 3:
-			System.out.println("Does " + other.getName() + " accept " + pl.getName() + "'s draw offer?");
-			System.out.println("(1) Accept draw");
-			System.out.println("(2) Decline draw");
-			int drawChoice = sc.nextInt();
-			if (drawChoice == 1) {
-				setDraw(true);
-				System.out.println(other.getName() + " has accepted " + pl.getName() + "'s draw offer.");
-			} else {
-				setDraw(false);
-				System.out.println(other.getName() + " has declined " + pl.getName() + "'s draw offer.");
-				isWhiteTurn = !isWhiteTurn; // make sure the turn player's turn is not skipped
-			}
-			break;
-		case 4:
-			// do nothing
-			System.out.println(pl.getName() + " has passed");
-			break;
-		default:
-			System.out.println("An invalid number was entered: please choose 1-4");
-			break;
-		}
+		boolean endPrompt = false;
+		while (!endPrompt) {
 
+			System.out.println("It is " + pl.getName() + "'s turn. Select one option:");
+			System.out.println("(1) Select a piece to move");
+			System.out.println("(2) Resign");
+			System.out.println("(3) Request draw");
+			System.out.println("(4) Pass turn: for testing only");
+			System.out.println("(5) View pieces I've captured");
+			int playerChoice = sc.nextInt();
+			switch (playerChoice) {
+				case 1:
+					System.out.println(gameBoard);
+					endPrompt = true;
+					continueTurn(pl);
+					break;
+				case 2:
+					pl.setResign(true);
+					endPrompt = true;
+					break;
+				case 3:
+					System.out.println("Does " + other.getName() + " accept " + pl.getName() + "'s draw offer?");
+					System.out.println("(1) Accept draw");
+					System.out.println("(2) Decline draw");
+					int drawChoice = sc.nextInt();
+					if (drawChoice == 1) {
+						setDraw(true);
+						System.out.println(other.getName() + " has accepted " + pl.getName() + "'s draw offer.");
+					} else {
+						setDraw(false);
+						System.out.println(other.getName() + " has declined " + pl.getName() + "'s draw offer.");
+						isWhiteTurn = !isWhiteTurn; // make sure the turn player's turn is not skipped
+					}
+					endPrompt = true;
+					break;
+				case 4:
+					// do nothing
+					System.out.println(pl.getName() + " has passed");
+					endPrompt = true;
+					break;
+				case 5:
+					System.out.println(pl.getCapturedPieces());
+					break;
+				default:
+					System.out.println("An invalid number was entered: please choose 1-4");
+					endPrompt = true;
+					break;
+			}
+
+		}
 	}
 
 	/**
 	 * Starts a turn played by the AI. AI Never surrenders
 	 *
-	 * @param myAI
-	 *            - the turn player
-	 * @param other
-	 *            - the opposing player
+	 * @param myAI  - the turn player
+	 * @param other - the opposing player
 	 */
 	private void startAIPlayerTurn(AI myAI, Player other) {
 		System.out.println(myAI.getName() + " is looking at the board.");
@@ -169,8 +175,7 @@ public class Game {
 	/**
 	 * Selects the piece and destination for the player
 	 *
-	 * @param pl
-	 *            - the turn player
+	 * @param pl - the turn player
 	 */
 	private void continueTurn(Player pl) {
 		Scanner sc = new Scanner(System.in);
@@ -236,8 +241,7 @@ public class Game {
 	/**
 	 * Selects the piece and destination for the player
 	 *
-	 * @param myAI
-	 *            - the turn player
+	 * @param myAI - the turn player
 	 */
 	private void continueAITurn(AI myAI) {
 		Vector bestMove = myAI.generateHighestPointValueMove();
@@ -246,7 +250,7 @@ public class Game {
 			return;
 		}
 		String feedback = gameBoard.getTile(bestMove.getFromPos()).getPiece().toString(); // contains the location of
-																							// the Piece prior
+		// the Piece prior
 		movePieceOnBoard(bestMove.getFromPos(), bestMove.getToPos());
 		System.out.println(feedback + " has moved to " + bestMove.getToPos() + "\n");
 		// Account for promotion
@@ -308,14 +312,11 @@ public class Game {
 	 * column indexes, then checks whether the player is selecting a piece of the
 	 * appropriate color
 	 *
-	 * @param row
-	 *            - the row index
-	 * @param col
-	 *            - the column index
-	 * @param color
-	 *            - 0 for white, 1 for black
+	 * @param row   - the row index
+	 * @param col   - the column index
+	 * @param color - 0 for white, 1 for black
 	 * @return true if there is a Piece of the correct color at the row and column
-	 *         indexes, false otherwise
+	 * indexes, false otherwise
 	 */
 	public static boolean isValidPiece(int row, int col, int color, Board board) {
 		if (new Position(row, col).isWithinBounds() && board.getTile(row, col).hasPiece()) {
@@ -331,14 +332,11 @@ public class Game {
 	 * checks whether there is a Piece of the correct color at the specified row and
 	 * column indexes
 	 *
-	 * @param pos
-	 *            - Position of the board to check at
-	 * @param color
-	 *            - 0 for white, 1 for black
-	 * @param board
-	 *            to check at
+	 * @param pos   - Position of the board to check at
+	 * @param color - 0 for white, 1 for black
+	 * @param board to check at
 	 * @return true if there is a Piece of the correct color at the row and column
-	 *         indexes, false otherwise
+	 * indexes, false otherwise
 	 */
 	public static boolean isValidPiece(Position pos, int color, Board board) {
 		if (pos.isWithinBounds() && board.getTile(pos).hasPiece()) {
@@ -353,30 +351,23 @@ public class Game {
 	 * for legality; if a capture is made, adds the point value of the captured
 	 * piece to the turn player's score.
 	 *
-	 * @param fromPos
-	 *            - the Piece's current position
-	 * @param toPos
-	 *            - the Position to which the Piece will be moved
+	 * @param fromPos - the Piece's current position
+	 * @param toPos   - the Position to which the Piece will be moved
 	 */
 	private void movePieceOnBoard(Position fromPos, Position toPos) {
 		// If a capture is made, add points to the player's score
-
 		if (gameBoard.getTile(toPos).hasPiece()) {
 			Piece capturedPiece = gameBoard.getTile(toPos).getPiece();
 			System.out.println(capturedPiece + " will be captured!");
 			incrementScore(capturedPiece.getColor(), capturedPiece.getPointValue());
-		} else if (gameBoard.getTile(fromPos).getPiece().getName().equals("Pawn")
-				&& ((fromPos.getColumn() + 1 == toPos.getColumn() && fromPos.getRow() + 1 == toPos.getRow())
-						|| (fromPos.getColumn() - 1 == toPos.getColumn() && fromPos.getRow() - 1 == toPos.getRow()))) {
-			Position tempPos = null;
-			if (gameBoard.getTile(fromPos).getPiece().getColor() == 0) {
-				tempPos = new Position(toPos.getRow() + 1, toPos.getColumn()); // en passant stuff, delete later if need
-																				// be
+
+			//Add captured Piece to a maintained list of the capturing player
+
+			if (capturedPiece.getColor() == 0) {
+				blackPlayer.addCapturedPiece(capturedPiece);
 			} else {
-				tempPos = new Position(toPos.getRow() - 1, toPos.getColumn());
+				whitePlayer.addCapturedPiece(capturedPiece);
 			}
-			Piece capturedPiece = gameBoard.getTile(tempPos).getPiece();
-			incrementScore(capturedPiece.getColor(), capturedPiece.getPointValue());
 		}
 		gameBoard.movePiece(fromPos, toPos);
 	}
@@ -387,8 +378,7 @@ public class Game {
 	 * it is on row 7. The method removes the promoted Pawn from the board and
 	 * constructs the user's specified Piece at the current Position.
 	 *
-	 * @param promotedPawn
-	 *            - the given promoted Pawn
+	 * @param promotedPawn - the given promoted Pawn
 	 */
 	private void promotion(Piece promotedPawn) {
 		Scanner sc = new Scanner(System.in);
@@ -402,33 +392,33 @@ public class Game {
 		System.out.println("(4) Promote to Queen");
 		int promotionChoice = sc.nextInt();
 		switch (promotionChoice) {
-		case 1:
-			gameBoard.getTile(currentPos.getRow(), currentPos.getColumn()).setPiece(null);
-			Piece knight = new Knight(myColor, currentPos);
-			gameBoard.getTile(currentPos.getRow(), currentPos.getColumn()).setPiece(knight);
-			System.out.println("Promotion to Knight at " + currentPos);
-			break;
-		case 2:
-			gameBoard.getTile(currentPos.getRow(), currentPos.getColumn()).setPiece(null);
-			Piece bishop = new Bishop(myColor, currentPos);
-			gameBoard.getTile(currentPos.getRow(), currentPos.getColumn()).setPiece(bishop);
-			System.out.println("Promotion to Bishop at " + currentPos);
-			break;
-		case 3:
-			gameBoard.getTile(currentPos.getRow(), currentPos.getColumn()).setPiece(null);
-			Piece rook = new Rook(myColor, currentPos);
-			gameBoard.getTile(currentPos.getRow(), currentPos.getColumn()).setPiece(rook);
-			System.out.println("Promotion to Rook at " + currentPos);
-			break;
-		case 4:
-			gameBoard.getTile(currentPos.getRow(), currentPos.getColumn()).setPiece(null);
-			Piece queen = new Queen(myColor, currentPos);
-			gameBoard.getTile(currentPos.getRow(), currentPos.getColumn()).setPiece(queen);
-			System.out.println("Promotion to Queen at " + currentPos);
-			break;
-		default:
-			System.out.println(promotionChoice + " is not a valid number. Please choose 1-4");
-			break;
+			case 1:
+				gameBoard.getTile(currentPos.getRow(), currentPos.getColumn()).setPiece(null);
+				Piece knight = new Knight(myColor, currentPos);
+				gameBoard.getTile(currentPos.getRow(), currentPos.getColumn()).setPiece(knight);
+				System.out.println("Promotion to Knight at " + currentPos);
+				break;
+			case 2:
+				gameBoard.getTile(currentPos.getRow(), currentPos.getColumn()).setPiece(null);
+				Piece bishop = new Bishop(myColor, currentPos);
+				gameBoard.getTile(currentPos.getRow(), currentPos.getColumn()).setPiece(bishop);
+				System.out.println("Promotion to Bishop at " + currentPos);
+				break;
+			case 3:
+				gameBoard.getTile(currentPos.getRow(), currentPos.getColumn()).setPiece(null);
+				Piece rook = new Rook(myColor, currentPos);
+				gameBoard.getTile(currentPos.getRow(), currentPos.getColumn()).setPiece(rook);
+				System.out.println("Promotion to Rook at " + currentPos);
+				break;
+			case 4:
+				gameBoard.getTile(currentPos.getRow(), currentPos.getColumn()).setPiece(null);
+				Piece queen = new Queen(myColor, currentPos);
+				gameBoard.getTile(currentPos.getRow(), currentPos.getColumn()).setPiece(queen);
+				System.out.println("Promotion to Queen at " + currentPos);
+				break;
+			default:
+				System.out.println(promotionChoice + " is not a valid number. Please choose 1-4");
+				break;
 		}
 	}
 
@@ -436,10 +426,8 @@ public class Game {
 	 * Increments the score of the player with the color OPPOSITE of the given color
 	 * by the given value
 	 *
-	 * @param color
-	 *            - 0 if black, 1 if white
-	 * @param val
-	 *            - the value of the captured piece
+	 * @param color - 0 if black, 1 if white
+	 * @param val   - the value of the captured piece
 	 */
 	private void incrementScore(int color, int val) {
 		if (color == 0) {
@@ -468,12 +456,9 @@ public class Game {
 	 * game is in stalemate if and only if: 1) the turn player is not in check and
 	 * the turn player has no legal moves; 2) checkmate is impossible for either
 	 * player (if a player has only 1 Knight or only 1 Bishop left)
-	 * 
-	 * @param pl
-	 *            - the Player who just moved a piece
-	 * @param other
-	 *            - the opposing Player
 	 *
+	 * @param pl    - the Player who just moved a piece
+	 * @param other - the opposing Player
 	 * @return true if there is a stalemate, false otherwise
 	 */
 	private boolean stalemate(Player pl, Player other) {
@@ -498,9 +483,8 @@ public class Game {
 
 	/**
 	 * Returns the number of Pawns left for the given Player
-	 * 
-	 * @param pl
-	 *            - the given Player
+	 *
+	 * @param pl - the given Player
 	 * @return the number of Pawns that the given player has left
 	 */
 	private int numPawnsLeft(Player pl) {
@@ -527,9 +511,8 @@ public class Game {
 
 	/**
 	 * Returns the number of Knights left for the given Player
-	 * 
-	 * @param pl
-	 *            - the given Player
+	 *
+	 * @param pl - the given Player
 	 * @return the number of Knights that the given Player has left
 	 */
 	private int numKnightsLeft(Player pl) {
@@ -556,9 +539,8 @@ public class Game {
 
 	/**
 	 * Returns the number of Bishops left for the given Player
-	 * 
-	 * @param pl
-	 *            - the given Player
+	 *
+	 * @param pl - the given Player
 	 * @return the number of Bishops that the given Player has left
 	 */
 	private int numBishopsLeft(Player pl) {
@@ -585,9 +567,8 @@ public class Game {
 
 	/**
 	 * Returns the number of Rooks left for the given Player
-	 * 
-	 * @param pl
-	 *            - the given Player
+	 *
+	 * @param pl - the given Player
 	 * @return the number of Rooks that the given Player has left
 	 */
 	private int numRooksLeft(Player pl) {
@@ -614,9 +595,8 @@ public class Game {
 
 	/**
 	 * Returns the number of Bishops left for the given Player
-	 * 
-	 * @param pl
-	 *            - the given Player
+	 *
+	 * @param pl - the given Player
 	 * @return the number of Bishops that the given Player has left
 	 */
 	private int numQueensLeft(Player pl) {
@@ -683,8 +663,7 @@ public class Game {
 	/**
 	 * Mutator method that updates the draw status of the game
 	 *
-	 * @param draw
-	 *            - true if there is a draw, false otherwise
+	 * @param draw - true if there is a draw, false otherwise
 	 */
 	public void setDraw(boolean draw) {
 		this.draw = draw;
@@ -693,8 +672,7 @@ public class Game {
 	/**
 	 * Mutator method that updates the turn
 	 *
-	 * @param turn
-	 *            - true if it is whitePlayer's turn, false otherwise
+	 * @param turn - true if it is whitePlayer's turn, false otherwise
 	 */
 	public void setTurn(boolean turn) {
 		isWhiteTurn = turn;
@@ -703,8 +681,7 @@ public class Game {
 	/**
 	 * Mutator method that updates stalemate
 	 *
-	 * @param stale
-	 *            - true if there is a stalemate, false otherwise
+	 * @param stale - true if there is a stalemate, false otherwise
 	 */
 	public void setStalemate(boolean stale) {
 		stalemate = stale;

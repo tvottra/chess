@@ -7,7 +7,7 @@ import java.util.ArrayList;
  * @author Andrew Le
  * @author Tommy V. Tran
  */
-public abstract class Piece {
+public abstract class Piece implements Comparable {
 	private String name;
 	private int color; // 0 is white, 1 is black
 	private Position pos;
@@ -28,7 +28,7 @@ public abstract class Piece {
 	public Piece(String name, int color, Position pos, int pointVal) {
 		this.name = name;
 		this.color = color;
-		this.pos = new Position (pos);
+		this.pos = new Position(pos);
 		POINT_VALUE = pointVal;
 		hasMoved = false;
 	}
@@ -41,7 +41,7 @@ public abstract class Piece {
 	public Piece(Piece other) {
 		this.name = other.getName();
 		this.color = other.getColor();
-		this.pos = new Position (other.getPosition());
+		this.pos = new Position(other.getPosition());
 		POINT_VALUE = getPointValue();
 		hasMoved = other.hasMoved();
 	}
@@ -169,7 +169,7 @@ public abstract class Piece {
 	/**
 	 * Makes and returns a copy of the Piece, based on the Piece's name
 	 *
-	 * @param other - the model Piece
+	 * @param other     - the model Piece
 	 * @param moveState - true if this Piece has already moved, false otherwise
 	 * @return a fresh copy of the Piece or null if the parameter is not a valid Piece in the first place
 	 */
@@ -212,6 +212,16 @@ public abstract class Piece {
 				break;
 		}
 		return piece;
+	}
+
+	/**
+	 * Compares this Piece to another Piece
+	 *
+	 * @param other another Piece
+	 * @return a positive integer if this Piece has a greater point value than the other, a negative integer if vice versa, 0 if equal.
+	 */
+	public int compareTo(Object other) {
+		return POINT_VALUE - ((Piece) other).getPointValue();
 	}
 
 }
