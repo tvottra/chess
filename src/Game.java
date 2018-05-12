@@ -1,16 +1,12 @@
-
-/**
- * 
- *
- * @author Andrew Le
- */
-
 import java.util.Scanner;
 
 /**
  * Class that represents a chess game containing Players and a Board
  * 
- * @author Andrew Le, Tommy V. Tran, Brian Qiu, Arjun Agrawal
+ * @author Andrew Le
+ * @author Tommy V. Tran
+ * @author Brian Qiu
+ * @author Arjun Agrawal
  */
 public class Game {
 	private Player whitePlayer; // white
@@ -71,8 +67,8 @@ public class Game {
 		System.out.println("Would you like to play against the computer or another person?");
 		System.out.println("(1) Computer");
 		System.out.println("(2) Person");
-		int playerChoice = sc.nextInt();
-
+		// int playerChoice = sc.nextInt();
+		int playerChoice = 2;
 		if (playerChoice == 1) {
 			blackPlayer = new AI(blackPlayer.getName(), 1, gameBoard);
 		}
@@ -183,19 +179,16 @@ public class Game {
 			System.out.println("Please enter valid coordinates for the destination:");
 			toPos = chooseDestination();
 		}
-		/*
-		 * boolean castle = false; if (gameBoard.castleAble(fromPos, toPos)) { castle =
-		 * true; }
-		 */
 		// Check whether the supposed move is legal
 		String feedback = "";
 		boolean castle = false;
-		if(gameBoard.castleAble(fromPos, toPos, gameBoard.getBoard())) {
+		if (gameBoard.castleAble(fromPos, toPos, gameBoard.getBoard())) {
 			castle = true;
 			feedback = "King";
 		}
 
-		while (!castle && (!isValidPiece(fromPos, pl.getNumber(), gameBoard) || !isWithinBounds(toPos.getRow(), toPos.getColumn())
+		while (!castle && (!isValidPiece(fromPos, pl.getNumber(), gameBoard)
+				|| !isWithinBounds(toPos.getRow(), toPos.getColumn())
 				|| !gameBoard.isLegalMove(fromPos, toPos, gameBoard.getBoard())
 				|| (gameBoard.getTile(fromPos).getPiece().getName().equals("KING && !castle")))) {
 			if (!isValidPiece(fromPos, pl.getNumber(), gameBoard)) {
@@ -207,21 +200,18 @@ public class Game {
 			if (!gameBoard.isLegalMove(fromPos, toPos, gameBoard.getBoard())) {
 				System.out.println("Move is illegal.");
 			}
-			/*
-			 * if
-			 * (gameBoard.getTile(fromPos).getPiece().getName().equals("KING && !castle")) {
-			 * System.out.println("Illegal: cannot castle"); }
-			 */
+
+			if (gameBoard.getTile(fromPos).getPiece().getName().equals("King && !castle")) {
+				System.out.println("Illegal: cannot castle");
+			}
+
 			System.out.println("Move to " + toPos + " is invalid. Please repeat the move process.");
 			fromPos = choosePiece();
 			toPos = chooseDestination();
 		}
-		// to move
-		/*
-		 * if (!castle) { System.out.println("!castle evaluated to true");
-		 * movePieceOnBoard(fromPos, toPos); }
-		 */
-		if(!castle) {
+
+		if (!castle) {
+			System.out.println("!castle evaluated to true");
 			feedback = gameBoard.getTile(fromPos).getPiece().toString(); // contains the location of the Piece prior
 			movePieceOnBoard(fromPos, toPos);
 		}
@@ -468,6 +458,184 @@ public class Game {
 	}
 
 	/**
+	 * Determines whether there is stalemate following the given player's move. A
+	 * game is in stalemate if and only if: 1) the turn player is not in check and
+	 * the turn player has no legal moves; 2) checkmate is impossible for either
+	 * player (if a player has only 1 Knight or only 1 Bishop left)
+	 * 
+	 * @param pl
+	 *            - the Player who just moved a piece
+	 * @param other
+	 *            - the opposing Player
+	 *
+	 * @return true if there is a stalemate, false otherwise
+	 */
+	private boolean stalemate(Player pl, Player other) {
+		int color = other.getNumber();
+		if (!gameBoard.isKingChecked(color, gameBoard.getBoard())
+				&& !gameBoard.hasLegalMoveLeft(color, gameBoard.getBoard())) {
+			return true;
+		}
+		int numPawns = numPawnsLeft(other);
+		int numKnights = numKnightsLeft(other);
+		int numBishops = numBishopsLeft(other);
+		int numRooks = numRooksLeft(other);
+		int numQueens = numQueensLeft(other);
+		if (numKnights <= 1 && numPawns == 0 && numBishops == 0 && numRooks == 0 && numQueens == 0) {
+			return true;
+		}
+		if (numBishops <= 1 && numPawns == 0 && numKnights == 0 && numRooks == 0 && numQueens == 0) {
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * Returns the number of Pawns left for the given Player
+	 * 
+	 * @param pl
+	 *            - the given Player
+	 * @return the number of Pawns that the given player has left
+	 */
+	private int numPawnsLeft(Player pl) {
+		int count = 0;
+		if (pl.getNumber() == 0) {
+			for (Tile[] arr : gameBoard.getBoard()) {
+				for (Tile obj : arr) {
+					if (obj.hasPiece() && obj.getPiece().getName().equals("Pawn") && obj.getPiece().getColor() == 0) {
+						count++;
+					}
+				}
+			}
+		} else {
+			for (Tile[] arr : gameBoard.getBoard()) {
+				for (Tile obj : arr) {
+					if (obj.hasPiece() && obj.getPiece().getName().equals("Pawn") && obj.getPiece().getColor() == 1) {
+						count++;
+					}
+				}
+			}
+		}
+		return count;
+	}
+
+	/**
+	 * Returns the number of Knights left for the given Player
+	 * 
+	 * @param pl
+	 *            - the given Player
+	 * @return the number of Knights that the given Player has left
+	 */
+	private int numKnightsLeft(Player pl) {
+		int count = 0;
+		if (pl.getNumber() == 0) {
+			for (Tile[] arr : gameBoard.getBoard()) {
+				for (Tile obj : arr) {
+					if (obj.hasPiece() && obj.getPiece().getName().equals("Knight") && obj.getPiece().getColor() == 0) {
+						count++;
+					}
+				}
+			}
+		} else {
+			for (Tile[] arr : gameBoard.getBoard()) {
+				for (Tile obj : arr) {
+					if (obj.hasPiece() && obj.getPiece().getName().equals("Knight") && obj.getPiece().getColor() == 1) {
+						count++;
+					}
+				}
+			}
+		}
+		return count;
+	}
+
+	/**
+	 * Returns the number of Bishops left for the given Player
+	 * 
+	 * @param pl
+	 *            - the given Player
+	 * @return the number of Bishops that the given Player has left
+	 */
+	private int numBishopsLeft(Player pl) {
+		int count = 0;
+		if (pl.getNumber() == 0) {
+			for (Tile[] arr : gameBoard.getBoard()) {
+				for (Tile obj : arr) {
+					if (obj.hasPiece() && obj.getPiece().getName().equals("Bishop") && obj.getPiece().getColor() == 0) {
+						count++;
+					}
+				}
+			}
+		} else {
+			for (Tile[] arr : gameBoard.getBoard()) {
+				for (Tile obj : arr) {
+					if (obj.hasPiece() && obj.getPiece().getName().equals("Bishop") && obj.getPiece().getColor() == 1) {
+						count++;
+					}
+				}
+			}
+		}
+		return count;
+	}
+
+	/**
+	 * Returns the number of Rooks left for the given Player
+	 * 
+	 * @param pl
+	 *            - the given Player
+	 * @return the number of Rooks that the given Player has left
+	 */
+	private int numRooksLeft(Player pl) {
+		int count = 0;
+		if (pl.getNumber() == 0) {
+			for (Tile[] arr : gameBoard.getBoard()) {
+				for (Tile obj : arr) {
+					if (obj.hasPiece() && obj.getPiece().getName().equals("Rook") && obj.getPiece().getColor() == 0) {
+						count++;
+					}
+				}
+			}
+		} else {
+			for (Tile[] arr : gameBoard.getBoard()) {
+				for (Tile obj : arr) {
+					if (obj.hasPiece() && obj.getPiece().getName().equals("Rook") && obj.getPiece().getColor() == 1) {
+						count++;
+					}
+				}
+			}
+		}
+		return count;
+	}
+
+	/**
+	 * Returns the number of Bishops left for the given Player
+	 * 
+	 * @param pl
+	 *            - the given Player
+	 * @return the number of Bishops that the given Player has left
+	 */
+	private int numQueensLeft(Player pl) {
+		int count = 0;
+		if (pl.getNumber() == 0) {
+			for (Tile[] arr : gameBoard.getBoard()) {
+				for (Tile obj : arr) {
+					if (obj.hasPiece() && obj.getPiece().getName().equals("Queen") && obj.getPiece().getColor() == 0) {
+						count++;
+					}
+				}
+			}
+		} else {
+			for (Tile[] arr : gameBoard.getBoard()) {
+				for (Tile obj : arr) {
+					if (obj.hasPiece() && obj.getPiece().getName().equals("Queen") && obj.getPiece().getColor() == 1) {
+						count++;
+					}
+				}
+			}
+		}
+		return count;
+	}
+
+	/**
 	 * Checks to see if at least 1 of the conditions that would end the game is
 	 * present
 	 *
@@ -534,18 +702,6 @@ public class Game {
 	 */
 	public void setStalemate(boolean stale) {
 		stalemate = stale;
-	}
-
-	/**
-	 * Determines whether there is stalemate. A game is in stalemate if and only if:
-	 * 1) the turn player is not in check and the turn player has no legal moves; 2)
-	 * threefold repitition has occurred; 3) fifty-move rule applies
-	 *
-	 * @return true if there is a stalemate, false otherwise
-	 */
-	private boolean stalemate() {
-		// TO BE IMPLEMENTED
-		return false;
 	}
 
 	/**
