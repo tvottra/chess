@@ -43,7 +43,7 @@ public abstract class Piece {
 		this.color = other.getColor();
 		this.pos = new Position (other.getPosition());
 		POINT_VALUE = getPointValue();
-		hasMoved = other.hasMoved();
+		hasMoved = other.getHasMoved();
 	}
 
 	/**
@@ -105,7 +105,7 @@ public abstract class Piece {
 	 *
 	 * @return true if this Piece has already moved, false otherwise
 	 */
-	public boolean hasMoved() {
+	public boolean getHasMoved() {
 		return hasMoved;
 	}
 

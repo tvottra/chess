@@ -241,21 +241,11 @@ public class Game {
 	 * @param fromPos - the Piece's current position
 	 * @param toPos   - the Position to which the Piece will be moved
 	 */
-	public void movePieceOnBoard(Position fromPos, Position toPos) {
+	public void movePieceOnBoard(Position fromPos, Position toPos) { //TODO: Fix en passant here
 		// If a capture is made, add points to the player's score
-
 		if (gameBoard.getTile(toPos).hasPiece()) {
 			Piece capturedPiece = gameBoard.getTile(toPos).getPiece();
 			System.out.println(capturedPiece + " will be captured!");
-			incrementScore(capturedPiece.getColor(), capturedPiece.getPointValue());
-		} else if (gameBoard.getTile(fromPos).getPiece().getName().equals("Pawn") && ((fromPos.getColumn() + 1 == toPos.getColumn() && fromPos.getRow() + 1 == toPos.getRow()) || (fromPos.getColumn() - 1 == toPos.getColumn() && fromPos.getRow() - 1 == toPos.getRow()))) {
-			Position tempPos = null;
-			if (gameBoard.getTile(fromPos).getPiece().getColor() == 0) {
-				tempPos = new Position(toPos.getRow() + 1, toPos.getColumn());    //en passant stuff, delete later if need be
-			} else {
-				tempPos = new Position(toPos.getRow() - 1, toPos.getColumn());
-			}
-			Piece capturedPiece = gameBoard.getTile(tempPos).getPiece();
 			incrementScore(capturedPiece.getColor(), capturedPiece.getPointValue());
 		}
 		gameBoard.movePiece(fromPos, toPos);
@@ -500,10 +490,11 @@ public class Game {
 	}
 
 	/**
-	 * Update the hotSpots
+	 * Update the hotSpots and enPassant opportunity.
 	 */
 	public void update() {
 		gameBoard.updateHotSpots();
+		gameBoard.updateEnPassantOpportunity();
 	}
 
 	/**

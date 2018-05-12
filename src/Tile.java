@@ -29,7 +29,7 @@ public class Tile {
 
 	public Tile(Tile other) {
 		if (other.hasPiece()) {
-			this.myPiece = Piece.createPiece(other.getPiece(), other.getPiece().hasMoved());
+			this.myPiece = Piece.createPiece(other.getPiece(), other.getPiece().getHasMoved());
 		} else {
 			this.myPiece = Piece.createPiece(other.getPiece(), false);
 		}

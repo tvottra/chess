@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
  * Class that represents the chess board
@@ -183,6 +184,7 @@ public class Board {
 
 	/**
 	 * Moves a Piece at fromPos to toPos on the board without checking for legality.
+	 * PRECONDITION: Verify legality first
 	 *
 	 * @param fromPos - the Piece's current position
 	 * @param toPos   - the Position to which the Piece will be moved
@@ -190,19 +192,38 @@ public class Board {
 	 */
 	public boolean movePiece(Position fromPos, Position toPos) {
 
+
 		int fromRow = fromPos.getRow();
 		int fromCol = fromPos.getColumn();
 		Piece pieceToMove = Piece.createPiece(board[fromRow][fromCol].getPiece(),
-				board[fromRow][fromCol].getPiece().hasMoved());
+				board[fromRow][fromCol].getPiece().getHasMoved());
+
+
 		if (pieceToMove == null) {
 			return false;
 		}
+		//update justMovedTwo for Pawn
+		if (pieceToMove.getName() == "Pawn" && ((Pawn) pieceToMove).getHasMoved() == false && Math.abs(fromRow - toPos.getRow()) == 2) { //If this is the Pawn's first movement and it's a 2-Position move
+			switch (((Pawn) pieceToMove).getJustMovedTwo()) {
+				case 0:
+					((Pawn) pieceToMove).setJustMovedTwo(1);
+					break;
+				case 1:
+					((Pawn) pieceToMove).setJustMovedTwo(2);
+				default:
+					break;
+			}
+		}
+
 		int toRow = toPos.getRow();
 		int toCol = toPos.getColumn();
 		board[toRow][toCol].setPiece(pieceToMove);
 		board[fromRow][fromCol].setPiece(null);
 		board[toRow][toCol].getPiece().setPosition(new Position(toPos));
 		board[toRow][toCol].getPiece().setHasMoved(true);
+
+
+
 		return true;
 	}
 
@@ -246,7 +267,7 @@ public class Board {
 			return false;
 		}
 
-		if (king.getName().equals("King") && !king.hasMoved() && rook.getName().equals("Rook") && !rook.hasMoved()) {
+		if (king.getName().equals("King") && !king.getHasMoved() && rook.getName().equals("Rook") && !rook.getHasMoved()) {
 			int kFromRow = fromPos.getRow();
 			int kFromCol = fromPos.getColumn();
 			int kToRow = toPos.getRow();
@@ -307,12 +328,12 @@ public class Board {
 		int fromRow = fromPos.getRow();
 		int fromCol = fromPos.getColumn();
 
-		if (!fromPos.isWithinBounds() || !toPos.isWithinBounds()|| !aBoard[fromRow][fromCol].hasPiece()) {
+		if (!fromPos.isWithinBounds() || !toPos.isWithinBounds() || !aBoard[fromRow][fromCol].hasPiece()) {
 			return false;
 		}
 
 		Piece pieceToMove = Piece.createPiece(board[fromRow][fromCol].getPiece(),
-				board[fromRow][fromCol].getPiece().hasMoved());
+				board[fromRow][fromCol].getPiece().getHasMoved());
 
 		if (pieceToMove == null) {
 			System.out.println("Something went wrong. No Piece at fromPos."); // Debugging
@@ -322,6 +343,9 @@ public class Board {
 		int toRow = toPos.getRow();
 		int toCol = toPos.getColumn();
 		if (pieceToMove.getName().equals("Pawn")) {
+			if(enPassantable(fromPos, toPos, aBoard)) {
+				return true;
+			}
 			if (!isWithinPawnRangeOfMovement(pieceToMove, toPos, aBoard)) {
 				//System.out.println("Illegal: Not within Pawn ROM"); Debugging
 				return false;
@@ -343,7 +367,7 @@ public class Board {
 		}
 
 		// Create a copy of the real board to determine whether the move creates a check
-		Tile[][] copy = Tile.cloneTile2DArray(board); //If incorrect hasMoved(), then manually code creation of Pieces in Tile.cloneTile2DArray later
+		Tile[][] copy = Tile.cloneTile2DArray(board); //If incorrect getHasMoved(), then manually code creation of Pieces in Tile.cloneTile2DArray later
 
 		// Perform the move on the copy of the board
 		copy[toRow][toCol].setPiece(pieceToMove);
@@ -505,28 +529,105 @@ public class Board {
 	public ArrayList<Position> getPawnRangeOfMovement(Piece pawn, Tile[][] aBoard) {
 		ArrayList<Position> rom = new ArrayList<Position>();
 		// get forward tiles (if any)
-		ArrayList<Position> list = pawn.getRangeOfMovement();
-		for (int i = 0; i < list.size(); i++) {
-			Tile currentTile = getTile(list.get(i));
+		ArrayList<Position> romAssumingNoBlockage = pawn.getRangeOfMovement();
+
+		for (int i = 0; i < romAssumingNoBlockage.size(); i++) {
+			Tile currentTile = getTile(romAssumingNoBlockage.get(i));
 			if (currentTile.hasPiece()) {
 				break;
 			} else {
-				if (pawn.hasMoved() && Math.abs(list.get(i).getRow() - pawn.getPosition().getRow()) == 2) {
+				if (pawn.getHasMoved() && Math.abs(romAssumingNoBlockage.get(i).getRow() - pawn.getPosition().getRow()) == 2) {
 					break;
 				} else {
-					rom.add(list.get(i));
+					rom.add(romAssumingNoBlockage.get(i));
 				}
 			}
 		}
+
+
 		// get diagonal tiles (if any)
 		ArrayList<Position> hotSpots = getPawnHotSpots(pawn, aBoard);
-		for (int i = 0; i < hotSpots.size(); i++) {
-			Tile currentTile = getTile(hotSpots.get(i));
+//		for (int i = 0; i < hotSpots.size(); i++) {
+//			Tile currentTile = getTile(hotSpots.get(i));
+//			if (currentTile.hasPiece() && !currentTile.getPiece().isSameColorAs(pawn)) {
+//				rom.add(hotSpots.get(i));
+//			}
+//		}
+
+		// get diagonal tiles (if any) --rewrote above using Iterator
+		Iterator iter = hotSpots.iterator();
+		while (iter.hasNext()) {
+			Position pos = (Position) iter.next();
+			Tile currentTile = getTile(pos);
 			if (currentTile.hasPiece() && !currentTile.getPiece().isSameColorAs(pawn)) {
-				rom.add(hotSpots.get(i));
+				rom.add(pos);
 			}
 		}
+
 		return rom;
+	}
+
+	/**
+	 * Checks if en passant is legal using an initial position and the final position
+	 * PRECONDITION: fromPos is verified as having a Pawn of the right player's color
+	 *
+	 * @param fromPos - Position of Pawn to be moved
+	 * @param toPos   - Position behind enemy Pawn
+	 * @return
+	 */
+	public boolean enPassantable(Position fromPos, Position toPos, Tile[][] aBoard) {
+		int r;
+		if (aBoard[fromPos.getRow()][fromPos.getColumn()].getPiece().getColor() == 0) { //If offensive player is white
+			r = 1;
+		} else {
+			r = -1; //If player is black
+		}
+		//If the Piece behind final destination is a Pawn that has just moved 2 Tiles and if this is first en passant opportunity
+		if (aBoard[toPos.getRow() + r][toPos.getColumn()].hasPiece() && aBoard[toPos.getRow() + r][toPos.getColumn()].getPiece().getName().equals("Pawn") && ((Pawn) aBoard[fromPos.getRow()][fromPos.getColumn()].getPiece()).getEnPassantOpportunity() == 1) {
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * Scan through the Board and updates en passant opportunity accordingly
+	 */
+	public void updateEnPassantOpportunity() {
+		for (int r = 0; r < board.length; r++) {
+			for (int c = 0; c < board[0].length - 1; c++) {
+				//Check for Pawns horizontal to enemy Pawns
+				if (board[r][c].hasPiece() && board[r][c + 1].hasPiece() && board[r][c].getPiece().equals("Pawn") && board[r][c + 1].getPiece().equals("Pawn")) {
+					Pawn pawn1 = (Pawn) board[r][c].getPiece();
+					Pawn pawn2 = (Pawn) board[r][c + 1].getPiece();
+					if (!pawn1.isSameColorAs(pawn2)) {
+						//update justMovedTwo
+						if(pawn1.getJustMovedTwo() == 1) {
+							pawn1.setJustMovedTwo(2);
+						}
+						if(pawn2.getJustMovedTwo() == 1) {
+							pawn2.setJustMovedTwo(2);
+						}
+
+						//update first opportunity to second opportunity if need be -> second opportunity means illegal en passant
+						if (pawn1.getEnPassantOpportunity() >= 1) {
+							pawn1.setEnPassantOpportunity(2);
+						}
+						if (pawn2.getEnPassantOpportunity() >= 1) {
+							pawn1.setEnPassantOpportunity(2);
+						}
+
+						if(pawn1.getJustMovedTwo() == 1) {
+							System.out.println("First opportunity at en passant! for " + pawn2);
+							pawn2.setEnPassantOpportunity(1);
+						} else if (pawn2.getJustMovedTwo() == 1) {
+							System.out.println("First opportunity at en passant! for " + pawn1);
+							pawn1.setEnPassantOpportunity(1);
+						}
+
+					}
+				}
+			}
+		}
 	}
 
 	/**
@@ -540,7 +641,7 @@ public class Board {
 	 */
 	public boolean isWithinPawnRangeOfMovement(Piece pawn, Position toPos, Tile[][] aBoard) {
 		ArrayList<Position> myRom = getPawnRangeOfMovement(pawn, aBoard);
-		//System.out.println(pawn.hasMoved()); Debugging
+		//System.out.println(pawn.getHasMoved()); Debugging
 		for (Position pos : myRom) {
 			//System.out.println(pos); Debugging
 			if (toPos.equals(pos)) {

@@ -37,7 +37,7 @@ public class AI extends Player {
 				fromPos = new Position(r, c);
 				if (Game.isValidPiece(fromPos, super.getNumber(), boardIAnalyze)) {
 
-					Piece myPiece = Piece.createPiece(chessBoard[r][c].getPiece(), chessBoard[r][c].getPiece().hasMoved());
+					Piece myPiece = Piece.createPiece(chessBoard[r][c].getPiece(), chessBoard[r][c].getPiece().getHasMoved());
 					ArrayList<Position> hotSpots = boardIAnalyze.getHotSpots(myPiece, chessBoard);                        //this points to the same Board as the main Board if the main Board is passed to AI's constructor
 
 					if (hotSpots != null) {

@@ -3,20 +3,21 @@ import java.util.ArrayList;
 /**
  * Class that represents a Pawn chess piece
  *
- * @author Brian Qiu
+ * @author Brian Qiu, Tommy V. Tran
  */
 public class Pawn extends Piece {
-    private boolean hasMovedTwo;
+	private int enPassantOpportunity = 0;
+	private int justMovedTwo = 0;
 
-    /**
-     * Contructor to initialize the Pawn's color and Position
-     *
-     * @param color* - the Pawn's color
-     * @param pos*   - the Pawn's Position
-     */
-    public Pawn(int color, Position pos) {
-        super("Pawn", color, pos, 1);
-    hasMovedTwo = false;}
+	/**
+	 * Contructor to initialize the Pawn's color and Position
+	 *
+	 * @param color* - the Pawn's color
+	 * @param pos*   - the Pawn's Position
+	 */
+	public Pawn(int color, Position pos) {
+		super("Pawn", color, pos, 1);
+	}
 
 	@Override
 	/**
@@ -65,9 +66,9 @@ public class Pawn extends Piece {
 
 		rom.add(new Position(currentPos.getRow() + r, currentPos.getColumn())); // Add Position 1 Tile in front of Piece
 
-		if (!hasMoved()) {
+		if (!getHasMoved()) {
 			rom.add(new Position(currentPos.getRow() + r + r, currentPos.getColumn())); // Add Position 2 Tiles in front
-																						// of Piece
+			// of Piece
 		}
 
 		return rom;
@@ -83,16 +84,17 @@ public class Pawn extends Piece {
 	 *         otherwise
 	 */
 	public boolean isWithinRangeOfMovement(Position toPos) {
-		int fromRow = getPosition().getRow();
-		int fromCol = getPosition().getColumn();
-		int toRow = toPos.getRow();
-		int toCol = toPos.getColumn();
-		if (!hasMoved()) {
-			return ((toPos.isWithinBounds()) && (fromCol == toCol)
-					&& (Math.abs(fromRow - toRow) == 2 || Math.abs(fromRow - toRow) == 1));
-		} else {
-			return ((toPos.isWithinBounds()) && (fromCol == toCol) && Math.abs(fromRow - toRow) == 1);
-		}
+//		int fromRow = getPosition().getRow();
+//		int fromCol = getPosition().getColumn();
+//		int toRow = toPos.getRow();
+//		int toCol = toPos.getColumn();
+//		if (!getHasMoved()) {
+//			return ((toPos.isWithinBounds()) && (fromCol == toCol)
+//					&& (Math.abs(fromRow - toRow) == 2 || Math.abs(fromRow - toRow) == 1));
+//		} else {
+//			return ((toPos.isWithinBounds()) && (fromCol == toCol) && Math.abs(fromRow - toRow) == 1);
+//		}
+		return getRangeOfMovement().contains(toPos);
 
 	}
 
@@ -109,12 +111,39 @@ public class Pawn extends Piece {
 			return false;
 	}
 
-    public void setHasMovedTwo(boolean moved) {
-        hasMovedTwo = moved;
-    }
+	/**
+	 * Setter method for whether this Pawn has moved 2 Positions in 1 move
+	 *
+	 * @param i 0 if hasn't moved two Positions in 1 move, 1 if just did, 2 if just did 1 or more turns ago
+	 */
+	public void setJustMovedTwo(int i) {
+		justMovedTwo = i;
+	}
 
-    public boolean hasMovedTwo() {
-        return hasMovedTwo;
-    }
+	/**
+	 * Get whether this Pawn just moved 2 Positions
+	 *
+	 * @return 0 if hasn't moved 2 Positions in 1 move, 1 if just did, 2 if just did 1 or more turns ago
+	 */
+	public int getJustMovedTwo() {
+		return justMovedTwo;
+	}
 
+	/**
+	 * Get whether this Pawn has an opportunity for en passant
+	 *
+	 * @return 0 means hasn't occured, 1 active, 2 passed
+	 */
+	public int getEnPassantOpportunity() {
+		return enPassantOpportunity;
+	}
+
+	/**
+	 * Setter method for the Pawn's en passant opportunity
+	 *
+	 * @param enPassantOpportunity - 0 means hasn't occured, 1 active, 2 passed
+	 */
+	public void setEnPassantOpportunity(int enPassantOpportunity) {
+		this.enPassantOpportunity = enPassantOpportunity;
+	}
 }
