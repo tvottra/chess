@@ -67,8 +67,7 @@ public class Game {
 		System.out.println("Would you like to play against the computer or another person?");
 		System.out.println("(1) Computer");
 		System.out.println("(2) Person");
-		// int playerChoice = sc.nextInt();
-		int playerChoice = 2;
+		int playerChoice = sc.nextInt();
 		if (playerChoice == 1) {
 			blackPlayer = new AI(blackPlayer.getName(), 1, gameBoard);
 		}
@@ -217,7 +216,7 @@ public class Game {
 		}
 
 		if (!castle) {
-			System.out.println("!castle evaluated to true");
+			//System.out.println("!castle evaluated to true"); Debugging
 			feedback = gameBoard.getTile(fromPos).getPiece().toString(); // contains the location of the Piece prior
 			movePieceOnBoard(fromPos, toPos);
 		}

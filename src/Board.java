@@ -906,22 +906,11 @@ public class Board {
 	 */
 	public boolean isKingChecked(int color, Tile[][] aBoard) {
 		Position kingPos = findKingPosition(color, aBoard);
-		if (color == 0) {
-			ArrayList<Position> bHotSpots = getBlackHotSpots(aBoard);
-			for (Position pos : bHotSpots) {
-				if (kingPos.equals(pos)) {
-					return true;
-				}
-			}
+		if(color == 0) {
+			return board[kingPos.getRow()][kingPos.getColumn()].isBlackHotSpot();
 		} else {
-			ArrayList<Position> wHotSpots = getWhiteHotSpots(aBoard);
-			for (Position pos : wHotSpots) {
-				if (kingPos.equals(pos)) {
-					return true;
-				}
-			}
+			return board[kingPos.getRow()][kingPos.getColumn()].isWhiteHotSpot();
 		}
-		return false;
 	}
 
 	/**
@@ -1047,7 +1036,7 @@ public class Board {
 			for (Tile t2 : t1) {
 
 				// If there is a Piece
-				if (t2.getPiece() != null) {
+				if (t2.hasPiece()) {
 					Piece myPiece = t2.getPiece();
 					checkedPos = getHotSpots(myPiece, board);
 					boolean isWhite = myPiece.getColor() == 0;
