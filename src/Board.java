@@ -904,7 +904,7 @@ public class Board {
 	 *            - @param aBoard - the given 2D array of Tiles
 	 * @return true if the King is checked, false otherwise
 	 */
-	private boolean isKingChecked(int color, Tile[][] aBoard) {
+	public boolean isKingChecked(int color, Tile[][] aBoard) {
 		Position kingPos = findKingPosition(color, aBoard);
 		if (color == 0) {
 			ArrayList<Position> bHotSpots = getBlackHotSpots(aBoard);
@@ -977,7 +977,7 @@ public class Board {
 	 *            - the given 2D array of Tiles
 	 * @return true if the player has at least 1 legal move left, false otherwise
 	 */
-	private boolean hasLegalMoveLeft(int color, Tile[][] aBoard) {
+	public boolean hasLegalMoveLeft(int color, Tile[][] aBoard) {
 		if (color == 0) {
 			for (Tile[] arr : board) {
 				for (Tile obj : arr) {
