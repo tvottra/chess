@@ -16,12 +16,12 @@ public class GameTester {
 		Game test = new Game(name1, name2);
 		Board myBoard = test.getBoard();
 		clearBoard(myBoard);
-		generatePawns(1, myBoard);
-		setupPawns(myBoard);
+		testCastle(myBoard);
 		for (int i = 2; i < 6; i++) {
 			clearRow(i, myBoard);
 		}
 		System.out.println(myBoard);
+		test.update();
 		test.playGame();
 	}
 
@@ -280,7 +280,9 @@ public class GameTester {
 		aBoard.getTile(wRook2.getPosition()).setPiece(wRook2);
 		// Black pieces
 		Piece bKing = new King(1, new Position(0, 4));
+		Piece bQueen = new Queen(1, new Position(0, 3));
 		aBoard.getTile(bKing.getPosition()).setPiece(bKing);
+		aBoard.getTile(bQueen.getPosition()).setPiece(bQueen);
 
 	}
 

@@ -271,6 +271,10 @@ public class Board {
 		int direction = toPos.getColumn() - fromPos.getColumn(); // right if positive, left if negative
 		Piece rook;
 
+		if(isKingChecked(king.getColor(), board)) {
+			return false;
+		}
+
 		if (king.getColor() == 0) {
 			if (direction < 0) {
 				rook = board[7][0].getPiece();
@@ -308,9 +312,22 @@ public class Board {
 			int rToRow = rookToPos.getRow();
 			int rToCol = rookToPos.getColumn();
 
+			if(king.getColor() == 0 && board[rook.getPosition().getRow()][rook.getPosition().getColumn()].isBlackHotSpot()) {
+				return false;
+			}
+			if(king.getColor() == 1 && board[rook.getPosition().getRow()][rook.getPosition().getColumn()].isWhiteHotSpot()) {
+				return false;
+			}
+
 			if (direction < 0) {
 				for (int col = king.getPosition().getColumn() - 1; col > 0; col--) {
 					if (board[king.getPosition().getRow()][col].hasPiece()) {
+						return false;
+					}
+					if(king.getColor() == 0 && board[king.getPosition().getRow()][col].isBlackHotSpot()) {
+						return false;
+					}
+					if(king.getColor() == 1 && board[king.getPosition().getRow()][col].isWhiteHotSpot()) {
 						return false;
 					}
 				}
@@ -326,6 +343,12 @@ public class Board {
 			} else {
 				for (int col = king.getPosition().getColumn() + 1; col < 7; col++) {
 					if (board[king.getPosition().getRow()][col].hasPiece()) {
+						return false;
+					}
+					if(king.getColor() == 0 && board[king.getPosition().getRow()][col].isBlackHotSpot()) {
+						return false;
+					}
+					if(king.getColor() == 1 && board[king.getPosition().getRow()][col].isWhiteHotSpot()) {
 						return false;
 					}
 				}
