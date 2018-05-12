@@ -13,11 +13,11 @@ public class Tile {
 	 * Parameter constructor to initialize a Tile on the board
 	 *
 	 * @param piece
-	 *            - the piece that occupies the Tile
+	 *            the piece that occupies the Tile
 	 * @param isWhiteHotSpot
-	 *            - whether the Tile is checked by a white Piece Piece
+	 *            whether the Tile is checked by a white Piece Piece
 	 * @param isBlackHotSpot
-	 *            - whether the Tile is checked by a black Piece
+	 *            whether the Tile is checked by a black Piece
 	 */
 	public Tile(Piece piece, boolean isWhiteHotSpot, boolean isBlackHotSpot) {
 		this.myPiece = piece;
@@ -29,7 +29,7 @@ public class Tile {
 	 * Constructor to initialize this Tile with the features of another Tile
 	 * 
 	 * @param other
-	 *            - the other Tile
+	 *            the other Tile
 	 */
 	public Tile(Tile other) {
 		if (other.hasPiece()) {
@@ -45,7 +45,7 @@ public class Tile {
 	 * Clones a 2D Array of Tiles and returns the fresh copy
 	 * 
 	 * @param other
-	 *            - initial 2D Array of Tiles
+	 *            initial 2D Array of Tiles
 	 * @return A copy of the initial 2D Array of Tiles
 	 */
 	public static Tile[][] cloneTile2DArray(Tile[][] other) {
@@ -73,7 +73,7 @@ public class Tile {
 	 * Mutator method to set the Piece on this Tile to the given Piece
 	 *
 	 * @param myPiece
-	 *            - the given Piece
+	 *            the given Piece
 	 */
 	public void setPiece(Piece myPiece) {
 		this.myPiece = myPiece;
@@ -101,7 +101,7 @@ public class Tile {
 	 * Mutator method to set white control of this Tile
 	 *
 	 * @param whiteHotSpot
-	 *            - true if white checks this Tile, false otherwise
+	 *            true if white checks this Tile, false otherwise
 	 */
 	public void setIsWhiteHotSpot(boolean whiteHotSpot) {
 		this.isWhiteHotSpot = whiteHotSpot;
@@ -120,7 +120,7 @@ public class Tile {
 	 * Mutator method to set black control of this Tile
 	 *
 	 * @param blackHotSpot
-	 *            - true if black checks this Tile, false otherwise
+	 *            true if black checks this Tile, false otherwise
 	 */
 	public void setIsBlackHotSpot(boolean blackHotSpot) {
 		this.isBlackHotSpot = blackHotSpot;
