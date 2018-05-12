@@ -13,9 +13,9 @@ public class Position {
 	 * Constructor to initialize the row and column of this Position
 	 *
 	 * @param row
-	 *            - the row index of this Position
-	 * @param column
-	 *            - the column index of this Position
+	 *            the row index of this Position
+	 * @param col
+	 *            the column index of this Position
 	 */
 	public Position(int row, int col) {
 		this.row = row;
@@ -26,7 +26,7 @@ public class Position {
 	 * Constructor initialize a new Position with another Position's coordinates
 	 *
 	 * @param other
-	 *            - the other Position
+	 *            the other Position
 	 */
 	public Position(Position other) {
 		row = other.getRow();
@@ -46,7 +46,7 @@ public class Position {
 	 * Mutator method to set the row index to the given row index
 	 *
 	 * @param row
-	 *            - the given row index
+	 *            the given row index
 	 */
 	public void setRow(int row) {
 		this.row = row;
@@ -56,7 +56,7 @@ public class Position {
 	 * Add to row the given number
 	 *
 	 * @param n
-	 *            - the given number to add
+	 *            the given number to add
 	 */
 	public void addToRow(int n) {
 		row = row + n;
@@ -74,8 +74,8 @@ public class Position {
 	/**
 	 * Mutator method to set the column index to the given column index
 	 *
-	 * @param column
-	 *            - the given column index
+	 * @param col
+	 *            the given column index
 	 */
 
 	public void setColumn(int col) {
@@ -86,7 +86,7 @@ public class Position {
 	 * Add to column the given number
 	 *
 	 * @param n
-	 *            - the given number to add
+	 *            the given number to add
 	 */
 	public void addToColumn(int n) {
 		column = column + n;
@@ -129,7 +129,7 @@ public class Position {
 	 * Method to determine whether this Position and the given Position are equal
 	 *
 	 * @param other
-	 *            - the given Position
+	 *            the given Position
 	 * @return true if this Position and other have the same row and column indexes,
 	 *         false otherwise
 	 */
@@ -143,10 +143,10 @@ public class Position {
 	 * Compares this Position to some other Position
 	 *
 	 * @param other
-	 *            - the given Position
+	 *            the given Position
 	 * @return 1 if other is in first quadrant, 2 if other is in second quadrant, 3
-	 *         if other is in third quadrant, 4 if other is in fourth quadrant, -1
-	 *         if inappropriate
+	 *         if other is in third quadrant, 4 if other is in fourth quadrant, 1 if
+	 *         inappropriate
 	 */
 	public int compareTo(Position other) {
 		if (other.getRow() > this.row && other.getColumn() > this.column) {
@@ -158,7 +158,7 @@ public class Position {
 		} else if (other.getRow() < this.row && other.getColumn() > this.column) {
 			return 4; // other is in fourth quadrant
 		} else {
-			return -1;
+			return 1;
 		}
 	}
 
@@ -166,7 +166,7 @@ public class Position {
 	 * Determines whether this Position is left of the other Position
 	 *
 	 * @param other
-	 *            - the other Position
+	 *            the other Position
 	 * @return true if this Position is left of the other Position, false otherwise.
 	 */
 	public boolean isLeftOf(Position other) {
@@ -177,7 +177,7 @@ public class Position {
 	 * Determines whether this Position is above the other Position
 	 *
 	 * @param other
-	 *            - the other Position
+	 *            the other Position
 	 * @return true if this Position is above the other Position, false otherwise.
 	 */
 	public boolean isAbove(Position other) {
@@ -190,12 +190,11 @@ public class Position {
 	 * over division with floats, as floats can lose accuracy.
 	 *
 	 * @param other
-	 *            - the other Position
+	 *            the other Position
 	 * @return true if absolute value of slope is 1; false otherwise.
 	 */
 	public boolean hasAbsSlopeOfOne(Position other) {
 		return Math.abs(other.getRow() - row) == Math.abs(other.getColumn() - column);
-
 	}
 
 	/**
