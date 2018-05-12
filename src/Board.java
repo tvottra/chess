@@ -1027,6 +1027,9 @@ public class Board {
 	/**
 	 * Called each time after a Piece is moved. Removes all hotSpots on current
 	 * board, then goes over that board and tags updated hotSpots accordingly.
+	 * 
+	 * @param aBoard
+	 *            the given 2D array of Tiles
 	 */
 	public void updateHotSpots(Tile[][] aBoard) {
 		ArrayList<Position> wHotSpots = getWhiteHotSpots(aBoard);
