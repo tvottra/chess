@@ -11,8 +11,5 @@ public class PlayGame {
         String nameTwo = sc.nextLine();
         Game startGame = new Game(nameOne, nameTwo);
         startGame.playGame();
-
-
     }
-
 }
