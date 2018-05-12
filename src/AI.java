@@ -1,8 +1,9 @@
 import java.util.ArrayList;
+import java.util.Random;
 
 /**
  * @author Tommy V. Tran
- *
+ * <p>
  * "AI" that randomly scans through the board for valid moves and goes for the one with highest point value.
  */
 public class AI extends Player {
@@ -11,9 +12,10 @@ public class AI extends Player {
 
 	/**
 	 * Constructor to initialize the "AI"
-	 * @param name - name of the AI
+	 *
+	 * @param name   - name of the AI
 	 * @param number - player number (usually 1 for Black)
-	 * @param bd - Board the AI is playing on
+	 * @param bd     - Board the AI is playing on
 	 */
 	public AI(String name, int number, Board bd) {
 		super("AI " + name, number);
@@ -24,9 +26,11 @@ public class AI extends Player {
 	/**
 	 * The AI reads in the Board it has access to and generates a vector of movement based on capturing the Piece with the highest point value. If highest point value
 	 * is 0, then AI just chooses the first legal move.
+	 *
 	 * @return a vector of movement that yields the capture with the highest point value
 	 */
 	public Vector generateHighestPointValueMove() {
+		Random gen = new Random();
 		Tile[][] chessBoard = boardIAnalyze.getBoard(); //don't modify original board yet!
 		//ArrayList<Vector> potentialMoves = new ArrayList<Vector>(); //use later maybe
 		ArrayList<Vector> optimalPlayPerFromPos = new ArrayList<Vector>();
@@ -59,6 +63,7 @@ public class AI extends Player {
 								}
 							}
 						}
+
 						if (optimalToPos != null) {
 							optimalPlayPerFromPos.add(new Vector(fromPos, optimalToPos));
 						}
@@ -67,8 +72,10 @@ public class AI extends Player {
 				}
 			}
 		}
-		//Scan through all the fromPos, optimalToPos vectors to find the absolute highest toPos
-		Vector bestMove = optimalPlayPerFromPos.get(0);
+		//Scan through all the fromPos, optimalToPos vectors to find the absolute highest toPos. If all the same, then best move will be random.
+		int vectorIndex = (int) (gen.nextDouble() * (optimalPlayPerFromPos.size()));
+
+		Vector bestMove = optimalPlayPerFromPos.get(vectorIndex);
 		int bestMoveValue = 0;
 		for (Vector move : optimalPlayPerFromPos) {
 			if (boardIAnalyze.getTile(move.getToPos()).hasPiece() && boardIAnalyze.getTile(move.getToPos()).getPiece().getPointValue() > bestMoveValue) {
