@@ -10,8 +10,10 @@ public class Queen extends Piece {
 	/**
 	 * Constructor to initialize the Queen
 	 *
-	 * @param color - the Queen's color
-	 * @param pos   - the Queen's Position
+	 * @param color
+	 *            - the Queen's color
+	 * @param pos
+	 *            - the Queen's Position
 	 */
 	public Queen(int color, Position pos) {
 		super("Queen", color, pos, 9);
@@ -79,47 +81,44 @@ public class Queen extends Piece {
 	@Override
 	/**
 	 * Calculates the Queen's range of movement based on known board size and its
-	 * current position. Positions are ordered ascending in terms of row then
-	 * column. E.g., (0, 0), (0, 1), (0, 2), (1, 0)... TODO:IGNORE THIS ORDERING. NO PIECES HAVE THIS ORDERING, I'M PRETTY SURE -TVT
-	 *
+	 * current position.
+	 * 
 	 * @return the Queen's range of movement
 	 */
 	public ArrayList<Position> getRangeOfMovement() {
 		Position pos = new Position(getPosition());
 		ArrayList<Position> rom = new ArrayList<Position>();
 
-		//Get the top vertical vector
+		// Get the top vertical vector
 		for (int r = (pos.getRow()) - 1; r >= 0; r--) {
 			Position p = new Position(r, pos.getColumn());
 			rom.add(p);
 		}
-
 		rom.add(pos);
 
-		//Get the bottom vertical vector
+		// Get the bottom vertical vector
 		for (int r = pos.getRow() + 1; r < getSize(); r++) {
 			Position p = new Position(r, pos.getColumn());
 			rom.add(p);
 		}
 		rom.add(pos);
 
-		//Get the left horizontal vector
+		// Get the left horizontal vector
 
 		for (int c = pos.getColumn() - 1; c >= 0; c--) {
 			Position p = new Position(pos.getRow(), c);
 			rom.add(p);
 		}
-
 		rom.add(pos);
 
-		//Get the right horizontal vector
+		// Get the right horizontal vector
 
 		for (int c = pos.getColumn() + 1; c < getSize(); c++) {
 			Position p = new Position(pos.getRow(), c);
 			rom.add(p);
 		}
 
-		//Get the diagonals
+		// Get the diagonals
 		Position currentPos = new Position(pos);
 		while (currentPos.isWithinBounds()) {
 			rom.add(new Position(currentPos));
@@ -129,18 +128,14 @@ public class Queen extends Piece {
 
 		currentPos = new Position(getPosition());
 		while (currentPos.isWithinBounds()) {
-
 			rom.add(new Position(currentPos));
-
 			currentPos.addToRow(-1);
 			currentPos.addToColumn(-1);
 		}
 
 		currentPos = new Position(getPosition());
 		while (currentPos.isWithinBounds()) {
-
 			rom.add(new Position(currentPos));
-
 			currentPos.addToRow(1);
 			currentPos.addToColumn(-1);
 		}
@@ -148,7 +143,6 @@ public class Queen extends Piece {
 		currentPos = new Position(getPosition());
 		while (currentPos.isWithinBounds()) {
 			rom.add(new Position(currentPos));
-
 			currentPos.addToRow(1);
 			currentPos.addToColumn(1);
 		}
@@ -157,11 +151,11 @@ public class Queen extends Piece {
 
 	@Override
 	/**
-	 * Checks whether the given Position is within this Piece's range of movement
+	 * Checks whether the given Position is within this Queen's range of movement
 	 *
 	 * @param toPos
 	 *            - the destination Position
-	 * @return true if toPos is within this Piece's range of movement, false
+	 * @return true if toPos is within this Queen's range of movement, false
 	 *         otherwise
 	 */
 	public boolean isWithinRangeOfMovement(Position toPos) {

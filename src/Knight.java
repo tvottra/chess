@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 
 /**
- * Class that represents a Knihgt chess piece
+ * Class that represents a Knight chess piece
  * 
  * @author Arjun Agrawal
  */

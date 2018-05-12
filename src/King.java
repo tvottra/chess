@@ -6,10 +6,9 @@ import java.util.ArrayList;
  * @author Brian Qiu
  */
 public class King extends Piece {
-	private boolean isChecked;
 
 	/**
-	 * COnstructor to intialize the King's color and Position
+	 * Constructor to initialize the King's color and Position
 	 * 
 	 * @param color
 	 *            - the King's color
@@ -39,9 +38,8 @@ public class King extends Piece {
 
 	/**
 	 * Calculates the King's range of movement based on known board size and its
-	 * current position. Positions are ordered ascending in terms of row then
-	 * column. E.g., (0, 0), (0, 1), (0, 2), (1, 0)...
-	 *
+	 * current position.
+	 * 
 	 * @return the King's range of movement
 	 */
 	public ArrayList<Position> getRangeOfMovement() {
@@ -67,6 +65,7 @@ public class King extends Piece {
 			left = true;
 		}
 
+		field.add(getPosition());
 		if (bot && left) {
 			field.add(new Position(row + 1, col - 1));
 		}
@@ -91,7 +90,6 @@ public class King extends Piece {
 		if (top && right) {
 			field.add(new Position(row - 1, col + 1));
 		}
-
 		return field;
 	}
 

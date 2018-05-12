@@ -19,7 +19,6 @@ public class Rook extends Piece {
 	 */
 	public Rook(int color, Position pos) {
 		super("Rook", color, pos, 5);
-
 	}
 
 	@Override
@@ -35,14 +34,12 @@ public class Rook extends Piece {
 		if (isWithinRangeOfMovement(toPos)) {
 			ArrayList<Position> positions = new ArrayList<Position>();
 			Position fromPos = getPosition();
-			// The two Positions are in the same row
 			if (fromPos.getRow() == toPos.getRow()) {
 				for (int c = fromPos.getColumn(); c < toPos.getColumn(); c++) {
 					Position pos = new Position(fromPos.getRow(), c);
 					positions.add(pos);
 				}
 			}
-			// The two Positions are in the same column
 			if (fromPos.getColumn() == toPos.getColumn()) {
 				for (int r = fromPos.getRow(); r < toPos.getRow(); r++) {
 					Position pos = new Position(r, fromPos.getColumn());
@@ -72,25 +69,27 @@ public class Rook extends Piece {
 			Position p = new Position(r, pos.getColumn());
 			fieldOfControl.add(p);
 		}
-
 		fieldOfControl.add(pos);
+
+		// Add all positions below current position (same column)
 		for (int r = pos.getRow() + 1; r < getSize(); r++) {
 			Position p = new Position(r, pos.getColumn());
 			fieldOfControl.add(p);
 		}
-
 		fieldOfControl.add(pos);
+
+		// Add all positions left of current position (same row)
 		for (int c = pos.getColumn() - 1; c >= 0; c--) {
 			Position p = new Position(pos.getRow(), c);
 			fieldOfControl.add(p);
 		}
-
 		fieldOfControl.add(pos);
+
+		// Add all positions right of current position (same row)
 		for (int c = pos.getColumn() + 1; c < getSize(); c++) {
 			Position p = new Position(pos.getRow(), c);
 			fieldOfControl.add(p);
 		}
-
 		return fieldOfControl;
 	}
 
