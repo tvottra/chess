@@ -307,7 +307,11 @@ public class Game {
 	/**
 	 * Check whether the suggested row and column indexes are within the bounds of
 	 * the gameBoard size
-	 *
+	 * 
+	 * @param row
+	 *            - the given row index
+	 * @param col
+	 *            - the given column index
 	 * @return true if the row and position are within bounds, false otherwise
 	 */
 	private boolean isWithinBounds(int row, int col) {
@@ -326,6 +330,8 @@ public class Game {
 	 *            the column index
 	 * @param color
 	 *            0 for white, 1 for black
+	 * @param board
+	 *            the given Board object
 	 * @return true if there is a Piece of the correct color at the row and column
 	 *         indexes, false otherwise
 	 */
