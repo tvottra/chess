@@ -78,6 +78,9 @@ public class Game {
 				startPlayerTurn(whitePlayer, blackPlayer);
 				isWhiteTurn = !isWhiteTurn;
 				findCheckmate();
+				if (stalemate(whitePlayer, blackPlayer)) {
+					setStalemate(true);
+				}
 			} // End White's turn
 			if (gameIsOver()) {
 				break;
@@ -91,6 +94,9 @@ public class Game {
 					}
 					isWhiteTurn = !isWhiteTurn;
 					findCheckmate();
+					if (stalemate(blackPlayer, whitePlayer)) {
+						setStalemate(true);
+					}
 				} // End Black's turn
 			}
 		} // End game
