@@ -511,7 +511,7 @@ public class Board {
 			}
 		}
 		// get diagonal tiles (if any)
-		ArrayList<Position> hotSpots = getPawnHotSpots(pawn, aBoard);
+		ArrayList<Position> hotSpots = getPawnHotSpots(pawn);
 		for (int i = 0; i < hotSpots.size(); i++) {
 			Tile currentTile = getTile(hotSpots.get(i));
 			if (currentTile.hasPiece() && !currentTile.getPiece().isSameColorAs(pawn)) {
