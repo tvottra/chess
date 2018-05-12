@@ -11,29 +11,12 @@ public class King extends Piece {
 	 * Constructor to initialize the King's color and Position
 	 * 
 	 * @param color
-	 *            - the King's color
+	 *            the King's color
 	 * @param pos
-	 *            - the King's position
+	 *            the King's position
 	 */
 	public King(int color, Position pos) {
 		super("King", color, pos, 100);
-	}
-
-	/**
-	 * Returns an array of the Positions that would be crossed if this King were to
-	 * move to the given Position
-	 *
-	 * @param toPos
-	 *            - the given Position
-	 * @return an ArrayList of the Positions that would be crossed
-	 */
-	public ArrayList<Position> getCrossedPositions(Position toPos) {
-		ArrayList<Position> iWillCross = new ArrayList<Position>();
-		if (isWithinRangeOfMovement(toPos)) {
-			iWillCross.add(getPosition());
-			iWillCross.add(toPos);
-		}
-		return iWillCross;
 	}
 
 	/**
@@ -91,19 +74,5 @@ public class King extends Piece {
 			field.add(new Position(row + 1, col + 1));
 		}
 		return field;
-	}
-
-	@Override
-	/**
-	 * Checks whether the given Position is within this King's range of movement
-	 *
-	 * @param toPos
-	 *            - the destination Position
-	 * @return true if toPos is within this King's range of movement, false
-	 *         otherwise
-	 */
-	public boolean isWithinRangeOfMovement(Position toPos) {
-		return toPos.isWithinBounds() && Math.sqrt(Math.pow(getPosition().getRow() - toPos.getRow(), 2)
-				- Math.pow(getPosition().getColumn(), toPos.getColumn())) == 1;
 	}
 }
