@@ -1,5 +1,9 @@
 import java.util.ArrayList;
-
+/**
+ * Class that includes a recursive quicksort method
+ * @author Tommy V. Tran
+ *
+ */
 public class Toolbox {
 
 	public static int binarySearch(ArrayList<Comparable> a, int l, int r, Comparable x) {
