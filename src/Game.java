@@ -32,6 +32,7 @@ public class Game {
 		isWhiteTurn = true;
 		draw = false;
 		stalemate = false;
+		update();
 	}
 
 	/**
@@ -713,7 +714,7 @@ public class Game {
 	 * Update the hotSpots
 	 */
 	public void update() {
-		gameBoard.updateHotSpots();
+		gameBoard.updateHotSpots(gameBoard.getBoard());
 	}
 
 }

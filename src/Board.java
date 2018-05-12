@@ -1,3 +1,5 @@
+import javafx.scene.Parent;
+
 import java.util.ArrayList;
 
 /**
@@ -21,7 +23,7 @@ public class Board {
 		setUpWhitePieces();
 		setUpBlackPieces();
 		setUpRestOfBoard();
-		updateHotSpots();
+		updateHotSpots(board);
 	}
 
 	/**
@@ -181,7 +183,7 @@ public class Board {
 		board[fromRow][fromCol].setPiece(null);
 		board[toRow][toCol].getPiece().setPosition(new Position(toPos));
 		board[toRow][toCol].getPiece().setHasMoved(true);
-		updateHotSpots();
+		updateHotSpots(board);
 		return true;
 	}
 
@@ -242,6 +244,7 @@ public class Board {
 		copy[toRow][toCol].setPiece(pieceToMove);
 		copy[fromRow][fromCol].setPiece(null);
 		// Find the hotSpots and see whether the move would result in a check
+		updateHotSpots(copy);
 		int myColor = pieceToMove.getColor();
 		if (isKingChecked(myColor, copy)) {
 			// System.out.println("Shouldn't be able to move");
@@ -907,9 +910,9 @@ public class Board {
 	public boolean isKingChecked(int color, Tile[][] aBoard) {
 		Position kingPos = findKingPosition(color, aBoard);
 		if(color == 0) {
-			return board[kingPos.getRow()][kingPos.getColumn()].isBlackHotSpot();
+			return aBoard[kingPos.getRow()][kingPos.getColumn()].isBlackHotSpot();
 		} else {
-			return board[kingPos.getRow()][kingPos.getColumn()].isWhiteHotSpot();
+			return aBoard[kingPos.getRow()][kingPos.getColumn()].isWhiteHotSpot();
 		}
 	}
 
@@ -1025,40 +1028,31 @@ public class Board {
 	}
 
 	/**
-	 * Called each time after a Piece is moved, looping through all of the Tiles and
-	 * updating the isWhiteHotSpot and isBlackHotSpot for each Tile
+	 * Called each time after a Piece is moved. Removes all hotSpots on current board, then
+	 * goes over that board and tags updated hotSpots accordingly.
 	 */
-	public void updateHotSpots() {
-		ArrayList<Position> checkedPos;
+	public void updateHotSpots(Tile[][] aBoard) {
+		ArrayList<Position> wHotSpots = getWhiteHotSpots(aBoard);
+		ArrayList<Position> bHotSpots = getBlackHotSpots(aBoard);
 
-		// Look through each Piece's field of hotSpots
-		for (Tile[] t1 : board) {
-			for (Tile t2 : t1) {
-
-				// If there is a Piece
-				if (t2.hasPiece()) {
-					Piece myPiece = t2.getPiece();
-					checkedPos = getHotSpots(myPiece, board);
-					boolean isWhite = myPiece.getColor() == 0;
-					// For each Position checked, update each corresponding Tile's isWhiteHotSpot
-					// and isBlackHotSpot accordingly
-					if (checkedPos != null) {
-
-						for (Position pos : checkedPos) {
-							if (pos.isWithinBounds()) {
-								if (isWhite) {
-									board[pos.getRow()][pos.getColumn()].setIsWhiteHotSpot(true);
-								} else {
-									board[pos.getRow()][pos.getColumn()].setIsBlackHotSpot(true);
-								}
-							}
-
-						}
-					}
-				}
+		//start with clean slate--no hotSpot values--then later tag on hotSpots
+		for(int r = 0; r < aBoard.length; r++) {
+			for(int c = 0; c < aBoard[0].length; c++) {
+				aBoard[r][c].setIsWhiteHotSpot(false);
+				aBoard[r][c].setIsBlackHotSpot(false);
 			}
-
 		}
+
+
+		//Tag on hotSpots
+		for(Position whiteHotSpot: wHotSpots) {
+			aBoard[whiteHotSpot.getRow()][whiteHotSpot.getColumn()].setIsWhiteHotSpot(true);
+		}
+
+		for(Position blackHotSpot: bHotSpots) {
+			aBoard[blackHotSpot.getRow()][blackHotSpot.getColumn()].setIsBlackHotSpot(true);
+		}
+
 	}
 
 	/**
