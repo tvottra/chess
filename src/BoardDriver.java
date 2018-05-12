@@ -1,15 +1,16 @@
 import java.util.ArrayList;
+
 /**
  * Class used to test the Board class; specifically; the hotSpots and move methods
- * 
- * @author  Andrew Le
+ *
+ * @author Andrew Le
  */
 public class BoardDriver {
 
-	public static void main(String[] args) {
-		Board myBoard = new Board();
-		System.out.print(myBoard);
-		int row = 7;
+    public static void main(String[] args) {
+        Board myBoard = new Board();
+        System.out.print(myBoard);
+		 /* int row = 7;
 		int col = 4;
 		Piece testPiece = myBoard.getTile(row, col).getPiece();
 		System.out.println("The piece is " + testPiece);
@@ -31,7 +32,9 @@ public class BoardDriver {
 				System.out.println(pos);
 			}
 		}
+		*/
 
-	}
+
+    }
 
 }
