@@ -164,7 +164,13 @@ public class Player {
 	public String getCapturedPieces() {
 		String s = "";
 		for(Comparable p: myCapturedPieces) {
-			s += p + " ";
+			s += ((Piece) p).getName() + " (" + ((Piece)p).getPointValue() + "), ";
+		}
+		if(s.length() >= 3) {
+			s = s.substring(0, s.length()-2);
+		}
+		if(s.length() == 0) {
+			s = "You have not captured any pieces.";
 		}
 		return s;
 	}

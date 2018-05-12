@@ -120,13 +120,13 @@ public class Game {
 			int playerChoice = sc.nextInt();
 			switch (playerChoice) {
 				case 1:
-					System.out.println(gameBoard);
 					endPrompt = true;
+					System.out.println(gameBoard);
 					continueTurn(pl);
 					break;
 				case 2:
-					pl.setResign(true);
 					endPrompt = true;
+					pl.setResign(true);
 					break;
 				case 3:
 					System.out.println("Does " + other.getName() + " accept " + pl.getName() + "'s draw offer?");
@@ -134,6 +134,7 @@ public class Game {
 					System.out.println("(2) Decline draw");
 					int drawChoice = sc.nextInt();
 					if (drawChoice == 1) {
+						endPrompt = true;
 						setDraw(true);
 						System.out.println(other.getName() + " has accepted " + pl.getName() + "'s draw offer.");
 					} else {
@@ -141,19 +142,17 @@ public class Game {
 						System.out.println(other.getName() + " has declined " + pl.getName() + "'s draw offer.");
 						isWhiteTurn = !isWhiteTurn; // make sure the turn player's turn is not skipped
 					}
-					endPrompt = true;
 					break;
 				case 4:
 					// do nothing
-					System.out.println(pl.getName() + " has passed");
 					endPrompt = true;
+					System.out.println(pl.getName() + " has passed");
 					break;
 				case 5:
 					System.out.println(pl.getCapturedPieces());
 					break;
 				default:
 					System.out.println("An invalid number was entered: please choose 1-4");
-					endPrompt = true;
 					break;
 			}
 
@@ -228,7 +227,7 @@ public class Game {
 		}
 		// postcondition: Piece has been moved from fromPos to toPos on the Board
 		// Provide feedback to user
-		System.out.println(feedback + " has moved to " + toPos + "\n");
+		System.out.println(feedback + " has moved to " + toPos + ".\n");
 		// Account for promotion
 		Piece currentPiece = gameBoard.getTile(toPos).getPiece();
 		if (currentPiece.getName().equals("Pawn") && ((Pawn) (currentPiece)).isWaitingForPromotion()) {
@@ -286,7 +285,7 @@ public class Game {
 	 */
 	private Position chooseDestination() {
 		Scanner sc = new Scanner(System.in);
-		System.out.println("Choose a tile to move to: ");
+		System.out.println("Choose a tile to move to. ");
 		System.out.print("Enter the row coordinates of the tile: ");
 		int tileRow = sc.nextInt();
 		System.out.print("Enter the column coordinates of the tile: ");
