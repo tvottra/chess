@@ -6,17 +6,20 @@ import java.util.ArrayList;
  * @author Brian Qiu
  */
 public class Pawn extends Piece {
-    private boolean hasMovedTwo;
+	private boolean hasMovedTwo; // whether the Pawn has used the 2-tile move
 
-    /**
-     * Contructor to initialize the Pawn's color and Position
-     *
-     * @param color* - the Pawn's color
-     * @param pos*   - the Pawn's Position
-     */
-    public Pawn(int color, Position pos) {
-        super("Pawn", color, pos, 1);
-    hasMovedTwo = false;}
+	/**
+	 * Contructor to initialize the Pawn's color and Position
+	 *
+	 * @param color
+	 *            - the Pawn's color
+	 * @param pos
+	 *            - the Pawn's Position
+	 */
+	public Pawn(int color, Position pos) {
+		super("Pawn", color, pos, 1);
+		hasMovedTwo = false;
+	}
 
 	@Override
 	/**
@@ -69,7 +72,6 @@ public class Pawn extends Piece {
 			rom.add(new Position(currentPos.getRow() + r + r, currentPos.getColumn())); // Add Position 2 Tiles in front
 																						// of Piece
 		}
-
 		return rom;
 	}
 
@@ -93,11 +95,10 @@ public class Pawn extends Piece {
 		} else {
 			return ((toPos.isWithinBounds()) && (fromCol == toCol) && Math.abs(fromRow - toRow) == 1);
 		}
-
 	}
 
 	/**
-	 * Determines whther this Pawn need to be promoted; a white Pawn is promoted if
+	 * Determines whether this Pawn need to be promoted; a white Pawn is promoted if
 	 * it is on row 0; a black Pawn is promoted if it is on row 7.
 	 *
 	 * @return true if this Pawn should be promoted, false otherwise
@@ -109,12 +110,23 @@ public class Pawn extends Piece {
 			return false;
 	}
 
-    public void setHasMovedTwo(boolean moved) {
-        hasMovedTwo = moved;
-    }
+	/**
+	 * Accessor method to get the Pawn's 2-tile move status
+	 * 
+	 * @return true if the Pawn has already used the 2-tile move, false otherwise
+	 */
+	public boolean hasMovedTwo() {
+		return hasMovedTwo;
+	}
 
-    public boolean hasMovedTwo() {
-        return hasMovedTwo;
-    }
+	/**
+	 * Mutator method to update the Pawn's 2-tile move status
+	 * 
+	 * @param moved
+	 *            - true if the Pawn has used the 2-tile move, false otherwise
+	 */
+	public void setHasMovedTwo(boolean moved) {
+		hasMovedTwo = moved;
+	}
 
 }
