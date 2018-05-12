@@ -312,10 +312,10 @@ public class Board {
 			int rToRow = rookToPos.getRow();
 			int rToCol = rookToPos.getColumn();
 
-			if(king.getColor() == 0 && board[rook.getPosition().getRow()][rook.getPosition().getColumn()].isBlackHotSpot()) {
+			if(king.getColor() == 0 && board[toPos.getRow()][toPos.getColumn()].isBlackHotSpot()) {
 				return false;
 			}
-			if(king.getColor() == 1 && board[rook.getPosition().getRow()][rook.getPosition().getColumn()].isWhiteHotSpot()) {
+			if(king.getColor() == 1 && board[toPos.getRow()][toPos.getColumn()].isWhiteHotSpot()) {
 				return false;
 			}
 
