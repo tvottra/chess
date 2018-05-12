@@ -1,7 +1,7 @@
 /**
  * Class that represents the position of a Piece in [row][column] format
  *
- * @author Arjun Agrawal, Tommy Tran
+ * @author Arjun Agrawal, Tommy V. Tran
  */
 public class Position {
 	private int row;

@@ -5,7 +5,7 @@ import java.util.ArrayList;
  *
  * @author Arjun Agrawal
  * @author Andrew Le
- * @author Tommy Vo Tran
+ * @author Tommy V. Tran
  */
 public abstract class Piece {
 	private String name;

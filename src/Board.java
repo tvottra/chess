@@ -5,7 +5,7 @@ import java.util.ArrayList;
  *
  * @author Andrew Le
  * @author Brian Qiu
- * @author Tommy Tran
+ * @author Tommy V. Tran
  */
 public class Board {
 	Tile[][] board;

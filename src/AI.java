@@ -1,8 +1,8 @@
 import java.util.ArrayList;
 
 /**
- * @author Tommy V. T.
- * <p>
+ * @author Tommy V. Tran
+ *
  * "AI" that randomly scans through the board for valid moves and goes for the one with highest point value.
  */
 public class AI extends Player {
@@ -16,7 +16,7 @@ public class AI extends Player {
 	 * @param bd - Board the AI is playing on
 	 */
 	public AI(String name, int number, Board bd) {
-		super(name, number);
+		super("AI " + name, number);
 		boardIAnalyze = bd;
 	}
 

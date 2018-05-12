@@ -3,7 +3,7 @@ import java.util.ArrayList;
 /**
  * Class that represents a Bishop chess piece
  * 
- * @author Tommy Tran
+ * @author Tommy V. Tran
  */
 public class Bishop extends Piece {
 

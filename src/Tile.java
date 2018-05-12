@@ -1,7 +1,7 @@
 /**
  * Class that represents a tile on the board
  *
- * @author Tommy Tran
+ * @author Tommy V. Tran
  * @author Andrew Le
  */
 public class Tile {

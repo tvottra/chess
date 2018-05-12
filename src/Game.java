@@ -8,7 +8,7 @@
 import java.util.Scanner;
 
 /**
- * @author Andrew Le
+ * @author Andrew Le, Tommy V. Tran, Brian Qiu, Arjun Agrawal
  */
 public class Game {
 	private Player whitePlayer; // white
