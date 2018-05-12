@@ -54,27 +54,27 @@ public class King extends Piece {
 		boolean bot = false;
 		boolean left = false;
 
-		if (row + 1 < 7) {
+		if (row - 1 > 0) {
 			top = true;
 		}
 		if (col + 1 < 7) {
 			right = true;
 		}
-		if (row - 1 < 7) {
+		if (row + 1 < 7) {
 			bot = true;
 		}
-		if (col - 1 < 7) {
+		if (col - 1 > 0) {
 			left = true;
 		}
 
 		if (bot && left) {
-			field.add(new Position(row - 1, col - 1));
+			field.add(new Position(row + 1, col - 1));
 		}
 		if (bot) {
-			field.add(new Position(row - 1, col));
+			field.add(new Position(row + 1, col));
 		}
 		if (bot && right) {
-			field.add(new Position(row - 1, col + 1));
+			field.add(new Position(row + 1, col + 1));
 		}
 		if (right) {
 			field.add(new Position(row, col + 1));
@@ -83,13 +83,13 @@ public class King extends Piece {
 			field.add(new Position(row, col - 1));
 		}
 		if (top && left) {
-			field.add(new Position(row + 1, col - 1));
+			field.add(new Position(row - 1, col - 1));
 		}
 		if (top) {
-			field.add(new Position(row + 1, col));
+			field.add(new Position(row - 1, col));
 		}
 		if (top && right) {
-			field.add(new Position(row + 1, col + 1));
+			field.add(new Position(row - 1, col + 1));
 		}
 
 		return field;
