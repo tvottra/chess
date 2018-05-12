@@ -9,8 +9,8 @@ public class PlayGame {
         String nameOne = sc.nextLine();
         System.out.print("Please enter Player 2's name (black): ");
         String nameTwo = sc.nextLine();
-        Game startGame = new Game(nameOne, nameTwo);
-        startGame.playGame();
+        Game myGame = new Game(nameOne, nameTwo);
+        myGame.playGame();
 
 
     }

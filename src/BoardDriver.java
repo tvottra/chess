@@ -1,6 +1,6 @@
 import java.util.ArrayList;
 /**
- * Class used to test the Board class; specifically; the hotspots and move methods
+ * Class used to test the Board class; specifically; the hotSpots and move methods
  * 
  *
  */
@@ -20,7 +20,7 @@ public class BoardDriver {
 		for (Position pos : range) {
 			System.out.println(pos);
 		}
-		// Hotspots test
+		// HotSpots test
 
 		ArrayList<Position> hotSpots = myBoard.getHotSpots(testPiece, myBoard.getBoard());
 		System.out.println("Here are the hotSpots:");

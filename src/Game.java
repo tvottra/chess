@@ -138,7 +138,6 @@ public class Game {
 	 */
 	private void startAIPlayerTurn(AI myAI, Player other) {
 		System.out.println(myAI.getName() + " is looking at the board.");
-		System.out.println(gameBoard);
 		continueAITurn(myAI);
 
 	}
@@ -172,20 +171,20 @@ public class Game {
 				|| !isWithinBounds(toPos.getRow(), toPos.getColumn()) || !gameBoard.isLegalMove(fromPos, toPos, gameBoard.getBoard())
 				|| (gameBoard.getTile(fromPos).getPiece().getName().equals("KING && !castle"))) {
 			if (!isValidPiece(fromPos, pl.getNumber(), gameBoard)) {
-				System.out.println("Invalid coordinates for the piece to be moved:");
+				System.out.println("You cannot move a piece at that position.");
 			}
 			if (!isWithinBounds(toPos.getRow(), toPos.getColumn())) {
-				System.out.println("Invalid coordinates for the destination:");
+				System.out.println("Destination is out of bounds.");
 			}
 			if (!gameBoard.isLegalMove(fromPos, toPos, gameBoard.getBoard())) {
-				System.out.println("Move deemed illegal by isLegalMove");
+				System.out.println("Move is illegal.");
 			}
 			/*
 			if (gameBoard.getTile(fromPos).getPiece().getName().equals("KING && !castle")) {
 				System.out.println("Illegal: cannot castle");
 			}
 			*/
-			System.out.println("Move to " + toPos + " is not legal. Please repeat the move process.");
+			System.out.println("Move to " + toPos + " is invalid. Please repeat the move process.");
 			fromPos = choosePiece();
 			toPos = chooseDestination();
 		}
@@ -501,7 +500,7 @@ public class Game {
 	}
 
 	/**
-	 * Update the hotspots
+	 * Update the hotSpots
 	 */
 	public void update() {
 		gameBoard.updateHotSpots();
