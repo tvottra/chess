@@ -121,10 +121,8 @@ public class Board {
 	/**
 	 * Accessor method to get a tile at the specified location
 	 *
-	 * @param row
-	 *            the row index of the Tile
-	 * @param col
-	 *            the column index of the Tile
+	 * @param row the row index of the Tile
+	 * @param col the column index of the Tile
 	 * @return the Tile at board[row][col]
 	 */
 	public Tile getTile(int row, int col) {
@@ -134,8 +132,7 @@ public class Board {
 	/**
 	 * Accessor method to get a tile at the specified location
 	 *
-	 * @param pos
-	 *            the position of the Tile
+	 * @param pos the position of the Tile
 	 * @return the Tile at board[row][col]
 	 */
 	public Tile getTile(Position pos) {
@@ -163,10 +160,8 @@ public class Board {
 	/**
 	 * Moves a Piece at fromPos to toPos on the board without checking for legality.
 	 *
-	 * @param fromPos
-	 *            the Piece's current position
-	 * @param toPos
-	 *            the Position to which the Piece will be moved
+	 * @param fromPos the Piece's current position
+	 * @param toPos   the Position to which the Piece will be moved
 	 * @return true if there was a Piece at fromPos on the board; false otherwise.
 	 */
 	public boolean movePiece(Position fromPos, Position toPos) {
@@ -191,12 +186,9 @@ public class Board {
 	 * Checks whether moving a Piece from its current Position to a given Position
 	 * is legal.
 	 *
-	 * @param fromPos
-	 *            the Piece's current Position
-	 * @param toPos
-	 *            the Position of the Piece's proposed destination
-	 * @param aBoard
-	 *            the given 2D array of Tiles
+	 * @param fromPos the Piece's current Position
+	 * @param toPos   the Position of the Piece's proposed destination
+	 * @param aBoard  the given 2D array of Tiles
 	 * @return true if the move is legal, false otherwise
 	 */
 	public boolean isLegalMove(Position fromPos, Position toPos, Tile[][] aBoard) {
@@ -238,7 +230,7 @@ public class Board {
 
 		// Create a copy of the real board to determine whether the move creates a check
 		Tile[][] copy = Tile.cloneTile2DArray(board); // If incorrect hasMoved(), then manually code creation of Pieces
-														// in Tile.cloneTile2DArray later
+		// in Tile.cloneTile2DArray later
 
 		// Perform the move on the copy of the board
 		copy[toRow][toCol].setPiece(pieceToMove);
@@ -259,12 +251,9 @@ public class Board {
 	 * Determines whether the King at the given Position may castle on the given
 	 * board
 	 *
-	 * @param fromPos
-	 *            the King's current Position
-	 * @param toPos
-	 *            the King's Position upon castling
-	 * @param aBoard
-	 *            the given 2D array of Tiles
+	 * @param fromPos the King's current Position
+	 * @param toPos   the King's Position upon castling
+	 * @param aBoard  the given 2D array of Tiles
 	 * @return true if castling is possible, false otherwise
 	 */
 	public boolean castleAble(Position fromPos, Position toPos, Tile[][] aBoard) {
@@ -377,10 +366,8 @@ public class Board {
 	 * appropriate helper method to get the hotSpots, depending on the identity of
 	 * the piece
 	 *
-	 * @param piece
-	 *            the given Piece
-	 * @param aBoard
-	 *            the given 2D array of Tiles
+	 * @param piece  the given Piece
+	 * @param aBoard the given 2D array of Tiles
 	 * @return all the Positions currently checked by this Piece
 	 */
 	public ArrayList<Position> getHotSpots(Piece piece, Tile[][] aBoard) {
@@ -410,12 +397,9 @@ public class Board {
 	 * Checks whether the given Piece's proposed destination is within the Piece's
 	 * hotSpots
 	 *
-	 * @param piece
-	 *            the given Piece
-	 * @param toPos
-	 *            the given destination Position
-	 * @param aBoard
-	 *            the given 2D array of Tiles
+	 * @param piece  the given Piece
+	 * @param toPos  the given destination Position
+	 * @param aBoard the given 2D array of Tiles
 	 * @return true if toPos is within the Piece's hotSpots, false otherwise
 	 */
 	private boolean isWithinHotSpots(Piece piece, Position toPos, Tile[][] aBoard) {
@@ -434,8 +418,7 @@ public class Board {
 	/**
 	 * Returns all of white's checked hotSpots for the given board
 	 *
-	 * @param aBoard
-	 *            the given board
+	 * @param aBoard the given board
 	 * @return all of the hotSpots checked by white pieces
 	 */
 	private ArrayList<Position> getWhiteHotSpots(Tile[][] aBoard) {
@@ -456,8 +439,7 @@ public class Board {
 	/**
 	 * Returns all of black's checked hotSpots for the given board
 	 *
-	 * @param aBoard
-	 *            the given board
+	 * @param aBoard the given board
 	 * @return all of the hotSpots checked by black pieces
 	 */
 	private ArrayList<Position> getBlackHotSpots(Tile[][] aBoard) {
@@ -478,8 +460,7 @@ public class Board {
 	/**
 	 * Returns the hotSpots for the given Pawn
 	 *
-	 * @param pawn
-	 *            the given Pawn
+	 * @param pawn the given Pawn
 	 * @return the hotSpots for the given Pawn
 	 */
 	private ArrayList<Position> getPawnHotSpots(Piece pawn) {
@@ -512,10 +493,8 @@ public class Board {
 	 * obstruction on the Board. The Pawn's range of movement may include forward
 	 * tiles, diagonal tiles, both, or none, depending on the current board.
 	 *
-	 * @param pawn
-	 *            the given Pawn
-	 * @param aBoard
-	 *            the given 2D array of Tiles
+	 * @param pawn   the given Pawn
+	 * @param aBoard the given 2D array of Tiles
 	 * @return the Pawn's real range of movement
 	 */
 	public ArrayList<Position> getPawnRangeOfMovement(Piece pawn, Tile[][] aBoard) {
@@ -552,14 +531,11 @@ public class Board {
 	 * Checks whether the given Pawn's proposed destination is within the given
 	 * Pawn's true range of movement
 	 *
-	 * @param pawn
-	 *            pawn
-	 * @param toPos
-	 *            the given Position
-	 * @param aBoard
-	 *            the given 2D array of Tiles
+	 * @param pawn   pawn
+	 * @param toPos  the given Position
+	 * @param aBoard the given 2D array of Tiles
 	 * @return true if toPos is within the Pawn's real range of movement, false
-	 *         otherwise
+	 * otherwise
 	 */
 	public boolean isWithinPawnRangeOfMovement(Piece pawn, Position toPos, Tile[][] aBoard) {
 		ArrayList<Position> myRom = getPawnRangeOfMovement(pawn, aBoard);
@@ -576,8 +552,7 @@ public class Board {
 	/**
 	 * Returns the hotSpots for the given Knight
 	 *
-	 * @param knight
-	 *            the given Knight
+	 * @param knight the given Knight
 	 * @return the hotSpots for the given Knight
 	 */
 	private ArrayList<Position> getKnightHotSpots(Piece knight) {
@@ -592,10 +567,8 @@ public class Board {
 	/**
 	 * Returns the hotSpots for the given Bishop
 	 *
-	 * @param bishop
-	 *            the given Bishop
-	 * @param aBoard
-	 *            the given 2D array of Tiles
+	 * @param bishop the given Bishop
+	 * @param aBoard the given 2D array of Tiles
 	 * @return the hotSpots for the given Bishop
 	 */
 	private ArrayList<Position> getBishopHotSpots(Piece bishop, Tile[][] aBoard) {
@@ -665,10 +638,8 @@ public class Board {
 	/**
 	 * Returns the hotSpots for the given Rook on the given board
 	 *
-	 * @param rook
-	 *            the given Rook
-	 * @param aBoard
-	 *            the given 2D array of Tiles
+	 * @param rook   the given Rook
+	 * @param aBoard the given 2D array of Tiles
 	 * @return the hotSpots for the given Rook
 	 */
 	private ArrayList<Position> getRookHotSpots(Piece rook, Tile[][] aBoard) {
@@ -746,10 +717,8 @@ public class Board {
 	/**
 	 * Returns the hotSpots for the given Queen
 	 *
-	 * @param queen
-	 *            the given Queen
-	 * @param aBoard
-	 *            the given 2D array of Tiles
+	 * @param queen  the given Queen
+	 * @param aBoard the given 2D array of Tiles
 	 * @return the hotSpots for the given Queen
 	 */
 	private ArrayList<Position> getQueenHotSpots(Piece queen, Tile[][] aBoard) {
@@ -884,8 +853,7 @@ public class Board {
 	/**
 	 * Returns the hotSpots for the given King
 	 *
-	 * @param king
-	 *            the given King
+	 * @param king the given King
 	 * @return the hotSpots for the given King
 	 */
 	private ArrayList<Position> getKingHotSpots(Piece king) {
@@ -902,10 +870,8 @@ public class Board {
 	 * Determines whether a King of a given color is currently in check on the given
 	 * board
 	 *
-	 * @param color
-	 *            0 if white, 1 if black
-	 * @param aBoard
-	 *            the given 2D array of Tiles
+	 * @param color  0 if white, 1 if black
+	 * @param aBoard the given 2D array of Tiles
 	 * @return true if the King is checked, false otherwise
 	 */
 	public boolean isKingChecked(int color, Tile[][] aBoard) {
@@ -920,10 +886,8 @@ public class Board {
 	/**
 	 * Finds the Position of the King of a given color on the given board
 	 *
-	 * @param color
-	 *            0 if white, 1 if black
-	 * @param aBoard
-	 *            the given 2D array of Tiles
+	 * @param color  0 if white, 1 if black
+	 * @param aBoard the given 2D array of Tiles
 	 * @return the Position of the King
 	 */
 	private Position findKingPosition(int color, Tile[][] aBoard) {
@@ -943,7 +907,7 @@ public class Board {
 	 * checked
 	 *
 	 * @return 0 if the white king is checkmated, 1 if the black king is checkmated,
-	 *         -1 otherwise
+	 * -1 otherwise
 	 */
 	public int getWhoIsCheckmated() {
 		if (isKingChecked(0, board)) {
@@ -964,10 +928,8 @@ public class Board {
 	/**
 	 * Determines whether a player of the given color has any legal moves left
 	 *
-	 * @param color
-	 *            0 if white, 1 if black
-	 * @param aBoard
-	 *            the given 2D array of Tiles
+	 * @param color  0 if white, 1 if black
+	 * @param aBoard the given 2D array of Tiles
 	 * @return true if the player has at least 1 legal move left, false otherwise
 	 */
 	public boolean hasLegalMoveLeft(int color, Tile[][] aBoard) {
@@ -1001,12 +963,10 @@ public class Board {
 	 * Determines whether at least one of the given piece's moves can be performed
 	 * to avoid a check; calls isLegalMove
 	 *
-	 * @param piece
-	 *            the given piece
-	 * @param aBoard
-	 *            the given 2D array of Tiles
+	 * @param piece  the given piece
+	 * @param aBoard the given 2D array of Tiles
 	 * @return true if at least one of the piece's moves can be performed, false
-	 *         otherwise
+	 * otherwise
 	 */
 	private boolean performMoves(Piece piece, Tile[][] aBoard) {
 		Position currentPosition = piece.getPosition();
@@ -1031,9 +991,8 @@ public class Board {
 	/**
 	 * Called each time after a Piece is moved. Removes all hotSpots on current
 	 * board, then goes over that board and tags updated hotSpots accordingly.
-	 * 
-	 * @param aBoard
-	 *            the given 2D array of Tiles
+	 *
+	 * @param aBoard the given 2D array of Tiles
 	 */
 	public void updateHotSpots(Tile[][] aBoard) {
 		ArrayList<Position> wHotSpots = getWhiteHotSpots(aBoard);

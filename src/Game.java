@@ -120,8 +120,7 @@ public class Game {
 			System.out.println("(1) Select a piece to move");
 			System.out.println("(2) Resign");
 			System.out.println("(3) Request draw");
-			System.out.println("(4) Pass turn: for testing only");
-			System.out.println("(5) View pieces I've captured");
+			System.out.println("(4) View pieces I've captured");
 			int playerChoice = sc.nextInt();
 			switch (playerChoice) {
 			case 1:
@@ -149,11 +148,6 @@ public class Game {
 				}
 				break;
 			case 4:
-				// do nothing
-				endPrompt = true;
-				System.out.println(pl.getName() + " has passed");
-				break;
-			case 5:
 				System.out.println(pl.getCapturedPieces());
 				break;
 			default:
