@@ -1,0 +1,10 @@
+#BlueJ class context
+comment0.target=AI
+comment0.text=\r\n\ @author\ Tommy\ V.\ Tran\r\n\ \ \ \ \ \ \ \ \ <p>\r\n\ \ \ \ \ \ \ \ \ "AI"\ that\ randomly\ scans\ through\ the\ board\ for\ valid\ moves\ and\ goes\r\n\ \ \ \ \ \ \ \ \ for\ the\ one\ with\ highest\ point\ value.\r\n
+comment1.params=name\ number\ bd
+comment1.target=AI(java.lang.String,\ int,\ Board)
+comment1.text=\r\n\ Constructor\ to\ initialize\ the\ "AI"\r\n\r\n\ @param\ name\r\n\ \ \ \ \ \ \ \ \ \ \ \ name\ of\ the\ AI\r\n\ @param\ number\r\n\ \ \ \ \ \ \ \ \ \ \ \ player\ number\ (usually\ 1\ for\ Black)\r\n\ @param\ bd\r\n\ \ \ \ \ \ \ \ \ \ \ \ Board\ the\ AI\ is\ playing\ on\r\n
+comment2.params=
+comment2.target=Vector\ generateHighestPointValueMove()
+comment2.text=\r\n\ The\ AI\ reads\ in\ the\ Board\ it\ has\ access\ to\ and\ generates\ a\ vector\ of\ movement\r\n\ based\ on\ capturing\ the\ Piece\ with\ the\ highest\ point\ value.\ If\ highest\ point\r\n\ value\ is\ 0,\ then\ AI\ just\ chooses\ the\ first\ legal\ move.\r\n\r\n\ @return\ a\ vector\ of\ movement\ that\ yields\ the\ capture\ with\ the\ highest\ point\r\n\ \ \ \ \ \ \ \ \ value\r\n
+numComments=3

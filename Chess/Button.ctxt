@@ -1,0 +1,22 @@
+#BlueJ class context
+comment0.target=Button
+comment0.text=\r\n\ \r\n\ \r\n\ @author\ Jonathan\ Lim\ \r\n\ Period\ 3\r\n\ \r\n\ Button\ class\ -\ class\ to\ simulate\ button\r\n
+comment1.params=text
+comment1.target=Button(java.lang.String)
+comment1.text=\r\n\ Button\ constructor\ -\ initializes\ the\ text\ and\ set\ the\ image\ to\ the\ text\r\n\ @param\ text\ -\ text\ of\ image\r\n
+comment2.params=text
+comment2.target=void\ setText(java.lang.String)
+comment2.text=\r\n\ Method\ to\ set\ picture\ of\ object\ to\ text\r\n\ @param\ text\ -\ text\ of\ image\r\n
+comment3.params=
+comment3.target=void\ act()
+comment3.text=\r\n\ Method\ to\ check\ if\ button\ has\ been\ pressed\r\n
+comment4.params=
+comment4.target=java.lang.String\ getText()
+comment4.text=\r\n\ Method\ that\ returns\ text\ of\ button\r\n\ @\ return\ text\ of\ button\r\n
+comment5.params=
+comment5.target=boolean\ clicked()
+comment5.text=\r\n\ Method\ that\ returns\ if\ button\ has\ been\ clicked\r\n\ @return\ true\ if\ button\ is\ clicked,\ else\ return\ false\r\n
+comment6.params=click
+comment6.target=void\ setClicked(boolean)
+comment6.text=\r\n\ Method\ to\ set\ whether\ button\ has\ been\ clicked\r\n\ \r\n
+numComments=7

@@ -1,0 +1,24 @@
+#BlueJ class context
+comment0.target=Vector
+comment0.text=\r\n\r\n\ @author\ Tommy\ V.\ Tran\r\n\ Represents\ a\ link\ of\ movement\ from\ an\ initial\ position\ to\ a\ final\ position.\r\n
+comment1.params=fromPos\ toPos
+comment1.target=Vector(Position,\ Position)
+comment1.text=\r\n\ Constructor\ to\ initialize\ the\ vector\r\n\ @param\ fromPos\ the\ initial\ position\r\n\ @param\ toPos\ the\ final\ position\r\n
+comment2.params=other
+comment2.target=Vector(Vector)
+comment2.text=\r\n\ Constructor\ to\ initialize\ the\ vector\ based\ on\ another\ vector\r\n\ @param\ other\ some\ other\ Vector\r\n
+comment3.params=
+comment3.target=Position\ getFromPos()
+comment3.text=\r\n\ Getter\ method\ for\ the\ initial\ position\r\n\ @return\ the\ initial\ position\r\n
+comment4.params=fromPos
+comment4.target=void\ setFromPos(Position)
+comment4.text=\r\n\ Setter\ method\ for\ the\ initial\ position\r\n\ @param\ fromPos\ what\ initial\ position\ should\ be\ set\ to\r\n
+comment5.params=
+comment5.target=Position\ getToPos()
+comment5.text=\r\n\ Getter\ method\ for\ the\ final\ position\r\n\ @return\ the\ final\ position\r\n
+comment6.params=toPos
+comment6.target=void\ setToPos(Position)
+comment6.text=\r\n\ Setter\ method\ for\ the\ final\ positoin\r\n\ @param\ toPos\ what\ the\ final\ position\ should\ be\ set\ to\r\n
+comment7.params=
+comment7.target=java.lang.String\ toString()
+numComments=8

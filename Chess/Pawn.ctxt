@@ -1,0 +1,18 @@
+#BlueJ class context
+comment0.target=Pawn
+comment0.text=\r\n\ Class\ that\ represents\ a\ Pawn\ chess\ piece\r\n\r\n\ @author\ Brian\ Qiu\r\n
+comment1.params=color\ pos
+comment1.target=Pawn(int,\ Position)
+comment1.text=\r\n\ Contructor\ to\ initialize\ the\ Pawn's\ color\ and\ Position\r\n\r\n\ @param\ color\r\n\ \ \ \ \ \ \ \ \ \ \ \ the\ Pawn's\ color\r\n\ @param\ pos\r\n\ \ \ \ \ \ \ \ \ \ \ \ the\ Pawn's\ Position\r\n
+comment2.params=
+comment2.target=java.util.ArrayList\ getRangeOfMovement()
+comment3.params=
+comment3.target=boolean\ isWaitingForPromotion()
+comment3.text=\r\n\ Determines\ whether\ this\ Pawn\ need\ to\ be\ promoted;\ a\ white\ Pawn\ is\ promoted\ if\r\n\ it\ is\ on\ row\ 0;\ a\ black\ Pawn\ is\ promoted\ if\ it\ is\ on\ row\ 7.\r\n\r\n\ @return\ true\ if\ this\ Pawn\ should\ be\ promoted,\ false\ otherwise\r\n
+comment4.params=
+comment4.target=boolean\ hasMovedTwo()
+comment4.text=\r\n\ Accessor\ method\ to\ get\ the\ Pawn's\ 2-tile\ move\ status\r\n\ \r\n\ @return\ true\ if\ the\ Pawn\ has\ already\ used\ the\ 2-tile\ move,\ false\ otherwise\r\n
+comment5.params=moved
+comment5.target=void\ setHasMovedTwo(boolean)
+comment5.text=\r\n\ Mutator\ method\ to\ update\ the\ Pawn's\ 2-tile\ move\ status\r\n\ \r\n\ @param\ moved\r\n\ \ \ \ \ \ \ \ \ \ \ \ true\ if\ the\ Pawn\ has\ used\ the\ 2-tile\ move,\ false\ otherwise\r\n
+numComments=6

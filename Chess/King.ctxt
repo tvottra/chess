@@ -1,0 +1,10 @@
+#BlueJ class context
+comment0.target=King
+comment0.text=\r\n\ Class\ that\ represents\ a\ King\ chess\ piece\r\n\ \r\n\ @author\ Brian\ Qiu\r\n
+comment1.params=color\ pos
+comment1.target=King(int,\ Position)
+comment1.text=\r\n\ Constructor\ to\ initialize\ the\ King's\ color\ and\ Position\r\n\ \r\n\ @param\ color\r\n\ \ \ \ \ \ \ \ \ \ \ \ the\ King's\ color\r\n\ @param\ pos\r\n\ \ \ \ \ \ \ \ \ \ \ \ the\ King's\ position\r\n
+comment2.params=
+comment2.target=java.util.ArrayList\ getRangeOfMovement()
+comment2.text=\r\n\ Calculates\ the\ King's\ range\ of\ movement\ based\ on\ known\ board\ size\ and\ its\r\n\ current\ position.\r\n\ \r\n\ @return\ the\ King's\ range\ of\ movement\r\n
+numComments=3

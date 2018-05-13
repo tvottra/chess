@@ -1,0 +1,9 @@
+#BlueJ class context
+comment0.target=Rook
+comment0.text=\r\n\ Class\ that\ represents\ a\ Rook\ chess\ piece\r\n\ \r\n\ @author\ Andrew\ Le\r\n\r\n
+comment1.params=color\ pos
+comment1.target=Rook(int,\ Position)
+comment1.text=\r\n\ Constructor\ to\ initialize\ the\ Rook's\ color\ and\ Position\r\n\ \r\n\ @param\ color\r\n\ \ \ \ \ \ \ \ \ \ \ \ the\ Rook's\ color\r\n\ @param\ pos\r\n\ \ \ \ \ \ \ \ \ \ \ \ the\ Rook's\ Position\r\n
+comment2.params=
+comment2.target=java.util.ArrayList\ getRangeOfMovement()
+numComments=3

@@ -1,0 +1,21 @@
+#BlueJ class context
+comment0.target=Title
+comment1.params=text\ s
+comment1.target=Title(java.lang.String,\ int)
+comment1.text=\r\n\ Title\ constructor\ -\ initializes\ the\ text\ and\ the\ size\ and\ sets\ the\ image\r\n\ to\ the\ text\ of\ the\ certain\ size\r\n\ @param\ text\ -\ text\ of\ image\r\n\ @param\ s\ -\ size\ of\ image\r\n
+comment2.params=text
+comment2.target=void\ setText(java.lang.String)
+comment2.text=\r\n\ Method\ to\ set\ image\ of\ object\ to\ the\ text\r\n\ @param\ text\ of\ image\r\n
+comment3.params=
+comment3.target=void\ act()
+comment3.text=\r\n\ Method\ to\ act\r\n
+comment4.params=
+comment4.target=java.lang.String\ getText()
+comment4.text=\r\n\ Method\ to\ get\ text\ of\ Title\r\n\ @return\ text\ of\ title\r\n
+comment5.params=
+comment5.target=greenfoot.GreenfootImage\ getImage()
+comment5.text=\r\n\ Method\ to\ return\ image\ of\ title\r\n\ @return\ image\ of\ title\r\n
+comment6.params=i
+comment6.target=void\ setTransparency(int)
+comment6.text=\r\n\ Method\ to\ set\ transparency\ of\ title\r\n\ @param\ i\ -\ transparency\ level\ of\ title\r\n
+numComments=7

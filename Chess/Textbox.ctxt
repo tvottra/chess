@@ -1,0 +1,25 @@
+#BlueJ class context
+comment0.target=Textbox
+comment0.text=\r\n\ @author\ Jonathan\ Lim\r\n\ \r\n\ Textbox\ class\ -\ class\ to\ simulate\ a\ box\ that\ can\ be\ edited\r\n
+comment1.params=
+comment1.target=Textbox()
+comment1.text=\r\n\ Textbox\ constructor\ -\ sets\ image\ of\ the\ Textbox\r\n
+comment2.params=num
+comment2.target=Textbox(int)
+comment2.text=\r\n\ Textbox\ constructor\ -\ updates\ text\ based\ on\ the\ number\ of\ the\ player\ and\r\n\ sets\ image\ of\ the\ Textbox\r\n\ @param\ num\ -\ nuumber\ of\ player\r\n
+comment3.params=
+comment3.target=void\ updateImage()
+comment3.text=\r\n\ Method\ to\ update\ image\ of\ Textbox\r\n
+comment4.params=
+comment4.target=void\ act()
+comment4.text=\r\n\ Method\ to\ allow\ user\ to\ edit\ the\ text\ given\r\n
+comment5.params=
+comment5.target=java.lang.String\ getValue()
+comment5.text=\r\n\ Method\ to\ get\ text\ of\ image\r\n\ @return\ text\ of\ image\r\n
+comment6.params=
+comment6.target=boolean\ enter()
+comment6.text=\r\n\ Method\ to\ check\ if\ text\ written\ is\ final\r\n\ @return\ true\ if\ text\ is\ final,\ else\ false\r\n
+comment7.params=e
+comment7.target=void\ setEnter(boolean)
+comment7.text=\r\n\ Method\ to\ set\ if\ text\ written\ is\ final\r\n\ @param\ e\ -\ enter\ value\r\n
+numComments=8
