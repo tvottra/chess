@@ -1,6 +1,7 @@
 import javafx.scene.Parent;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
  * Class that represents the chess board
@@ -535,12 +536,15 @@ public class Board {
 		}
 		// get diagonal tiles (if any)
 		ArrayList<Position> hotSpots = getPawnHotSpots(pawn);
-		for (int i = 0; i < hotSpots.size(); i++) {
-			Tile currentTile = getTile(hotSpots.get(i));
+		Iterator iter = hotSpots.iterator();
+		while (iter.hasNext()) {
+			Position pos = (Position) iter.next();
+			Tile currentTile = getTile(pos);
 			if (currentTile.hasPiece() && !currentTile.getPiece().isSameColorAs(pawn)) {
-				rom.add(hotSpots.get(i));
+				rom.add(pos);
 			}
 		}
+
 		return rom;
 	}
 
