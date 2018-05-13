@@ -228,7 +228,7 @@ public class Game extends World{
                 if(chosenToPos != null){
                     gameBoard.getTile(chosenFromPos).setTransparency(225);
                     boolean castle = (gameBoard.getTile(chosenFromPos).getPiece().getName().equals("King") && gameBoard.castleAble(chosenFromPos, chosenToPos, gameBoard.getBoard()));
-                    if(gameBoard.isLegalMove(chosenFromPos, chosenToPos, gameBoard.getBoard()) || castle){
+                    if(!promoted || gameBoard.isLegalMove(chosenFromPos, chosenToPos, gameBoard.getBoard()) || castle){
                         toPosChosen = true;
                         Piece currentPiece = gameBoard.getTile(chosenFromPos).getPiece();
                         if (currentPiece != null && currentPiece.getName().equals("Pawn")

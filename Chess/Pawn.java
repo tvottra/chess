@@ -55,10 +55,22 @@ public class Pawn extends Piece {
 	 * @return true if this Pawn should be promoted, false otherwise
 	 */
 	public boolean isWaitingForPromotion() {
-		if (getPosition().getRow() % 7 == 0) { // if pawn is either on row 0 or row 7
-			return true;
-		} else
-			return false;
+		if(getColor() == 0){
+		    if(getPosition().getRow() == 1){
+		        return true;
+		      }
+		      else{
+		          return false;
+		      }
+		  }
+		  else{
+		      if(getPosition().getRow() == 6){
+		          return true;
+		      }
+		      else{
+		          return false;
+		      }
+		  }
 	}
 
 	/**

@@ -523,8 +523,10 @@ public class Board {
 		// get forward tiles (if any)
 		ArrayList<Position> list = pawn.getRangeOfMovement();
 		for (int i = 0; i < list.size(); i++) {
-			Tile currentTile = getTile(list.get(i));
-			if (currentTile.hasPiece()) {
+		    Tile currentTile = null;
+		    if(list.get(i).isWithinBounds()){
+		        currentTile = getTile(list.get(i));
+		        if (currentTile.hasPiece()) {
 				break;
 			} else {
 				if (pawn.hasMoved() && Math.abs(list.get(i).getRow() - pawn.getPosition().getRow()) == 2) {
@@ -533,6 +535,8 @@ public class Board {
 					rom.add(list.get(i));
 				}
 			}
+		      }
+			
 		}
 		// get diagonal tiles (if any)
 		ArrayList<Position> hotSpots = getPawnHotSpots(pawn);
